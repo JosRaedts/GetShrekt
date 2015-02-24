@@ -20,7 +20,7 @@ public class DefaultController {
    @RequestMapping(value = "/", method = RequestMethod.GET)
    public String index(ModelMap map) {
        map.put("msg", "Hello photoshop users");
-       map.put("test", "cool");
+       map.put("test", "testen van github account");
        return "index";
    }
    
