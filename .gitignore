@@ -14,3 +14,4 @@ Photoshop/target
 hs_err_pid*
 *.lst
 *.war
+*.properties
