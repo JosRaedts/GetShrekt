@@ -1,6 +1,10 @@
 <jsp:include page="header.jsp" />
-<h4>PhotoShop</h4>
-Spring says: <span class="blue">${msg}</span>
-<p>${test}</p>
-<a href="${cp}/pizza/test">testen</a>
+<div class="container">
+    <div class="page-header">
+        <h1>Photoshop</h1>
+    </div>  
+    <p>Spring says: <span class="blue">${msg}</span><p>
+    <p>${test}</p>
+    <a href="${cp}/pizza/test">testen</a>
+</div>
 <jsp:include page="footer.jsp" />
