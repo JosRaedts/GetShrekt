@@ -1,3 +1,4 @@
-com/photoshop/config/WebInitializer.class
-com/photoshop/controllers/DefaultController.class
-com/photoshop/config/Config.class
+com\photoshop\controllers\DefaultController.class
+com\photoshop\controllers\LoginController.class
+com\photoshop\config\Config.class
+com\photoshop\config\WebInitializer.class
