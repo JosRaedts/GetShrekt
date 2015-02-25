@@ -13,7 +13,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="${cp}/resources/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="${cp}/resources/css/style.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="${cp}/resources/js/js.js"></script>
         <script src="${cp}/resources/js/bootstrap.min.js"></script>
         <title>PhotoShop</title>
@@ -32,7 +31,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="${cp}">Home</a></li>
+            <li class="active"><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
             <li class="dropdown">

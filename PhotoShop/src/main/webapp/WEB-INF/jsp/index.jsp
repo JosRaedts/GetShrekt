@@ -5,6 +5,6 @@
     </div>  
     <p>Spring says: <span class="blue">${msg}</span><p>
     <p>${test}</p>
-    <a href="${cp}/login">Log In</a>
+    <a href="${cp}/pizza/test">testen</a>
 </div>
 <jsp:include page="footer.jsp" />
