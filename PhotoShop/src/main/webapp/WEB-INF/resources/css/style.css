@@ -43,6 +43,11 @@ body > .container {
   margin: 20px 0;
 }
 
+.MainTitle {
+    color: lightblue;
+    text-align: center;
+}
+
 .footer > .container {
   padding-right: 15px;
   padding-left: 15px;
