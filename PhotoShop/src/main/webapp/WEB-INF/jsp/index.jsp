@@ -8,5 +8,11 @@
     </div>
     <a href="${cp}/login">Log In</a>
     <a href="${cp}/register">Register</a>
+    <p>Choose:
+      <a href="<c:url value=?lang=en'/>">English</a>
+      | <a href="<c:url value='?lang=fr'/>">French</a>
+      | <a href="<c:url value='?lang=de'/>">German</a>
+  </p>
+  <p>Greetings: <spring:message code="greetings" text="missing" /></p>
 </div>
 <jsp:include page="footer.jsp" />
