@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RegisterController {
      @RequestMapping(value = "/register", method = RequestMethod.GET)
    public String register(ModelMap map) {
-       map.put("message", "Please register");
+       map.put("admin", "Admin panel");
+       map.put("photographer", "Register of a photographer");
        return "register";
    }
 }
