@@ -10,17 +10,15 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 /**
-
-/**
  *
- * @author bart
+ * @author fhict
  */
 @Controller
-public class RegisterController {
-     @RequestMapping(value = "/register", method = RequestMethod.GET)
-   public String register(ModelMap map) {
-       map.put("admin", "Admin panel");
-       map.put("photographer", "Register of a photographer");
-       return "register";
+public class ContactController {
+      @RequestMapping(value = "/contact", method = RequestMethod.GET)
+   public String login(ModelMap map) {
+       map.put("msg", "Hello photoshop users");
+       map.put("test", "testen van github account");
+       return "contact";
    }
 }

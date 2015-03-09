@@ -133,3 +133,8 @@ code {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+hr {
+    border-color: #7DBDFF;
+    background-color: #7DBDFF;
+}
