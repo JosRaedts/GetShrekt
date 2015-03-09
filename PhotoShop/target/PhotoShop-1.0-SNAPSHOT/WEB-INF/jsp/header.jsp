@@ -6,16 +6,16 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="cp" value="${pageContext.request.servletContext.contextPath}" scope="request" />
+<c:set var="baseurl" value="${pageContext.request.servletContext.contextPath}" scope="request" />
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="${cp}/resources/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="${cp}/resources/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="${baseurl}/resources/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="${baseurl}/resources/css/style.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src="${cp}/resources/js/js.js"></script>
-        <script src="${cp}/resources/js/bootstrap.min.js"></script>
+        <script src="${baseurl}/resources/js/js.js"></script>
+        <script src="${baseurl}/resources/js/bootstrap.min.js"></script>
         <title>PhotoShop</title>
     </head>
     <body>
@@ -28,11 +28,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="${cp}/">PhotoShop</a>
+          <a class="navbar-brand" href="${baseurl}/">PhotoShop</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="${cp}">Home</a></li>
+            <li class="active"><a href="${baseurl}">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
             <li class="dropdown">

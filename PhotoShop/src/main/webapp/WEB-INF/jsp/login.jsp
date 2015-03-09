@@ -1,7 +1,7 @@
 <jsp:include page="header.jsp" />
 <div class="container">
 
-      <form class="form-signin">
+      <form class="form-signin" method="post" action="${baseurl}/login/checkLogin">
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="inputName" class="sr-only">Name:</label>
         <input type="text" name="name" id="inputName" class="form-control" placeholder="Full name" required autofocus>

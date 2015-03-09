@@ -6,8 +6,8 @@
     <div>
         <p>If you had your pictures taken, you can order them here. Please log in with your full name and code to get started</p>
     </div>
-    <a href="${cp}/login">Log In</a>
-    <a href="${cp}/register">Register</a>
+    <a href="${baseurl}/login">Log In</a>
+    <a href="${baseurl}/register">Register</a>
     <p>Choose:
       <a href="<c:url value=?lang=en'/>">English</a>
       | <a href="<c:url value='?lang=fr'/>">French</a>
