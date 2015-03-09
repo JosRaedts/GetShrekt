@@ -83,6 +83,16 @@ code {
     color: #fff; 
 }
 
+.lang-container{
+    float: right;
+    margin-top: 15px;
+}
+
+.lang-container .lang-img{
+    height: 20px;
+    width: 20px;
+}
+
 .footer {
     background-color: #3399FF;
 }

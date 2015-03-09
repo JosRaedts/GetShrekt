@@ -31,7 +31,7 @@ public class Config extends WebMvcConfigurerAdapter {
         UrlBasedViewResolver resolver = new UrlBasedViewResolver();  
         resolver.setPrefix("/WEB-INF/jsp/");  
         resolver.setSuffix(".jsp");  
-        resolver.setViewClass(JstlView.class);  
+        resolver.setViewClass(JstlView.class);
         return resolver;  
     }  
     

@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <c:set var="baseurl" value="${pageContext.request.servletContext.contextPath}" scope="request" />
 <!DOCTYPE html>
 <html>
@@ -28,7 +29,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="${baseurl}/">PhotoShop</a>
+          <a class="navbar-brand" href="${baseurl}/"><spring:message code="pageName" text="%pageName" /></a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -48,6 +49,10 @@
               </ul>
             </li>
           </ul>
+            <div class="lang-container">
+            <a href="<c:url value='?lang=en'/>"><img class="lang-img" src="${baseurl}/resources/img/en.png"/></a>
+            <a href="<c:url value='?lang=nl'/>"><img class="lang-img" src="${baseurl}/resources/img/nl.png"/></a>
+        </div>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
