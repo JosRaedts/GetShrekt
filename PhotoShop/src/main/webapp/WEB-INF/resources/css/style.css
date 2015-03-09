@@ -43,6 +43,11 @@ body > .container {
   margin: 20px 0;
 }
 
+.MainTitle {
+    color: lightblue;
+    text-align: center;
+}
+
 .footer > .container {
   padding-right: 15px;
   padding-left: 15px;
@@ -118,7 +123,7 @@ code {
 .form-signin .form-control:focus {
   z-index: 2;
 }
-.form-signin input[type="email"] {
+.form-signin input[type="text"] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
@@ -127,4 +132,9 @@ code {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+hr {
+    border-color: #7DBDFF;
+    background-color: #7DBDFF;
 }
