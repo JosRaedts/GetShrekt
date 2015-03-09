@@ -1,4 +1,7 @@
 com\photoshop\controllers\DefaultController.class
 com\photoshop\controllers\LoginController.class
-com\photoshop\config\Config.class
 com\photoshop\config\WebInitializer.class
+com\photoshop\models\Database.class
+com\photoshop\models\user\User.class
+com\photoshop\models\user\UserDao.class
+com\photoshop\config\Config.class
