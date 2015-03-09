@@ -35,10 +35,10 @@ public class LoginController {
             @RequestParam("schoolcode") String code, ModelMap map){
         User user = userDao.authenticate(name, code);
         if (user != null) {
-            return "index"; //hij zou nu ingelogd moeten zijn.
+            return "redirect:../"; //hij zou nu ingelogd moeten zijn.
         }
         else{
-            return "login"; //teruggeleid naar de index pagina of inlogpagina
+            return "redirect:"; //teruggeleid naar de index pagina of inlogpagina
         }
     }
 }
