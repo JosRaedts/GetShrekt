@@ -19,7 +19,8 @@
   *.war
 
 PhotoShop/target
-
+PhotoShop/target/*
+PhotoShop/target/**
 PhotoShop/target/PhotoShop-1.0-SNAPSHOT.war
 *.lst
 PhotoShop/target/maven-archiver/pom.properties
