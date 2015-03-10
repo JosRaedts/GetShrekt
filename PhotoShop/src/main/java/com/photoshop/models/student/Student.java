@@ -5,12 +5,22 @@
  */
 package com.photoshop.models.student;
 
+import com.photoshop.models.SchoolClass.SchoolClass;
+
 /**
  *
  * @author Bram
  */
 public class Student {
     
+    private int id;
+    private int studentnr;
+    private String name;
+    private String address;
+    private String city;
+    private String zipcode;
+    private String username;
+    private String password;
     private final StudentDao dao;
     
     public Student()
@@ -32,15 +42,6 @@ public class Student {
     {
         this.dao.delete(this);
     }
-    
-    private int id;
-    private int studentnr;
-    private String name;
-    private String address;
-    private String city;
-    private String zipcode;
-    private String username;
-    private String password;
 
     public int getId() {
         return id;
@@ -105,4 +106,13 @@ public class Student {
     public void setPassword(String password) {
         this.password = password;
     }    
+    
+    public SchoolClass getSchoolClass(){
+        //todo
+        return null;
+    }
+    
+    public void setSchoolClass(SchoolClass schoolclass){
+        //todo
+    }
 }

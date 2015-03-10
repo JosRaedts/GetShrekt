@@ -5,6 +5,10 @@
  */
 package com.photoshop.models.SchoolClass;
 
+import com.photoshop.models.school.School;
+import com.photoshop.models.student.Student;
+import java.util.List;
+
 /**
  *
  * @author Casper
@@ -50,4 +54,21 @@ public class SchoolClass {
         this.name = name;
     }
     
+    public List<Student> getStudents(){
+        //todo
+        return null;
+    }
+    
+    public void setStudents(List<Student> students){
+        //todo
+    }
+    
+    public School getSchool(){
+        //todo
+        return null;
+    }
+    
+    public void setSchool(School school){
+        //todo
+    }
 }

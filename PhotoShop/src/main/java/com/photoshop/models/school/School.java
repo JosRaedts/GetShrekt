@@ -5,6 +5,9 @@
  */
 package com.photoshop.models.school;
 
+import com.photoshop.models.SchoolClass.SchoolClass;
+import java.util.List;
+
 /**
  *
  * @author Casper
@@ -85,5 +88,14 @@ public class School{
 
     public void setCode(String code) {
         this.code = code;
+    }
+    
+    public List<SchoolClass> getSchoolClasses(){
+        //to do
+        return null;
+    }
+    
+    public void setSchoolClasses(List<SchoolClass> schoolclasses){
+        //todo
     }
 }
