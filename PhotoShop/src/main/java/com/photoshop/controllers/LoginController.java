@@ -6,6 +6,8 @@
 package com.photoshop.controllers;
 
 
+import com.photoshop.models.student.Student;
+import com.photoshop.models.student.StudentDao;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -23,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class LoginController {
     
     @Autowired
-    private UserDao userDao;
+    private StudentDao studentDao;
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(ModelMap map) {
@@ -35,10 +37,10 @@ public class LoginController {
     @RequestMapping(value="/login/checkLogin", method = RequestMethod.POST)
     public String checkLogin(@RequestParam("name") String name,
             @RequestParam("schoolcode") String code, ModelMap map, HttpServletRequest request) {
-        User user = userDao.authenticate(name, code);
-        if (user != null) {
-            request.getSession().setAttribute("UserID", user.getId());
-            request.getSession().setAttribute("UserName", user.getUsername());
+        Student student = studentDao.authenticate(name, code);
+        if (student != null) {
+            request.getSession().setAttribute("UserID", student.getId());
+            request.getSession().setAttribute("UserName", student.getUsername());
             return "redirect:../"; //hij zou nu ingelogd moeten zijn.
         } else {
             request.getSession().setAttribute("UserID", null);

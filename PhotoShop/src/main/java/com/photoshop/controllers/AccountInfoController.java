@@ -5,6 +5,8 @@
  */
 package com.photoshop.controllers;
 
+import com.photoshop.models.student.Student;
+import com.photoshop.models.student.StudentDao;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -21,28 +23,28 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Controller
 public class AccountInfoController {
     
-    private UserDao userDao;
+    private StudentDao studentDao;
     
    @RequestMapping(value = "/accountinformatie", method = RequestMethod.GET)
    public String index(ModelMap map, HttpServletRequest request) {
        int userID = 0;
        String userName = "";
-       User user;
+       Student student;
        
        try {
            userID = (int)request.getSession().getAttribute("UserID");
-           user = userDao.getById(userID);
+           student = studentDao.getById(userID);
        } catch (Exception e) {
-           user = null;
+           student = null;
        }
             
-       if (user == null) {
+       if (student == null) {
            return "index";
        }
        else {
            System.out.println("User was ingelogd");
-           map.put("UserName", user.getUsername());
-           map.put("Name", user.getName());
+           map.put("UserName", student.getUsername());
+           map.put("Name", student.getName());
        }
        return "accountgegevens";
    }
