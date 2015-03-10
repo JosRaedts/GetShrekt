@@ -104,8 +104,8 @@ public class StudentDao extends Database  {
                 querystring = "INSERT INTO students(studentnr, name, address, city, zipcode, username, password, schoolclass_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             }
             
-<<<<<<< HEAD
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
+            
+            PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, student.getStudentnr());
             stat.setString(2, student.getName());
             stat.setString(3, student.getAddress());
@@ -114,12 +114,6 @@ public class StudentDao extends Database  {
             stat.setString(6, student.getUsername());
             stat.setString(7, student.getPassword());
             stat.setInt(8, student.getSchoolclass_id());
-=======
-            PreparedStatement stat = conn.prepareStatement(querystring);
-            stat.setString(1, student.getName());
-            stat.setString(2, student.getUsername());
-            stat.setString(3, student.getPassword());
->>>>>>> origin/master
             if(exists)
             {
                 stat.setInt(9, student.getId());
