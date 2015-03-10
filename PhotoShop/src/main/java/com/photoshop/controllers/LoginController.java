@@ -5,11 +5,7 @@
  */
 package com.photoshop.controllers;
 
-import com.photoshop.models.user.User;
-import com.photoshop.models.user.UserDao;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -18,26 +14,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 /**
  *
  * @author fhict
  */
 @Controller
 public class LoginController {
-
+    
     @Autowired
     private UserDao userDao;
-
+    
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(ModelMap map) {
         map.put("msg", "Hello photoshop users");
         map.put("test", "testen van github account");
         return "login";
     }
-
-    @RequestMapping(value = "/login/checkLogin", method = RequestMethod.POST)
+    
+    @RequestMapping(value="/login/checkLogin", method = RequestMethod.POST)
     public String checkLogin(@RequestParam("name") String name,
+<<<<<<< HEAD
             @RequestParam("schoolcode") String code, ModelMap map, HttpServletRequest request) {
         User user = userDao.authenticate(name, code);
         if (user != null) {
@@ -47,6 +43,14 @@ public class LoginController {
         } else {
             request.getSession().setAttribute("UserID", null);
             request.getSession().setAttribute("UserName", "");
+=======
+            @RequestParam("schoolcode") String code, ModelMap map){
+        User user = userDao.authenticate(name, code);
+        if (user != null) {
+            return "redirect:../"; //hij zou nu ingelogd moeten zijn.
+        }
+        else{
+>>>>>>> origin/master
             return "redirect:"; //teruggeleid naar de index pagina of inlogpagina
         }
     }

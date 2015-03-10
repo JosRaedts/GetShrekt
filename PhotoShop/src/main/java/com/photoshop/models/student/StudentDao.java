@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.photoshop.models.user;
+package com.photoshop.models.student;
 
 import com.photoshop.models.Database;
 import java.sql.PreparedStatement;
@@ -20,55 +20,60 @@ import org.springframework.stereotype.Component;
  * @author Bram
  */
 @Component
-public class UserDao extends Database  {
+public class StudentDao extends Database  {
     
-    public UserDao()
+    public StudentDao()
     {
         super();
     }
     
-    public List<User> getList()
+    public List<Student> getList()
     {
-        List<User> users = new ArrayList();
+        List<Student> students = new ArrayList();
         try {
-            String querystring = "SELECT * FROM users";
+            String querystring = "SELECT * FROM students";
             PreparedStatement stat = this.conn.prepareStatement(querystring);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
             {
-                users.add(build(rs));
+                students.add(build(rs));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return users;
+        return students;
     }
     
-    public User getById(int id)
+    public Student getById(int id)
     {
-        User user = null;
+        Student student = null;
         try {
+<<<<<<< HEAD:PhotoShop/src/main/java/com/photoshop/models/user/UserDao.java
             String querystring = "SELECT * FROM users WHERE id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
+=======
+            String querystring = "SELECT * FROM students WHERE id = ?";
+            PreparedStatement stat = this.conn.prepareStatement(querystring);
+>>>>>>> origin/master:PhotoShop/src/main/java/com/photoshop/models/student/StudentDao.java
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
             {
-                user = build(rs);
+                student = build(rs);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return user;
+        return student;
     }
     
     public boolean idExists(int id)
     {
         boolean exists = false;
         try {
-            String querystring = "SELECT * FROM users WHERE id = ?";
+            String querystring = "SELECT * FROM students WHERE id = ?";
             PreparedStatement stat;
             stat = this.conn.prepareStatement(querystring);
             stat.setInt(1, id);
@@ -80,17 +85,17 @@ public class UserDao extends Database  {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return exists;
     }
     
-    public void save(User user)
+    public void save(Student student)
     {
         try {
             String querystring = null;
-            boolean exists = idExists(user.getId());
+            boolean exists = idExists(student.getId());
             if(exists)
             {
                 querystring = "UPDATE users SET name = ?, username = ?, password = ? WHERE id = ?";                                
@@ -101,65 +106,74 @@ public class UserDao extends Database  {
             }
             
             PreparedStatement stat = this.conn.prepareStatement(querystring);
-            stat.setString(1, user.getName());
-            stat.setString(2, user.getUsername());
-            stat.setString(3, user.getPassword());
+            stat.setString(1, student.getName());
+            stat.setString(2, student.getUsername());
+            stat.setString(3, student.getPassword());
             if(exists)
             {
-                stat.setInt(4, user.getId());
+                stat.setInt(4, student.getId());
             }
             stat.execute();
         } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void delete(User user)
+    public void delete(Student student)
     {
         try {
-            String querystring = "DELETE FROM users WHERE id = ?";
+            String querystring = "DELETE FROM students WHERE id = ?";
             PreparedStatement stat = this.conn.prepareStatement(querystring);
-            stat.setInt(1, user.getId());
+            stat.setInt(1, student.getId());
             stat.execute();
         } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public User authenticate(String username, String password)
+    public Student authenticate(String username, String password)
     {
-        User user = null;
+        Student student = null;
         try {
+<<<<<<< HEAD:PhotoShop/src/main/java/com/photoshop/models/user/UserDao.java
             System.out.println(username);
             System.out.println(password);
             String querystring = "SELECT * FROM users WHERE username = ? AND password = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
+=======
+            String querystring = "SELECT * FROM students WHERE username = ? AND password = ?";
+            PreparedStatement stat = this.conn.prepareStatement(querystring);
+>>>>>>> origin/master:PhotoShop/src/main/java/com/photoshop/models/student/StudentDao.java
             stat.setString(1, username);
             stat.setString(2, password);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
             {
-                user = build(rs);
+                student = build(rs);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return user;
+        return student;
     }
     
-    private User build(ResultSet rs)
+    private Student build(ResultSet rs)
     {
-        User user = null;
-        try {
-            user = new User(this);
-            user.setId(rs.getInt("id"));
-            user.setName(rs.getString("name"));
-            user.setPassword(rs.getString("password"));
-            user.setUsername(rs.getString("username"));
+        Student student = null;
+        try {            
+            student = new Student(this);
+            student.setId(rs.getInt("id"));
+            student.setName(rs.getString("name"));
+            student.setUsername(rs.getString("username"));
+            student.setPassword(rs.getString("password"));
+            student.setAddress(rs.getString("address"));
+            student.setCity(rs.getString("city"));
+            student.setZipcode(rs.getString("zipcode"));
+            
         } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return user;
+        return student;
     }
 }

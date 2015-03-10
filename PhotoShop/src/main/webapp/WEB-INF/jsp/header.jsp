@@ -14,7 +14,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="${baseurl}/resources/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="${baseurl}/resources/css/style.css" />
-        <link rel="icon" type="image/png" href="${baseurl}/resources/img/favicon.ico" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="${baseurl}/resources/js/js.js"></script>
         <script src="${baseurl}/resources/js/bootstrap.min.js"></script>

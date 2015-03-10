@@ -5,8 +5,6 @@
  */
 package com.photoshop.controllers;
 
-import com.photoshop.models.user.User;
-import com.photoshop.models.user.UserDao;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
