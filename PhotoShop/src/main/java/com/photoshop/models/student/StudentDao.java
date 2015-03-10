@@ -93,20 +93,25 @@ public class StudentDao extends Database  {
             boolean exists = idExists(student.getId());
             if(exists)
             {
-                querystring = "UPDATE users SET name = ?, username = ?, password = ? WHERE id = ?";                                
+                querystring = "UPDATE students SET studentnr = ?, name = ?, address = ?, city = ?, zipcode = ?, username = ?, password = ?, schoolclass_id = ? WHERE id = ?";                                
             }
             else
             {
-                querystring = "INSERT INTO users(name, username, password) VALUES(?, ?, ?)";
+                querystring = "INSERT INTO students(studentnr, name, address, city, zipcode, username, password, schoolclass_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             }
             
             PreparedStatement stat = this.conn.prepareStatement(querystring);
-            stat.setString(1, student.getName());
-            stat.setString(2, student.getUsername());
-            stat.setString(3, student.getPassword());
+            stat.setInt(1, student.getStudentnr());
+            stat.setString(2, student.getName());
+            stat.setString(3, student.getAddress());
+            stat.setString(4, student.getCity());
+            stat.setString(5, student.getZipcode());
+            stat.setString(6, student.getUsername());
+            stat.setString(7, student.getPassword());
+            stat.setInt(8, student.getSchoolclass_id());
             if(exists)
             {
-                stat.setInt(4, student.getId());
+                stat.setInt(9, student.getId());
             }
             stat.execute();
         } catch (SQLException ex) {
@@ -159,7 +164,7 @@ public class StudentDao extends Database  {
             student.setAddress(rs.getString("address"));
             student.setCity(rs.getString("city"));
             student.setZipcode(rs.getString("zipcode"));
-            
+            student.setSchoolclass_id(rs.getInt("schoolclass_id"));
         } catch (SQLException ex) {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }

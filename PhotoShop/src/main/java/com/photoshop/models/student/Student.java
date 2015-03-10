@@ -6,6 +6,7 @@
 package com.photoshop.models.student;
 
 import com.photoshop.models.SchoolClass.SchoolClass;
+import com.photoshop.models.SchoolClass.SchoolClassDao;
 
 /**
  *
@@ -21,6 +22,7 @@ public class Student {
     private String zipcode;
     private String username;
     private String password;
+    private int schoolclass_id;
     private SchoolClass schoolclass = null;
             
     private final StudentDao dao;   
@@ -110,11 +112,31 @@ public class Student {
     }    
     
     public SchoolClass getSchoolClass(){
-        //todo
-        return null;
+        if(this.schoolclass == null)
+        {
+            SchoolClassDao schoolclassdao = new SchoolClassDao();
+            this.schoolclass = schoolclassdao.getById(schoolclass_id);
+        }
+        return this.schoolclass;
     }
     
     public void setSchoolClass(SchoolClass schoolclass){
         this.schoolclass = schoolclass;
+        if(schoolclass != null)
+        {
+            this.schoolclass_id = schoolclass.getId();
+        }
+        else
+        {
+            this.schoolclass_id = 0;
+        }
+    }
+    
+    public int getSchoolclass_id() {
+        return schoolclass_id;
+    }
+
+    public void setSchoolclass_id(int schoolclass_id) {
+        this.schoolclass_id = schoolclass_id;
     }
 }
