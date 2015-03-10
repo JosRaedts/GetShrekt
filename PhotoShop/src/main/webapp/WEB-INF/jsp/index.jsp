@@ -10,5 +10,6 @@
     </div>
     <a href="${baseurl}/login"><spring:message code="login" text="%login" /></a>
     <a href="${baseurl}/register"><spring:message code="register" text="%register" /></a>
+    <a href="${baseurl}/adminpanel"><spring:message code="adminpanel" text="%adminpanel" /></a>
 </div>
 <jsp:include page="footer.jsp" />
