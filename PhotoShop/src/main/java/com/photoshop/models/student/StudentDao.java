@@ -32,7 +32,7 @@ public class StudentDao extends Database  {
         List<Student> students = new ArrayList();
         try {
             String querystring = "SELECT * FROM students";
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
@@ -47,20 +47,24 @@ public class StudentDao extends Database  {
     
     public Student getById(int id)
     {
+        int test = 0;
         Student student = null;
         try {
             String querystring = "SELECT * FROM students WHERE id = ?";
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
             {
+                test++;
                 student = build(rs);
+                System.out.println(test);
             }
         } catch (SQLException ex) {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println(student.getName()+"ghjgjygkjgjh");
         return student;
     }
     
@@ -70,7 +74,7 @@ public class StudentDao extends Database  {
         try {
             String querystring = "SELECT * FROM students WHERE id = ?";
             PreparedStatement stat;
-            stat = this.conn.prepareStatement(querystring);
+            stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
             
@@ -100,7 +104,7 @@ public class StudentDao extends Database  {
                 querystring = "INSERT INTO users(name, username, password) VALUES(?, ?, ?)";
             }
             
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setString(1, student.getName());
             stat.setString(2, student.getUsername());
             stat.setString(3, student.getPassword());
@@ -118,7 +122,7 @@ public class StudentDao extends Database  {
     {
         try {
             String querystring = "DELETE FROM students WHERE id = ?";
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, student.getId());
             stat.execute();
         } catch (SQLException ex) {
@@ -131,7 +135,7 @@ public class StudentDao extends Database  {
         Student student = null;
         try {
             String querystring = "SELECT * FROM students WHERE username = ? AND password = ?";
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setString(1, username);
             stat.setString(2, password);
             ResultSet rs = stat.executeQuery();
