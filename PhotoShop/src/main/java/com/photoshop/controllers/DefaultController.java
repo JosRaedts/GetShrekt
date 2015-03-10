@@ -5,10 +5,13 @@
  */
 package com.photoshop.controllers;
 
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  *
@@ -19,7 +22,8 @@ public class DefaultController {
     
    @RequestMapping(value = "/", method = RequestMethod.GET)
    public String index(ModelMap map) {
-       map.put("msg", "Hello photoshop users");
+       String s = (String) map.get("UserID");
+       map.put("msg", "Hello " + s);
        map.put("test", "testen van github account");
        return "index";
    }
