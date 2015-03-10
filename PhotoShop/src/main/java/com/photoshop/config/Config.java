@@ -39,6 +39,7 @@ public class Config extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/WEB-INF/resources/*");
     }
+    
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource result
