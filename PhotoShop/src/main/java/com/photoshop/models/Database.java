@@ -23,7 +23,7 @@ abstract public class Database {
     {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            if(this.conn != null)
+            if(this.conn == null)
             {
                 this.conn = (Connection) DriverManager.getConnection("jdbc:mysql://stormhost.nl:3306/admin_photo", "admin_photo", "pizza");
             }

@@ -6,7 +6,9 @@
 package com.photoshop.controllers;
 
 
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,12 +34,15 @@ public class LoginController {
     
     @RequestMapping(value="/login/checkLogin", method = RequestMethod.POST)
     public String checkLogin(@RequestParam("name") String name,
-            @RequestParam("schoolcode") String code, ModelMap map){
+            @RequestParam("schoolcode") String code, ModelMap map, HttpServletRequest request) {
         User user = userDao.authenticate(name, code);
         if (user != null) {
+            request.getSession().setAttribute("UserID", user.getId());
+            request.getSession().setAttribute("UserName", user.getUsername());
             return "redirect:../"; //hij zou nu ingelogd moeten zijn.
-        }
-        else{
+        } else {
+            request.getSession().setAttribute("UserID", null);
+            request.getSession().setAttribute("UserName", "");
             return "redirect:"; //teruggeleid naar de index pagina of inlogpagina
         }
     }

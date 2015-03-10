@@ -7,7 +7,8 @@
     </div>  
     <div>
         <p><spring:message code="instructionText" text="%instructionText" /></p>
-    </div>
+    </div>    
+    <p class="form-signin-heading">${msg}</p>
     <a href="${baseurl}/login"><spring:message code="login" text="%login" /></a>
     <a href="${baseurl}/register"><spring:message code="register" text="%register" /></a>
     <a href="${baseurl}/adminpanel"><spring:message code="adminpanel" text="%adminpanel" /></a>
