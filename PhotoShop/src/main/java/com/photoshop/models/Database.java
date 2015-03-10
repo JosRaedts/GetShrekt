@@ -17,13 +17,16 @@ import java.util.logging.Logger;
  */
 abstract public class Database {
     
-    protected Connection conn;
+    protected static Connection conn = null;
     
     public Database()
     {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            this.conn = (Connection) DriverManager.getConnection("jdbc:mysql://stormhost.nl:3306/admin_photo", "admin_photo", "pizza");
+            if(this.conn != null)
+            {
+                this.conn = (Connection) DriverManager.getConnection("jdbc:mysql://stormhost.nl:3306/admin_photo", "admin_photo", "pizza");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
