@@ -50,7 +50,7 @@ public class UserDao extends Database  {
         User user = null;
         try {
             String querystring = "SELECT * FROM users WHERE id = ?";
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
             
@@ -130,8 +130,10 @@ public class UserDao extends Database  {
     {
         User user = null;
         try {
+            System.out.println(username);
+            System.out.println(password);
             String querystring = "SELECT * FROM users WHERE username = ? AND password = ?";
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setString(1, username);
             stat.setString(2, password);
             ResultSet rs = stat.executeQuery();
