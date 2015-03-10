@@ -21,7 +21,9 @@ public class Student {
     private String zipcode;
     private String username;
     private String password;
-    private final StudentDao dao;
+    private SchoolClass schoolclass = null;
+            
+    private final StudentDao dao;   
     
     public Student()
     {
@@ -113,6 +115,6 @@ public class Student {
     }
     
     public void setSchoolClass(SchoolClass schoolclass){
-        //todo
+        this.schoolclass = schoolclass;
     }
 }

@@ -152,6 +152,7 @@ public class StudentDao extends Database  {
         try {            
             student = new Student(this);
             student.setId(rs.getInt("id"));
+            student.setStudentnr(rs.getInt("studentnr"));
             student.setName(rs.getString("name"));
             student.setUsername(rs.getString("username"));
             student.setPassword(rs.getString("password"));
