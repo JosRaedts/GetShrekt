@@ -5,8 +5,7 @@
  */
 package com.photoshop.controllers;
 
-import com.photoshop.models.user.User;
-import com.photoshop.models.user.UserDao;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,13 +23,14 @@ public class LoginController {
     @Autowired
     private UserDao userDao;
     
-       @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(ModelMap map) {
         map.put("msg", "Hello photoshop users");
         map.put("test", "testen van github account");
         return "login";
     }
-        @RequestMapping(value="/login/checkLogin", method = RequestMethod.POST)
+    
+    @RequestMapping(value="/login/checkLogin", method = RequestMethod.POST)
     public String checkLogin(@RequestParam("name") String name,
             @RequestParam("schoolcode") String code, ModelMap map){
         User user = userDao.authenticate(name, code);
