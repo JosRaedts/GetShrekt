@@ -49,13 +49,8 @@ public class StudentDao extends Database  {
     {
         Student student = null;
         try {
-<<<<<<< HEAD:PhotoShop/src/main/java/com/photoshop/models/user/UserDao.java
-            String querystring = "SELECT * FROM users WHERE id = ?";
-            PreparedStatement stat = conn.prepareStatement(querystring);
-=======
             String querystring = "SELECT * FROM students WHERE id = ?";
             PreparedStatement stat = this.conn.prepareStatement(querystring);
->>>>>>> origin/master:PhotoShop/src/main/java/com/photoshop/models/student/StudentDao.java
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
             
@@ -135,15 +130,8 @@ public class StudentDao extends Database  {
     {
         Student student = null;
         try {
-<<<<<<< HEAD:PhotoShop/src/main/java/com/photoshop/models/user/UserDao.java
-            System.out.println(username);
-            System.out.println(password);
-            String querystring = "SELECT * FROM users WHERE username = ? AND password = ?";
-            PreparedStatement stat = conn.prepareStatement(querystring);
-=======
             String querystring = "SELECT * FROM students WHERE username = ? AND password = ?";
             PreparedStatement stat = this.conn.prepareStatement(querystring);
->>>>>>> origin/master:PhotoShop/src/main/java/com/photoshop/models/student/StudentDao.java
             stat.setString(1, username);
             stat.setString(2, password);
             ResultSet rs = stat.executeQuery();

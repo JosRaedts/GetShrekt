@@ -36,11 +36,5 @@ public class DefaultController {
             
             return "index";
        }
-       
-   public String index(ModelMap map) {
-       map.put("msg", "Hello photoshop users");
-       map.put("test", "testen van github account");
-       return "index";
-   }
-   
+   }  
 }
