@@ -32,7 +32,7 @@ public class StudentDao extends Database  {
         List<Student> students = new ArrayList();
         try {
             String querystring = "SELECT * FROM students";
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
@@ -47,20 +47,24 @@ public class StudentDao extends Database  {
     
     public Student getById(int id)
     {
+        int test = 0;
         Student student = null;
         try {
             String querystring = "SELECT * FROM students WHERE id = ?";
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
             {
+                test++;
                 student = build(rs);
+                System.out.println(test);
             }
         } catch (SQLException ex) {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println(student.getName()+"ghjgjygkjgjh");
         return student;
     }
     
@@ -70,7 +74,7 @@ public class StudentDao extends Database  {
         try {
             String querystring = "SELECT * FROM students WHERE id = ?";
             PreparedStatement stat;
-            stat = this.conn.prepareStatement(querystring);
+            stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
             
@@ -93,20 +97,26 @@ public class StudentDao extends Database  {
             boolean exists = idExists(student.getId());
             if(exists)
             {
-                querystring = "UPDATE users SET name = ?, username = ?, password = ? WHERE id = ?";                                
+                querystring = "UPDATE students SET studentnr = ?, name = ?, address = ?, city = ?, zipcode = ?, username = ?, password = ?, schoolclass_id = ? WHERE id = ?";                                
             }
             else
             {
-                querystring = "INSERT INTO users(name, username, password) VALUES(?, ?, ?)";
+                querystring = "INSERT INTO students(studentnr, name, address, city, zipcode, username, password, schoolclass_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             }
             
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
-            stat.setString(1, student.getName());
-            stat.setString(2, student.getUsername());
-            stat.setString(3, student.getPassword());
+            
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, student.getStudentnr());
+            stat.setString(2, student.getName());
+            stat.setString(3, student.getAddress());
+            stat.setString(4, student.getCity());
+            stat.setString(5, student.getZipcode());
+            stat.setString(6, student.getUsername());
+            stat.setString(7, student.getPassword());
+            stat.setInt(8, student.getSchoolclass_id());
             if(exists)
             {
-                stat.setInt(4, student.getId());
+                stat.setInt(9, student.getId());
             }
             stat.execute();
         } catch (SQLException ex) {
@@ -118,7 +128,7 @@ public class StudentDao extends Database  {
     {
         try {
             String querystring = "DELETE FROM students WHERE id = ?";
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, student.getId());
             stat.execute();
         } catch (SQLException ex) {
@@ -131,7 +141,7 @@ public class StudentDao extends Database  {
         Student student = null;
         try {
             String querystring = "SELECT * FROM students WHERE username = ? AND password = ?";
-            PreparedStatement stat = this.conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setString(1, username);
             stat.setString(2, password);
             ResultSet rs = stat.executeQuery();
@@ -159,7 +169,7 @@ public class StudentDao extends Database  {
             student.setAddress(rs.getString("address"));
             student.setCity(rs.getString("city"));
             student.setZipcode(rs.getString("zipcode"));
-            
+            student.setSchoolclass_id(rs.getInt("schoolclass_id"));
         } catch (SQLException ex) {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }

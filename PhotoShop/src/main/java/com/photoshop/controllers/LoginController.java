@@ -34,6 +34,11 @@ public class LoginController {
         return "login";
     }
     
+    @RequestMapping(value = "/photographer/login", method = RequestMethod.GET)
+    public String photographerLogin(ModelMap map) {
+        return "photographerLogin";
+    }
+  
     @RequestMapping(value="/login/checkLogin", method = RequestMethod.POST)
     public String checkLogin(@RequestParam("name") String name,
             @RequestParam("schoolcode") String code, ModelMap map, HttpServletRequest request) {

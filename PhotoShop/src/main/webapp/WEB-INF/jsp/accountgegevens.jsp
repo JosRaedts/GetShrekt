@@ -2,7 +2,8 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <jsp:include page="header.jsp" />
 <div class="container">
-    <label class="sr-only">${UserName}</label>
-    <label class="sr-only">${Name}</label>
+    <label class="">${UserName}</label>
+    <br/>
+    <label class="">${Name}</label>
 </div>
 <jsp:include page="footer.jsp" />
