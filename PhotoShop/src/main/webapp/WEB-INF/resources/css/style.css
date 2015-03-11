@@ -57,6 +57,15 @@ code {
   font-size: 80%;
 }
 
+.navbar-brand {
+    //padding-top: 5px;
+}
+
+.navbar-brand img{
+    height: 40px;
+    width: auto;
+}
+
 .navbar-default{
     background-color: #3399FF;
 }

@@ -1,5 +1,7 @@
 package com.photoshop.controllers;
 
+import com.photoshop.models.photographer.Photographer;
+import com.photoshop.models.photographer.PhotographerDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
 import javax.servlet.http.HttpServletRequest;
@@ -22,30 +24,41 @@ public class AccountInfoController {
     @Autowired
     private StudentDao studentDao;
     
+    @Autowired
+    private PhotographerDao photographerDao;
+    
    @RequestMapping(value = "/accountgegevens", method = RequestMethod.GET)
    public String index(ModelMap map, HttpServletRequest request) {
        int userID = 0;
+       Type userType;
        String userName = "";
-       Student student;
+       Student student = null;
+       Photographer photographer = null;
        
        try {
+           userType = (Type)request.getSession().getAttribute("UserType");
            userID = (int)request.getSession().getAttribute("UserID");
-            System.out.println("User ID = " + userID);
-           student = studentDao.getById(userID);
+           switch(userType){
+                case ADMIN: System.out.println("not implemented");
+                   break;
+                case PHOTOGRAPHER: photographer = photographerDao.getById(userID);
+                    System.out.println("User ID = " + userID);
+                    map.put("UserName", photographer.getUsername());
+                    map.put("Name", photographer.getName());
+                    return "accountgegevens";
+                case STUDENT: student = studentDao.getById(userID);
+                    System.out.println("User ID = " + userID);
+                    map.put("UserName", student.getUsername());
+                    map.put("Name", student.getName());
+                    return "accountgegevens";
+                default: System.out.println("invalid type");
+                     break;
+
+           }
        } catch (Exception e) {
-           student = null;
-       }
-            
-       if (student == null) {
-           System.out.println("Student leeg");
+           System.out.println(e.getMessage());
            return "index";
        }
-       else {
-           System.out.println("User was ingelogd");
-           map.put("UserName", student.getUsername());
-           map.put("Name", student.getName());
-       }
-       System.out.println("Student gevuld");
-       return "accountgegevens";
-   }
+       return"index";
+    }
 }

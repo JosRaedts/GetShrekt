@@ -64,7 +64,7 @@ public class StudentDao extends Database  {
         } catch (SQLException ex) {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(student.getName()+"ghjgjygkjgjh");
+        System.out.println(student.getName());
         return student;
     }
     

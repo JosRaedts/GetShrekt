@@ -6,6 +6,8 @@
 package com.photoshop.controllers;
 
 
+import com.photoshop.models.photographer.Photographer;
+import com.photoshop.models.photographer.PhotographerDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +29,9 @@ public class LoginController {
     @Autowired
     private StudentDao studentDao;
     
+    @Autowired
+    private PhotographerDao photographerDao;
+    
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(ModelMap map) {
         map.put("msg", "Hello photoshop users");
@@ -34,11 +39,6 @@ public class LoginController {
         return "login";
     }
     
-    @RequestMapping(value = "/photographer/login", method = RequestMethod.GET)
-    public String photographerLogin(ModelMap map) {
-        return "photographerLogin";
-    }
-  
     @RequestMapping(value="/login/checkLogin", method = RequestMethod.POST)
     public String checkLogin(@RequestParam("name") String name,
             @RequestParam("schoolcode") String code, ModelMap map, HttpServletRequest request) {
@@ -46,11 +46,36 @@ public class LoginController {
         if (student != null) {
             request.getSession().setAttribute("UserID", student.getId());
             request.getSession().setAttribute("UserName", student.getUsername());
+            request.getSession().setAttribute("UserType", Type.STUDENT);
             return "redirect:../"; //hij zou nu ingelogd moeten zijn.
         } else {
             request.getSession().setAttribute("UserID", null);
             request.getSession().setAttribute("UserName", "");
+            request.getSession().setAttribute("UserType", "");
             return "redirect:"; //teruggeleid naar de index pagina of inlogpagina
         }
     }
+    
+    @RequestMapping(value = "/photographer/login", method = RequestMethod.GET)
+    public String photographerLogin(ModelMap map) {
+        return "photographerLogin";
+    }
+    
+    @RequestMapping(value="/photographer/checkLogin", method = RequestMethod.POST)
+    public String checkPhotographerLogin(@RequestParam("name") String name,
+            @RequestParam("password") String password, ModelMap map, HttpServletRequest request) {
+        Photographer photographer = photographerDao.authenticate(name, password);
+        if (photographer != null) {
+            request.getSession().setAttribute("UserID", photographer.getId());
+            request.getSession().setAttribute("UserName", photographer.getUsername());
+            request.getSession().setAttribute("UserType", Type.PHOTOGRAPHER);
+            return "redirect:../../"; 
+        } else {
+            request.getSession().setAttribute("UserID", null);
+            request.getSession().setAttribute("UserName", "");
+            request.getSession().setAttribute("UserType", "");
+            return "redirect:../login";
+        }
+    }
+  
 }

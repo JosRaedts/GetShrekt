@@ -25,8 +25,9 @@ public class DefaultController {
             HttpSession session = request.getSession();       
             int userID = (int)session.getAttribute("UserID");
             String userName = (String)session.getAttribute("UserName");
+            Type type= (Type)session.getAttribute("UserType");
             
-            map.put("msg", "Hello " + userName + " met ID: " + userID);
+            map.put("msg", "Hello " + userName + " met ID: " + userID +" van type: "+ type.toString());
             map.put("test", "testen van github account");
             
             return "index";
