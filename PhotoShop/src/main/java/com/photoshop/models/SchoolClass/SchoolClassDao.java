@@ -6,6 +6,7 @@
 package com.photoshop.models.SchoolClass;
 
 import com.photoshop.models.Database;
+import com.photoshop.models.school.School;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,8 +32,27 @@ public class SchoolClassDao extends Database  {
     {
         List<SchoolClass> schoolclasses = new ArrayList();
         try {
-            String querystring = "SELECT * FROM schools";
+            String querystring = "SELECT * FROM schoolclasses";
             PreparedStatement stat = conn.prepareStatement(querystring);
+            ResultSet rs = stat.executeQuery();
+            
+            while(rs.next())
+            {
+                schoolclasses.add(build(rs));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SchoolClassDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return schoolclasses;
+    }
+    
+    public List<SchoolClass> getSchoolClassesBySchool(School school)
+    {
+        List<SchoolClass> schoolclasses = new ArrayList();
+        try {
+            String querystring = "SELECT * FROM schoolclasses WHERE school_id = ?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, school.getId());
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())

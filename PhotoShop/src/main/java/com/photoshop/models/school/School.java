@@ -6,6 +6,7 @@
 package com.photoshop.models.school;
 
 import com.photoshop.models.SchoolClass.SchoolClass;
+import com.photoshop.models.SchoolClass.SchoolClassDao;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ public class School{
     private String city;
     private String zipcode;
     private String code;
+    private List<SchoolClass> schoolclasses;
     private final SchoolDao dao;
     
     public School()
@@ -92,10 +94,7 @@ public class School{
     
     public List<SchoolClass> getSchoolClasses(){
         //to do
-        return null;
-    }
-    
-    public void setSchoolClasses(List<SchoolClass> schoolclasses){
-        //todo
+        SchoolClassDao schoolclassdao = new SchoolClassDao();
+        return schoolclassdao.getSchoolClassesBySchool(this);
     }
 }

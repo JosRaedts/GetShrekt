@@ -112,24 +112,8 @@ public class Student {
     }    
     
     public SchoolClass getSchoolClass(){
-        if(this.schoolclass == null)
-        {
-            SchoolClassDao schoolclassdao = new SchoolClassDao();
-            this.schoolclass = schoolclassdao.getById(schoolclass_id);
-        }
-        return this.schoolclass;
-    }
-    
-    public void setSchoolClass(SchoolClass schoolclass){
-        this.schoolclass = schoolclass;
-        if(schoolclass != null)
-        {
-            this.schoolclass_id = schoolclass.getId();
-        }
-        else
-        {
-            this.schoolclass_id = 0;
-        }
+        SchoolClassDao schoolclassdao = new SchoolClassDao();
+        return schoolclassdao.getById(this.schoolclass_id);
     }
     
     public int getSchoolclass_id() {
