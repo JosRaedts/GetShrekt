@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.photoshop.models.SchoolClass;
+package com.photoshop.models.schoolClass;
 
 import com.photoshop.models.school.School;
 import com.photoshop.models.student.Student;

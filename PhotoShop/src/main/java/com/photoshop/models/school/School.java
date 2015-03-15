@@ -5,8 +5,8 @@
  */
 package com.photoshop.models.school;
 
-import com.photoshop.models.SchoolClass.SchoolClass;
-import com.photoshop.models.SchoolClass.SchoolClassDao;
+import com.photoshop.models.schoolClass.SchoolClass;
+import com.photoshop.models.schoolClass.SchoolClassDao;
 import java.util.List;
 
 /**

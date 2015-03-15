@@ -1,5 +1,6 @@
 package com.photoshop.controllers;
 
+import com.photoshop.models.UserType;
 import com.photoshop.models.photographer.Photographer;
 import com.photoshop.models.photographer.PhotographerDao;
 import com.photoshop.models.student.Student;
@@ -30,13 +31,13 @@ public class AccountInfoController {
    @RequestMapping(value = "/accountgegevens", method = RequestMethod.GET)
    public String index(ModelMap map, HttpServletRequest request) {
        int userID = 0;
-       Type userType;
+       UserType userType;
        String userName = "";
        Student student = null;
        Photographer photographer = null;
        
        try {
-           userType = (Type)request.getSession().getAttribute("UserType");
+           userType = (UserType)request.getSession().getAttribute("UserType");
            userID = (int)request.getSession().getAttribute("UserID");
            switch(userType){
                 case ADMIN: System.out.println("not implemented");
@@ -57,8 +58,8 @@ public class AccountInfoController {
            }
        } catch (Exception e) {
            System.out.println(e.getMessage());
-           return "index";
+           return "home";
        }
-       return"index";
+       return "home";
     }
 }

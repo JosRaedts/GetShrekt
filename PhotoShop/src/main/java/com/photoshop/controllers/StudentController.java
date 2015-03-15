@@ -5,40 +5,65 @@
  */
 package com.photoshop.controllers;
 
-
-import com.photoshop.models.photographer.Photographer;
-import com.photoshop.models.photographer.PhotographerDao;
+import com.photoshop.models.UserType;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 /**
  *
- * @author fhict
+ * @author Bram
  */
+@RequestMapping("/student")
 @Controller
-public class LoginController {
+public class StudentController {
     
     @Autowired
     private StudentDao studentDao;
     
-    @Autowired
-    private PhotographerDao photographerDao;
+    //Lijst weergaven
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String list(ModelMap map, HttpServletRequest request)
+    {
+        
+        map.put("students", studentDao.getList());
+        
+        return "student/list";
+    }
     
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    //Student aanpassen
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    public String edit(ModelMap map, HttpServletRequest request)
+    {
+        System.out.println(request.getParameter("id"));
+        map.put("student", studentDao.getById(Integer.parseInt(request.getParameter("id"))));
+        
+        return "student/edit";
+    }
+    
+   //Toevoegen student
+   @RequestMapping(value = "/add", method = RequestMethod.GET)
+   public String add(ModelMap map) {
+       map.put("admin", "Admin panel");
+       map.put("photographer", "Register of a photographer");
+       return "student/add";
+   }
+   
+   //Login
+   @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(ModelMap map) {
         map.put("msg", "Hello photoshop users");
         map.put("test", "testen van github account");
-        return "login";
+        return "student/login";
     }
     
+    //Post van login
     @RequestMapping(value="/login/checkLogin", method = RequestMethod.POST)
     public String checkLogin(@RequestParam("name") String name,
             @RequestParam("schoolcode") String code, ModelMap map, HttpServletRequest request) {
@@ -46,8 +71,8 @@ public class LoginController {
         if (student != null) {
             request.getSession().setAttribute("UserID", student.getId());
             request.getSession().setAttribute("UserName", student.getUsername());
-            request.getSession().setAttribute("UserType", Type.STUDENT);
-            return "redirect:../"; //hij zou nu ingelogd moeten zijn.
+            request.getSession().setAttribute("UserType", UserType.STUDENT);
+            return "redirect:../../"; //hij zou nu ingelogd moeten zijn.
         } else {
             request.getSession().setAttribute("UserID", null);
             request.getSession().setAttribute("UserName", "");
@@ -55,27 +80,4 @@ public class LoginController {
             return "redirect:"; //teruggeleid naar de index pagina of inlogpagina
         }
     }
-    
-    @RequestMapping(value = "/photographer/login", method = RequestMethod.GET)
-    public String photographerLogin(ModelMap map) {
-        return "photographerLogin";
-    }
-    
-    @RequestMapping(value="/photographer/checkLogin", method = RequestMethod.POST)
-    public String checkPhotographerLogin(@RequestParam("name") String name,
-            @RequestParam("password") String password, ModelMap map, HttpServletRequest request) {
-        Photographer photographer = photographerDao.authenticate(name, password);
-        if (photographer != null) {
-            request.getSession().setAttribute("UserID", photographer.getId());
-            request.getSession().setAttribute("UserName", photographer.getUsername());
-            request.getSession().setAttribute("UserType", Type.PHOTOGRAPHER);
-            return "redirect:../../"; 
-        } else {
-            request.getSession().setAttribute("UserID", null);
-            request.getSession().setAttribute("UserName", "");
-            request.getSession().setAttribute("UserType", "");
-            return "redirect:../login";
-        }
-    }
-  
 }

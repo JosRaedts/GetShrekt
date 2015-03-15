@@ -5,14 +5,16 @@
  */
 package com.photoshop.models.student;
 
-import com.photoshop.models.SchoolClass.SchoolClass;
-import com.photoshop.models.SchoolClass.SchoolClassDao;
+import com.photoshop.models.UserType;
+import com.photoshop.models.IUser;
+import com.photoshop.models.schoolClass.SchoolClass;
+import com.photoshop.models.schoolClass.SchoolClassDao;
 
 /**
  *
  * @author Bram
  */
-public class Student {
+public class Student implements IUser {
     
     private int id;
     private int studentnr;
@@ -122,5 +124,10 @@ public class Student {
 
     public void setSchoolclass_id(int schoolclass_id) {
         this.schoolclass_id = schoolclass_id;
+    }
+
+    @Override
+    public UserType getType() {
+        return UserType.STUDENT;
     }
 }

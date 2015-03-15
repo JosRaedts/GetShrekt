@@ -21,4 +21,11 @@ public class AdminpanelController {
     public String adminpanel(ModelMap map) {
         return "adminpanel";
     }
+    
+   @RequestMapping(value = "/register", method = RequestMethod.GET)
+   public String register(ModelMap map) {
+       map.put("admin", "Admin panel");
+       map.put("photographer", "Register of a photographer");
+       return "register";
+   }
 }

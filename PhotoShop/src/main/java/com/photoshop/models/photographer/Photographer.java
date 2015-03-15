@@ -5,11 +5,14 @@
  */
 package com.photoshop.models.photographer;
 
+import com.photoshop.models.UserType;
+import com.photoshop.models.IUser;
+
 /**
  *
  * @author Casper
  */
-public class Photographer {
+public class Photographer implements IUser {
     
     private int id;
     private String name;
@@ -67,5 +70,10 @@ public class Photographer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public UserType getType() {
+        return UserType.PHOTOGRAPHER;
     }
 }
