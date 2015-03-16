@@ -118,6 +118,11 @@ code {
     background-color: #297ACC;
 }
 
+.accountcreatestatus{
+    text-align: center;
+    color: green;
+}
+
 .form-signin {
   max-width: 330px;
   padding: 15px;

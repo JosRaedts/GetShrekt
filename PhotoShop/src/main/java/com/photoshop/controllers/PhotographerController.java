@@ -28,8 +28,38 @@ public class PhotographerController {
     private PhotographerDao photographerDao;
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String photographerLogin(ModelMap map) {
+    public String photographerLogin(ModelMap map,HttpServletRequest request) {
+        map.put("Accountmade", request.getSession().getAttribute("Accountmade"));
+        request.getSession().removeAttribute("Accountmade");
         return "photographer/login";
+    }
+    
+   //Toevoegen fotograaf
+   @RequestMapping(value = "/add", method = RequestMethod.GET)
+   public String add(ModelMap map) {
+       return "photographer/add";
+   }
+   
+       
+    @RequestMapping(value="/add/addphotographer", method = RequestMethod.POST)
+    public String Addphotographer(@RequestParam("name") String name,
+            @RequestParam("password") String password, ModelMap map, HttpServletRequest request) {
+        if (name.equals("") && password.equals("")) {
+            System.out.println("mislukt");
+            return "photographer/add";
+        } else {
+            System.out.println("gelukt");
+            Photographer Photographer = new Photographer();
+            Photographer.setName(name);
+            Photographer.setPassword(password);
+            Photographer.setUsername(name);
+            if(photographerDao.save(Photographer))
+            {
+                request.getSession().setAttribute("Accountmade", "Accountmade");
+            }
+            
+            return "photographer/login";
+        }
     }
     
     @RequestMapping(value="/checkLogin", method = RequestMethod.POST)

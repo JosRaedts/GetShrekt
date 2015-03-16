@@ -87,7 +87,7 @@ public class PhotographerDao extends Database  {
         return exists;
     }
     
-    public void save(Photographer photographer)
+    public boolean save(Photographer photographer)
     {
         try {
             String querystring = null;
@@ -110,8 +110,10 @@ public class PhotographerDao extends Database  {
                 stat.setInt(4, photographer.getId());
             }
             stat.execute();
+            return true;
         } catch (SQLException ex) {
             Logger.getLogger(PhotographerDao.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
     

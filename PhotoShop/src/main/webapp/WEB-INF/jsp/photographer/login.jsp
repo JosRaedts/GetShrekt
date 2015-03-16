@@ -10,6 +10,7 @@
         <label for="inputPassword" class="sr-only">Password:</label>
         <input type="password" name="password" id="inputSchoolcode" class="form-control" placeholder="<spring:message code="password" text="%password" />" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit"><spring:message code="login" text="%login" /></button>
+        <p class="accountcreatestatus"><spring:message code="${Accountmade}" text="${Accountmade}" /></p>
       </form>
 
     </div> <!-- /container -->
