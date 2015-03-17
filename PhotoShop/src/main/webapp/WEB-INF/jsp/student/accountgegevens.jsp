@@ -20,7 +20,7 @@
              </tr>
              <tr>
                  <td width="200px"><spring:message code="schoolcode" text="%schoolcode" />:</td>
-                 <td style="margin-top 5px">${Schoolcode}</td>
+                 <td style="margin-top-5px">${Schoolcode}</td>
                  
              </tr>
              <tr>
