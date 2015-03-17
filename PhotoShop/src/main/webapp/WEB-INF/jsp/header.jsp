@@ -50,7 +50,10 @@
                 <li><a href="#">One more separated link</a></li>
               </ul>
             </li>
-            <li><a href="${baseurl}/student/accountgegevens">My account</a></li>
+            <c:if test="${sessionScope.UserType == 'STUDENT' && sessionScope.UserID != null}">
+                <li><a href="${baseurl}/student/accountgegevens">My account</a></li>
+                <li><a href="${baseurl}/logout.html">Logout</a></li>
+            </c:if>
           </ul>
             <div class="lang-container">
             <a href="<c:url value='?lang=en'/>"><img class="lang-img" src="${baseurl}/resources/img/en.png"/></a>
