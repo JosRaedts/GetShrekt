@@ -2,48 +2,49 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <jsp:include page="/WEB-INF/jsp/header.jsp" />
 <div class="container">
-     <c:if test="${Type == 'student'}">
-         <br>
-         <br>
-         <table border="0" style="">
-             <tr>
-                 <td width="200px"><spring:message code="accountTypeText" text="%accountTypeText" />:</td>
-                 <td><spring:message code="student" text="%student" /></td>
-             </tr>
-             <tr>
-                 <td width="200px"><spring:message code="studentnumber" text="%studentnumber" />:</td>
-                 <td>${Studentnumber}</td>
-             </tr>
-             <tr>
-                 <td width="200px"><spring:message code="name" text="%name" />:</td>
-                 <td>${Name}</td>
-             </tr>
-             <tr>
-                 <td width="200px"><spring:message code="schoolcode" text="%schoolcode" />:</td>
-                 <td style="margin-top-5px">${Schoolcode}</td>
-                 
-             </tr>
-             <tr>
-                 <td width="200px"><spring:message code="username" text="%username" />:</td>
-                 <td><input type="textfield" name="username" value="${UserName}" /></td>
-             </tr>
-         </table>
-         <table border="0" style="">
-             <br>
-             <tr>
-                 <td width="200px"><spring:message code="city" text="%city" />:</td>
-                 <td><input type="textfield" name="city" value="${City}" /></td>
-             </tr>
-             <tr>
-                 <td width="200px"><spring:message code="zipcode" text="%zipcode" />:</td>
-                 <td width="200px"><input type="textfield" name="zipcode" value="${Zipcode}" /></td>
-             </tr>
-             <tr>
-                 <td width="200px"><spring:message code="address" text="%address" />:</td>
-                 <td width="200px"><input type="textfield" name="address" value="${Address}" /></td>
-             </tr>
-         </table>
-         <input type="submit" value="Submit">
-     </c:if>
+    <c:if test="${Type == 'student'}">
+        <br>
+        <br>
+        <table border="0" style="">
+            <tr>
+                <td width="200px"><spring:message code="accountTypeText" text="%accountTypeText" />:</td>
+                <td><spring:message code="student" text="%student" /></td>
+            </tr>
+            <tr>
+                <td width="200px"><spring:message code="studentnumber" text="%studentnumber" />:</td>
+                <td>${Studentnumber}</td>
+            </tr>
+            <tr>
+                <td width="200px"><spring:message code="name" text="%name" />:</td>
+                <td>${Name}</td>
+            </tr>
+            <tr>
+                <td width="200px"><spring:message code="schoolcode" text="%schoolcode" />:</td>
+                <td style="margin-top-5px">${Schoolcode}</td>
+
+            </tr>
+            <tr>
+                <td width="200px"><spring:message code="username" text="%username" />:</td>
+                <td><input type="textfield" name="username" value="${UserName}" /></td>
+            </tr>
+        </table>
+        <table border="0" style="">
+            <br>
+            <tr>
+                <td width="200px"><spring:message code="city" text="%city" />:</td>
+                <td><input type="textfield" name="city" value="${City}" /></td>
+            </tr>
+            <tr>
+                <td width="200px"><spring:message code="zipcode" text="%zipcode" />:</td>
+                <td width="200px"><input type="textfield" name="zipcode" value="${Zipcode}" /></td>
+            </tr>
+            <tr>
+                <td width="200px"><spring:message code="address" text="%address" />:</td>
+                <td width="200px"><input type="textfield" name="address" value="${Address}" /></td>
+            </tr>
+        </table>
+    </c:if>
+    <br>
+    <input type="submit" value="<spring:message code="save" text="%save" />" style="left">
 </div>
 <jsp:include page="/WEB-INF/jsp/footer.jsp" />

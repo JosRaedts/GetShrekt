@@ -133,7 +133,8 @@ public class StudentController {
                     }                    
                     map.put("Name", student.getName());
                     map.put("Zipcode", student.getZipcode());
-                    map.put("Adress", student.getAddress());
+                    map.put("Address", student.getAddress());
+                    map.put("City", student.getCity());
                     return "student/accountgegevens";
                 default: System.out.println("invalid type");
                      break;
