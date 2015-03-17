@@ -27,6 +27,46 @@ public class PhotographerController {
     @Autowired
     private PhotographerDao photographerDao;
     
+    //Lijst weergaven
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String list(ModelMap map, HttpServletRequest request)
+    {
+        
+        map.put("photographer", photographerDao.getList());
+        
+        return "photographer/list";
+    }
+    
+    //Photographer aanpassen
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    public String edit(ModelMap map, HttpServletRequest request)
+    {
+        System.out.println(request.getParameter("id"));
+        map.put("photographer", photographerDao.getById(Integer.parseInt(request.getParameter("id"))));
+        
+        return "student/edit";
+    }
+    
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String post(ModelMap map, HttpServletRequest request)
+    {
+        Photographer temp = photographerDao.getById(Integer.parseInt(request.getParameter("id")));
+        if(temp != null)
+        {
+            temp.setName(request.getParameter("name"));
+            temp.setUsername(request.getParameter("username"));
+            temp.setPassword(request.getParameter("password"));
+            photographerDao.save(temp);
+        }
+        else
+        {
+            System.out.println("Invalid ID");
+        }
+        
+        
+        return "redirect:list";
+    } 
+    
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String photographerLogin(ModelMap map,HttpServletRequest request) {
         map.put("Accountmade", request.getSession().getAttribute("Accountmade"));
