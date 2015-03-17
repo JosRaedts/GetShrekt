@@ -41,10 +41,14 @@ public class PhotographerController {
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(ModelMap map, HttpServletRequest request)
     {
+        if(request.getParameter("id") != null)
+        {
         System.out.println(request.getParameter("id"));
         map.put("photographer", photographerDao.getById(Integer.parseInt(request.getParameter("id"))));
         
         return "photographer/edit";
+        }
+        return "redirect:list";
     }
     
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
