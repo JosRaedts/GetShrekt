@@ -6,6 +6,8 @@
 package com.photoshop.controllers;
 
 import com.photoshop.models.UserType;
+import com.photoshop.models.schoolClass.SchoolClass;
+import com.photoshop.models.schoolClass.SchoolClassDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
 import javax.servlet.http.HttpServletRequest;
@@ -27,12 +29,15 @@ public class StudentController {
     @Autowired
     private StudentDao studentDao;
     
+    @Autowired
+    private SchoolClassDao schoolclassdao;
+    
     //Lijst weergaven
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(ModelMap map, HttpServletRequest request)
     {
-        
-        map.put("students", studentDao.getList());
+        SchoolClass temp = schoolclassdao.getById(Integer.parseInt(request.getParameter("id")));
+        map.put("students", studentDao.getStudentsBySchoolclass(temp));
         
         return "student/list";
     }

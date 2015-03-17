@@ -12,14 +12,15 @@
                 <th><spring:message code="address" text="%address" /></th>
                 <th><spring:message code="city" text="%city" /></th>  
                 <th><spring:message code="zipcode" text="%zipcode" /></th>
-                <th><spring:message code="code" text="%username" /></th>
+                <th>Code</th>
             </tr>
         </thead>
         <tbody>
             <c:forEach var="school" items="${schools}">
+            <input type="hidden" id="hiddenIdfield" name="id" value="${school.id}">
             <tr>
                 <td><a href="${baseurl}/student/edit?id=${school.id}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>
-                <td>View classes</td>
+                <td><a href="${baseurl}/schoolclass/list?id=${school.id}">View classes</a></td>
                 <td>${school.name}</td>
                 <td>${school.address}</td>
                 <td>${school.city}</td>

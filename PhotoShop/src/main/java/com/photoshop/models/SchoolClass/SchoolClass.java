@@ -7,6 +7,7 @@ package com.photoshop.models.schoolClass;
 
 import com.photoshop.models.school.School;
 import com.photoshop.models.student.Student;
+import com.photoshop.models.student.StudentDao;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public class SchoolClass {
     private int id;
     private String name;
     private final SchoolClassDao dao;
+    private List<Student> students;
     
     public SchoolClass()
     {
@@ -54,11 +56,6 @@ public class SchoolClass {
         this.name = name;
     }
     
-    public List<Student> getStudents(){
-        //todo
-        return null;
-    }
-    
     public void setStudents(List<Student> students){
         //todo
     }
@@ -70,5 +67,11 @@ public class SchoolClass {
     
     public void setSchool(School school){
         //todo
+    }
+    
+    public List<Student> getStudents()
+    {
+        StudentDao studentdao = new StudentDao();
+        return studentdao.getStudentsBySchoolclass(this);
     }
 }

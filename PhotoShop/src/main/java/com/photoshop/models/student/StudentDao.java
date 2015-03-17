@@ -6,6 +6,7 @@
 package com.photoshop.models.student;
 
 import com.photoshop.models.Database;
+import com.photoshop.models.schoolClass.SchoolClass;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,6 +34,25 @@ public class StudentDao extends Database  {
         try {
             String querystring = "SELECT * FROM students";
             PreparedStatement stat = conn.prepareStatement(querystring);
+            ResultSet rs = stat.executeQuery();
+            
+            while(rs.next())
+            {
+                students.add(build(rs));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return students;
+    }
+    
+    public List<Student> getStudentsBySchoolclass(SchoolClass schoolclass)
+    {
+        List<Student> students = new ArrayList();
+        try {
+            String querystring = "SELECT * FROM students WHERE schoolclass_id = ?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, schoolclass.getId());
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
