@@ -65,15 +65,8 @@ public class PhotographerController {
         
         
         return "redirect:list";
-    } 
-    
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String photographerLogin(ModelMap map,HttpServletRequest request) {
-        map.put("Accountmade", request.getSession().getAttribute("Accountmade"));
-        request.getSession().removeAttribute("Accountmade");
-        return "photographer/login";
-    }
-    
+    }    
+
    //Toevoegen fotograaf
    @RequestMapping(value = "/add", method = RequestMethod.GET)
    public String add(ModelMap map) {
@@ -99,23 +92,6 @@ public class PhotographerController {
             }
             
             return "photographer/login";
-        }
-    }
-    
-    @RequestMapping(value="/checkLogin", method = RequestMethod.POST)
-    public String checkPhotographerLogin(@RequestParam("name") String name,
-            @RequestParam("password") String password, ModelMap map, HttpServletRequest request) {
-        Photographer photographer = photographerDao.authenticate(name, password);
-        if (photographer != null) {
-            request.getSession().setAttribute("UserID", photographer.getId());
-            request.getSession().setAttribute("UserName", photographer.getUsername());
-            request.getSession().setAttribute("UserType", UserType.PHOTOGRAPHER);
-            return "redirect:../../admin"; 
-        } else {
-            request.getSession().setAttribute("UserID", null);
-            request.getSession().setAttribute("UserName", "");
-            request.getSession().setAttribute("UserType", "");
-            return "redirect:../login";
         }
     }
     
