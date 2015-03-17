@@ -43,6 +43,8 @@
     <link href="${baseurl}/resources/admin/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href="${baseurl}/resources/admin/css/dataTables.responsive.css" rel="stylesheet">
     <link href="${baseurl}/resources/admin/css/dataTables.fontAwesome.css" rel="stylesheet">
+    
+    <link href="${baseurl}/resources/admin/css/style.css" rel="stylesheet">
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -91,7 +93,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Photoshop Admin</a>
+                <a class="navbar-brand" href="admin"><img src="${baseurl}/resources/img/Photoshop_white.png"/> Admin</a>
             </div>
             <!-- /.navbar-header -->
 
