@@ -44,11 +44,13 @@ public class AccountInfoController {
                    break;
                 case PHOTOGRAPHER: photographer = photographerDao.getById(userID);
                     System.out.println("User ID = " + userID);
+                    map.put("Type", "photographer");
                     map.put("UserName", photographer.getUsername());
                     map.put("Name", photographer.getName());
                     return "accountgegevens";
                 case STUDENT: student = studentDao.getById(userID);
                     System.out.println("User ID = " + userID);
+                    map.put("Type", "student");
                     map.put("UserName", student.getUsername());
                     map.put("Name", student.getName());
                     return "accountgegevens";
