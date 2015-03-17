@@ -54,4 +54,14 @@ public class DefaultController extends AbstractController {
        map.put("test", "testen van github account");
        return "contact";
    }
+   
+   @RequestMapping(value = "/admin", method = RequestMethod.GET)
+   public String admin(ModelMap map) {
+        if(authenticate(UserType.PHOTOGRAPHER))
+        {    
+            return "admin/home";
+        }
+        return "home";
+       
+   }
 }

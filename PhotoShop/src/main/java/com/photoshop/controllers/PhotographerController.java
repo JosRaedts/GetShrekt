@@ -70,7 +70,7 @@ public class PhotographerController {
             request.getSession().setAttribute("UserID", photographer.getId());
             request.getSession().setAttribute("UserName", photographer.getUsername());
             request.getSession().setAttribute("UserType", UserType.PHOTOGRAPHER);
-            return "redirect:../../"; 
+            return "redirect:../../admin"; 
         } else {
             request.getSession().setAttribute("UserID", null);
             request.getSession().setAttribute("UserName", "");
