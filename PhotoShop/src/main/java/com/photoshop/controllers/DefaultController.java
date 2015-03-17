@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
+
  * @author casper
- */
+**/
+
 @Controller
 public class DefaultController extends AbstractController {
    
