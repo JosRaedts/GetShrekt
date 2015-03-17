@@ -120,7 +120,15 @@ public class StudentController {
                     System.out.println("User ID = " + userID);
                     map.put("Type", "student");
                     map.put("UserName", student.getUsername());
+                    map.put("Studentnumber", student.getStudentnr());
+                    if (student.getSchoolClass() != null) {
+                        map.put("Schoolcode", student.getSchoolClass().getName());
+                    } else {
+                        map.put("Schoolcode", "");
+                    }                    
                     map.put("Name", student.getName());
+                    map.put("Zipcode", student.getZipcode());
+                    map.put("Adress", student.getAddress());
                     return "student/accountgegevens";
                 default: System.out.println("invalid type");
                      break;
