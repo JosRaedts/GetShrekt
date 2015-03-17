@@ -3,7 +3,7 @@
 <jsp:include page="/WEB-INF/jsp/header.jsp" />
 <div class="container">
 
-      <form class="form-signin" method="post" action="${baseurl}/photographer/checkLogin/">
+      <form class="form-signin" method="post" action="${baseurl}/admin/checkLogin/">
         <h2 class="form-signin-heading"><spring:message code="loginTextPhotographer" text="%loginTextPhotograher" /></h2>
         <label for="inputName" class="sr-only">Name:</label>
         <input type="text" name="name" id="inputName" class="form-control" placeholder="<spring:message code="name" text="%name" />" required autofocus>

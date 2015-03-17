@@ -7,6 +7,7 @@ package com.photoshop.controllers;
 
 import com.photoshop.models.UserType;
 import com.photoshop.models.IUser;
+import com.photoshop.models.admin.AdminDao;
 import com.photoshop.models.photographer.PhotographerDao;
 import com.photoshop.models.student.StudentDao;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,8 @@ public class AbstractController {
     private StudentDao studentDao;
     @Autowired
     private PhotographerDao photographerDao;
+    @Autowired
+    private AdminDao adminDao;
     
     public AbstractController()
     {
@@ -52,6 +55,7 @@ public class AbstractController {
                             user = photographerDao.getById(userID);
                             break;
                         case ADMIN:
+                            user = adminDao.getById(userID);
                             break;
                         default:
                             break;

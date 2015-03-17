@@ -6,20 +6,33 @@
 package com.photoshop.controllers;
 
 import com.photoshop.models.UserType;
+import com.photoshop.models.admin.Admin;
+import com.photoshop.models.admin.AdminDao;
+import com.photoshop.models.photographer.Photographer;
+import com.photoshop.models.photographer.PhotographerDao;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
- * @author john
+ * @author casper
  */
 @Controller
 public class DefaultController extends AbstractController {
+   
+    @Autowired
+    private PhotographerDao photographerDao;
     
+    @Autowired
+    private AdminDao adminDao;
+    
+            
    @RequestMapping(value = "/", method = RequestMethod.GET)
    public String index(ModelMap map, HttpServletRequest request) {
        try {
@@ -57,11 +70,49 @@ public class DefaultController extends AbstractController {
    
    @RequestMapping(value = "/admin", method = RequestMethod.GET)
    public String admin(ModelMap map) {
-        if(authenticate(UserType.PHOTOGRAPHER))
+        if(authenticate(UserType.ADMIN,UserType.PHOTOGRAPHER))
         {    
             return "admin/home";
         }
-        return "home";
+        return "redirect:admin/login";
        
+   }
+   
+   @RequestMapping(value = "/admin/login", method = RequestMethod.GET)
+    public String Login(ModelMap map,HttpServletRequest request) {
+        map.put("Accountmade", request.getSession().getAttribute("Accountmade"));
+        request.getSession().removeAttribute("Accountmade");
+        return "login";
+    }
+    
+    @RequestMapping(value="/admin/checkLogin", method = RequestMethod.POST)
+    public String checkLogin(@RequestParam("name") String name,
+            @RequestParam("password") String password, ModelMap map, HttpServletRequest request) {
+        Admin admin = adminDao.authenticate(name, password);
+        Photographer photographer = photographerDao.authenticate(name, password);
+        if(admin != null){
+            request.getSession().setAttribute("UserID", admin.getId());
+            request.getSession().setAttribute("UserName", admin.getUsername());
+            request.getSession().setAttribute("UserType", UserType.ADMIN);
+            return "redirect:../../admin";
+        } else if (photographer != null) {
+            request.getSession().setAttribute("UserID", photographer.getId());
+            request.getSession().setAttribute("UserName", photographer.getUsername());
+            request.getSession().setAttribute("UserType", UserType.PHOTOGRAPHER);
+            return "redirect:../../admin"; 
+        } else{
+            request.getSession().setAttribute("UserID", null);
+            request.getSession().setAttribute("UserName", "");
+            request.getSession().setAttribute("UserType", "");
+            return "redirect:../login";
+        }
+    }
+   
+   @RequestMapping(value = "/logout", method = RequestMethod.GET)
+   public String logout(ModelMap map, HttpServletRequest request) {
+        request.getSession().setAttribute("UserID", null);
+        request.getSession().setAttribute("UserName", "");
+        request.getSession().setAttribute("UserType", "");
+        return "home";      
    }
 }
