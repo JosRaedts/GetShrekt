@@ -70,14 +70,6 @@
     <script src="${baseurl}/resources/admin/js/jquery.dataTables.min.js"></script>
     <script src="${baseurl}/resources/admin/js/dataTables.bootstrap.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            $('#dataTables-example').DataTable({
-                responsive: true
-            });
-        });
-    </script>
-
 </head>
 
 <body>

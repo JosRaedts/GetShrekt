@@ -49,15 +49,20 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
-
-                                    <table>
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#photographertable').DataTable({
+                                                responsive: true
+                                            });
+                                        });
+                                    </script>
+                                    <table class="table table-striped table-bordered table-hover dataTable no-footer" id="photographertable">
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th>photographer</th>
+                                                <th><spring:message code="photographer" text="%photographer" /></th>
                                                 <th><spring:message code="name" text="%name" /></th>
                                                 <th><spring:message code="username" text="%username" /></th>
-                                                <th><spring:message code="password" text="%password" /></th>
                                             </tr>
                                         </thead>
                                         <tbody>

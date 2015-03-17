@@ -55,7 +55,7 @@ public class SchoolDao extends Database  {
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
-            {
+              {
                 school = build(rs);
             }
         } catch (SQLException ex) {
