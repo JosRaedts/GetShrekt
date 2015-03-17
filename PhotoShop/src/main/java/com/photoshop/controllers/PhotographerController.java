@@ -78,4 +78,32 @@ public class PhotographerController {
             return "redirect:../login";
         }
     }
+    
+    @RequestMapping(value = "/accountgegevens", method = RequestMethod.GET)
+   public String VraagAccountInfoOp(ModelMap map, HttpServletRequest request) {
+       int userID = 0;
+       UserType userType;
+       String userName = "";
+       Photographer photographer = null;
+       
+       try {
+           userType = (UserType)request.getSession().getAttribute("UserType");
+           userID = (int)request.getSession().getAttribute("UserID");
+           switch(userType){
+                case PHOTOGRAPHER: photographer = photographerDao.getById(userID);
+                    System.out.println("User ID = " + userID);
+                    map.put("Type", "photographer");
+                    map.put("UserName", photographer.getUsername());
+                    map.put("Name", photographer.getName());
+                    return "photographer/accountgegevens";
+                default: System.out.println("invalid type");
+                     break;
+
+           }
+       } catch (Exception e) {
+           System.out.println(e.getMessage());
+           return "home";
+       }
+       return "home";
+    }
 }

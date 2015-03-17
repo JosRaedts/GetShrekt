@@ -80,4 +80,32 @@ public class StudentController {
             return "redirect:"; //teruggeleid naar de index pagina of inlogpagina
         }
     }
+    
+    @RequestMapping(value = "/accountgegevens", method = RequestMethod.GET)
+   public String VraagAccountInfoOp(ModelMap map, HttpServletRequest request) {
+       int userID = 0;
+       UserType userType;
+       String userName = "";
+       Student student = null;
+
+       try {
+           userType = (UserType)request.getSession().getAttribute("UserType");
+           userID = (int)request.getSession().getAttribute("UserID");
+           switch(userType){
+                case STUDENT: student = studentDao.getById(userID);
+                    System.out.println("User ID = " + userID);
+                    map.put("Type", "student");
+                    map.put("UserName", student.getUsername());
+                    map.put("Name", student.getName());
+                    return "student/accountgegevens";
+                default: System.out.println("invalid type");
+                     break;
+           }
+       } catch (Exception e) {
+           System.out.println(e.getMessage());
+           return "home";
+       }
+       return "home";
+    }
+   
 }
