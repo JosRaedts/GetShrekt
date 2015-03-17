@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
- * @author john
+ * @author Bram
  */
 @Controller
 public class DefaultController extends AbstractController {
