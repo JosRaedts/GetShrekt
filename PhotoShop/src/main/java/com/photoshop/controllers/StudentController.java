@@ -57,7 +57,9 @@ public class StudentController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String post(ModelMap map, HttpServletRequest request)
     {
+        
         Student temp = studentDao.getById(Integer.parseInt(request.getParameter("id")));
+        
         if(temp != null)
         {
             temp.setAddress(request.getParameter("address"));
@@ -73,7 +75,7 @@ public class StudentController {
         }
         
         
-        return "redirect:list";
+        return "redirect:list?id="+temp.getSchoolclass_id();
     } 
     
    //Toevoegen student
