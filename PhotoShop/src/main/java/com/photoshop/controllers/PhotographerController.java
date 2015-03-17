@@ -44,7 +44,7 @@ public class PhotographerController {
         System.out.println(request.getParameter("id"));
         map.put("photographer", photographerDao.getById(Integer.parseInt(request.getParameter("id"))));
         
-        return "student/edit";
+        return "photographer/edit";
     }
     
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
