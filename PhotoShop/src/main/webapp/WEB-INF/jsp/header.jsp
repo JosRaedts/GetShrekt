@@ -14,6 +14,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="${baseurl}/resources/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="${baseurl}/resources/css/style.css" />
+        <link rel="icon" href="${baseurl}/resources/img/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="${baseurl}/resources/img/favicon.ico" type="image/x-icon"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="${baseurl}/resources/js/js.js"></script>
         <script src="${baseurl}/resources/js/bootstrap.min.js"></script>
@@ -29,7 +31,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-            <a class="navbar-brand" href="${baseurl}/"><spring:message code="pageName" text="%pagename"/></a>
+            <a class="navbar-brand" href="${baseurl}/"><img src="${baseurl}/resources/img/Photoshop_white.png"/></a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">

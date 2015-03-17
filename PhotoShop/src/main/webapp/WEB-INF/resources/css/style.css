@@ -58,11 +58,11 @@ code {
 }
 
 .navbar-brand {
-    //padding-top: 5px;
+    padding:0;
 }
 
 .navbar-brand img{
-    height: 40px;
+    height: 60px;
     width: auto;
 }
 
