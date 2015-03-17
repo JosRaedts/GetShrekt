@@ -37,6 +37,8 @@ public class StudentController {
         return "student/list";
     }
     
+    
+    
     //Student aanpassen
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(ModelMap map, HttpServletRequest request)
@@ -46,6 +48,28 @@ public class StudentController {
         
         return "student/edit";
     }
+    
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String post(ModelMap map, HttpServletRequest request)
+    {
+        Student temp = studentDao.getById(Integer.parseInt(request.getParameter("id")));
+        if(temp != null)
+        {
+            temp.setAddress(request.getParameter("address"));
+            temp.setName(request.getParameter("name"));
+            temp.setCity(request.getParameter("city"));
+            temp.setZipcode(request.getParameter("zipcode"));
+            temp.setUsername(request.getParameter("username"));
+            studentDao.save(temp);
+        }
+        else
+        {
+            System.out.println("Invalid ID");
+        }
+        
+        
+        return "redirect:list";
+    } 
     
    //Toevoegen student
    @RequestMapping(value = "/add", method = RequestMethod.GET)

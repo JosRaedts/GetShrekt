@@ -18,7 +18,7 @@
         <tbody>
             <c:forEach var="student" items="${students}">
             <tr>
-                <td><a href="${baseurl}/student/edit?id=${student.id}"><img src="${baseurl}/resources/img/pencil.png" title="<spring:message code="edit" text="%edit" />"/></a></td>
+                <td><a href="${baseurl}/student/edit?id=${student.id}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>
                 <td>${student.studentnr}</td>
                 <td>${student.name}</td>
                 <td>${student.address}</td>

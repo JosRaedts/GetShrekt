@@ -3,8 +3,9 @@
 <jsp:include page="/WEB-INF/jsp/header.jsp" />
 <div class="container">
 
-    <form>
-        <spring:message code="name" text="%name" /><br>
+    <form method="post"  action="${baseurl}/student/edit">
+        <input type="hidden" id="hiddenIdfield" name="id" value="${student.id}">
+        <spring:message code="name" text="%name" /><br> 
         <input type="text" name="name" value="${student.name}"><br><br>
         <spring:message code="address" text="%address" /><br>
         <input type="text" name="address" value="${student.address}"><br><br>
@@ -15,7 +16,7 @@
         <spring:message code="username" text="%username" /><br>
         <input type="text" name="username" value="${student.username}">
         <br><br>
-        <input type="button" name="save" value="<spring:message code="save" text="%save" />">
+        <input type="submit" name="save" value="<spring:message code="save" text="%save" />">
     </form>
 </div>
 
