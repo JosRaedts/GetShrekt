@@ -113,7 +113,7 @@ public class StudentController {
     }
     
     @RequestMapping(value = "/accountgegevens", method = RequestMethod.GET)
-   public String VraagAccountInfoOp(ModelMap map, HttpServletRequest request) {
+    public String VraagAccountInfoOp(ModelMap map, HttpServletRequest request) {
        int userID = 0;
        UserType userType;
        String userName = "";
@@ -146,6 +146,38 @@ public class StudentController {
            return "home";
        }
        return "home";
+    }
+    
+    @RequestMapping(value = "/modify", method = RequestMethod.POST)
+    public String modify(@RequestParam("username") String username,
+            @RequestParam("zipcode") String zipcode,
+            @RequestParam("city") String city,
+            @RequestParam("address") String address,
+            ModelMap map, HttpServletRequest request) { 
+        System.out.println("Student is being modified");
+
+        if (!zipcode.equals("") && !username.equals("") && !city.equals("") && !address.equals("")) {
+            try {    
+                int userID = (int)request.getSession().getAttribute("UserID");
+                Student student = this.studentDao.getById(userID);
+                System.out.println("de naam van te student is " + student.getName());
+                if (student != null) {
+                    System.out.println("Student is being saved");
+                    student.setAddress(address);
+                    student.setCity(city);
+                    student.setUsername(username);
+                    student.setZipcode(zipcode);
+                    student.save();
+                } else {
+                    System.out.println("student was null");
+                }
+                
+            } catch (Exception e) {
+                System.out.println("Student was null");
+            }
+        }
+        
+        return "home";
     }
    
 }
