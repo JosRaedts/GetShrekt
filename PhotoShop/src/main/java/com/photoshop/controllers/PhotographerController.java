@@ -99,7 +99,7 @@ public class PhotographerController {
         }
     }
     
-    @RequestMapping(value = "/accountgegevens", method = RequestMethod.GET)
+    @RequestMapping(value = "/accountgegevens2", method = RequestMethod.GET)
    public String VraagAccountInfoOp(ModelMap map, HttpServletRequest request) {
        int userID = 0;
        UserType userType;
@@ -115,7 +115,7 @@ public class PhotographerController {
                     map.put("Type", "photographer");
                     map.put("UserName", photographer.getUsername());
                     map.put("Name", photographer.getName());
-                    return "photographer/accountgegevens";
+                    return "photographer/accountgegevens2";
                 default: System.out.println("invalid type");
                      break;
 
