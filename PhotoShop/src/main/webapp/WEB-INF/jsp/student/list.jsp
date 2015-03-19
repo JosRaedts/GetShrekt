@@ -49,6 +49,11 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
+                                    <form id="formid" method="post" action="${baseurl}/student/list">
+                                        <input type="hidden" id="hiddenIdfield" name="id" value="${schoolclass.id}">
+                                             <a href="#" onclick="document.getElementById('formid').submit()"><i class="fa fa-long-arrow-left" title="<spring:message code="back" text="%back" />"></i></a>
+                                       
+                                    </form>
                                     <table>
                                         <thead>
                                             <tr>

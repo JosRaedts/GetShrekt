@@ -30,16 +30,47 @@ public class SchoolController {
     public String list(ModelMap map, HttpServletRequest request)
     {
         map.put("schools", schoolDao.getList());
-        School temp = schoolDao.getById(2);
-        System.out.println(temp.getName());
         return "school/list";
     }
     
+//    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+//    public String schoolClasses(ModelMap map, HttpServletRequest request)
+//    {
+//        School temp = schoolDao.getById(Integer.parseInt(request.getParameter("id")));
+//        map.put("school", temp.getSchoolClasses());
+//        return "schoolclass/list";
+//    }
+    
+    //Student aanpassen
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public String schoolClasses(ModelMap map, HttpServletRequest request)
+    public String edit(ModelMap map, HttpServletRequest request)
     {
-        School temp = schoolDao.getById(Integer.parseInt(request.getParameter("id")));
-        map.put("school", temp.getSchoolClasses());
-        return "schoolclass/list";
+        map.put("school", schoolDao.getById(Integer.parseInt(request.getParameter("id"))));
+        
+        return "school/edit";
     }
+    
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String post(ModelMap map, HttpServletRequest request)
+    {
+        
+        School temp = schoolDao.getById(Integer.parseInt(request.getParameter("id")));
+        
+        if(temp != null)
+        {
+            temp.setAddress(request.getParameter("address"));
+            temp.setName(request.getParameter("name"));
+            temp.setCity(request.getParameter("city"));
+            temp.setZipcode(request.getParameter("zipcode"));
+            temp.setCode(request.getParameter("code"));
+            schoolDao.save(temp);
+        }
+        else
+        {
+            System.out.println("Invalid ID");
+        }
+        
+        
+        return "redirect:list?id=";
+    } 
 }
