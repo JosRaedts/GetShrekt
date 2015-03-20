@@ -6,6 +6,7 @@
 package com.photoshop.models.schoolClass;
 
 import com.photoshop.models.school.School;
+import com.photoshop.models.school.SchoolDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
 import java.util.List;
@@ -61,8 +62,8 @@ public class SchoolClass {
     }
     
     public School getSchool(){
-        //todo
-        return null;
+        SchoolDao schooldao = new SchoolDao();
+        return schooldao.getSchoolBySchoolClass(this.id);
     }
     
     public void setSchool(School school){

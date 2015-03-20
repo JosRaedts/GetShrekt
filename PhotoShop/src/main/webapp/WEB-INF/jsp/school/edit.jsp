@@ -49,27 +49,21 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
-                                    <a href="${baseurl}/school/list"><i class="fa fa-long-arrow-left" title="<spring:message code="back" text="%back" />"></i></a>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th></th><!-- View/edit -->
-                                                <th><spring:message code="name" text="%name" /></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach var="schoolclass" items="${schoolclasses}">
-                                                <tr>
-                                                    <td><a href="${baseurl}/schoolclass/edit?id=${schoolclass.id}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>
-                                                    <td><a href="${baseurl}/student/list?id=${schoolclass.id}">view students</a></td>
-                                                    <td>${schoolclass.name}</td>
-
-                                                </tr>
-                                            </c:forEach>
-
-                                        </tbody>
-                                    </table>
+                                    <form method="post"  action="${baseurl}/school/edit">
+                                        <input type="hidden" id="hiddenIdfield" name="id" value="${school.id}">
+                                        <spring:message code="name" text="%name" /><br> 
+                                        <input type="text" name="name" value="${school.name}"><br><br>
+                                        <spring:message code="address" text="%address" /><br>
+                                        <input type="text" name="address" value="${school.address}"><br><br>
+                                        <spring:message code="city" text="%city" /><br>
+                                        <input type="text"  name="city" value="${school.city}"><br><br>
+                                        <spring:message code="zipcode" text="%zipcode" /><br>
+                                        <input type="text" name="zipcode" value="${school.zipcode}"><br><br>
+                                        Code<br>
+                                        <input type="text" name="code" value="${school.code}">
+                                        <br><br>
+                                        <input type="submit" name="save" value="<spring:message code="save" text="%save" />">
+                                    </form>
                                 </div>
                                 <!-- /.table-responsive -->
                             </div>
