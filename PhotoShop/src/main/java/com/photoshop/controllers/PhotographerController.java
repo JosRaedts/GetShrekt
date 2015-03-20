@@ -99,7 +99,7 @@ public class PhotographerController {
         }
     }
     
-    @RequestMapping(value = "/accountgegevens2", method = RequestMethod.GET)
+    @RequestMapping(value = "/accountgegevens", method = RequestMethod.GET)
    public String VraagAccountInfoOp(ModelMap map, HttpServletRequest request) {
        int userID = 0;
        UserType userType;
@@ -115,7 +115,7 @@ public class PhotographerController {
                     map.put("Type", "photographer");
                     map.put("UserName", photographer.getUsername());
                     map.put("Name", photographer.getName());
-                    return "photographer/accountgegevens2";
+                    return "photographer/accountgegevens";
                 default: System.out.println("invalid type");
                      break;
 
@@ -125,5 +125,43 @@ public class PhotographerController {
            return "home";
        }
        return "home";
+    }
+   
+   @RequestMapping(value = "/modify", method = RequestMethod.POST)
+    public String modify(@RequestParam("username") String username,
+            @RequestParam("name") String name,
+            ModelMap map, HttpServletRequest request) { 
+        System.out.println("Student is being modified");
+
+        if (!name.equals("") && !username.equals("")) {
+            try {    
+                int userID = (int)request.getSession().getAttribute("UserID");
+                Photographer photog = this.photographerDao.getById(userID);
+                System.out.println("de naam van te fotograaf is " + photog.getName());
+                if (photog != null) {
+                    System.out.println("photographer is being saved");
+                    photog.setName(name);
+                    photog.setUsername(username);
+                    photog.save();
+                    
+                    String newP = request.getParameter("newPassword");
+                    String confP = request.getParameter("confirmPassword");
+                    
+                    if (!newP.equals("") && !confP.equals("") && newP.equals(confP)) {
+                        photog.setPassword(newP);
+                        photog.save();
+                    } else {
+                        System.out.println("password not changed");
+                    }
+                } else {
+                    System.out.println("student was null");
+                }
+                
+            } catch (Exception e) {
+                System.out.println("Student was null");
+            }
+        }
+        
+        return "home";
     }
 }
