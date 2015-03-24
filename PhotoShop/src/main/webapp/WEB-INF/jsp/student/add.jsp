@@ -38,7 +38,7 @@
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
                                     <div class="col-lg-4">
-                                        <form class="form-signin" method="post" action="${baseurl}/photographer/student/studentadd">
+                                        <form class="form-signin" method="post" action="${baseurl}/student/add">
                                             <h2 class="form-signin-heading"><spring:message code="addstudent" text="%addstudent" /></h2>
                                             <input type="text" name="Name" class="form-control" placeholder="<spring:message code="studentname" text="&studentname" />" required autofocus>
                                             <input type="text" name="Address" class="form-control" placeholder="<spring:message code="address" text="&address" />" required autofocus>
@@ -47,7 +47,7 @@
                                             <input type="text" name="Username" class="form-control" placeholder="<spring:message code="username" text="&username" />" required autofocus>
                                             <input type="text" name="Studentcode" class="form-control" placeholder="<spring:message code="studentnr" text="&studentnr" />" required autofocus>
                                             <input type="password" name="Password1" class="form-control" placeholder="<spring:message code="password" text="&password" />" required autofocus>
-                                            <input type="password" name="Password2" class="form-control" placeholder="<spring:message code="password" text="&password" />" required autofocus>
+                                            <input type="password" name="Password2" class="form-control" placeholder="<spring:message code="confirmpassword" text="&confirmpassword" />" required autofocus>
                                             <button class="btn btn-lg btn-primary btn-block" type="submit"><spring:message code="createstudent" text="%createstudent" /></button>
                                         </form>
                                     </div>
