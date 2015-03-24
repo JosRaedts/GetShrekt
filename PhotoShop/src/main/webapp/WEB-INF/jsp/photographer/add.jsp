@@ -50,7 +50,7 @@
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
                                     <form class="form-signin" method="post" action="${baseurl}/photographer/add/addphotographer">
-                                        <h2 class="form-signin-heading"><spring:message code="photographerText" text="%photographerText" /></h2>
+                                        <h2 class="form-signin center"><spring:message code="photographerText" text="%photographerText" /></h2>
                                         <label for="photographerName" class="sr-only">Name:</label>
                                         <input type="text" id="inputName" name="name" class="form-control" placeholder="<spring:message code="photographerName" text="%photographerName" />" required autofocus>
                                         <label for="Wachtwoord" class="sr-only">Password:</label>

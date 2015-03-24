@@ -60,7 +60,6 @@
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th><spring:message code="photographer" text="%photographer" /></th>
                                                 <th><spring:message code="name" text="%name" /></th>
                                                 <th><spring:message code="username" text="%username" /></th>
                                             </tr>
@@ -69,9 +68,8 @@
                                             <c:forEach var="photographer" items="${photographer}">
                                                 <tr>
                                                     <td><a href="${baseurl}/photographer/edit?id=${photographer.id}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>
-                                                    <td>${photographer.name}</td>
-                                                    <td>${photographer.username}</td>
-                                                    <td>${photographer.password}</td>
+                                                    <td>${photographer.name}</td> 
+                                                    <td>${photographer.username}</td>                                                                                                                  
                                                 </tr>
                                             </c:forEach>            
                                         </tbody>
