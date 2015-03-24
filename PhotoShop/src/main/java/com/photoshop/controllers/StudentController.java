@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @RequestMapping("/student")
 @Controller
-public class StudentController {
+public class StudentController extends AbstractController {
 
     @Autowired
     private StudentDao studentDao;
@@ -36,46 +36,64 @@ public class StudentController {
     //Lijst weergaven
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(ModelMap map, HttpServletRequest request) {
-        SchoolClass temp = schoolclassdao.getById(Integer.parseInt(request.getParameter("id")));
-        map.put("students", studentDao.getStudentsBySchoolclass(temp));
-        map.put("schoolclass", temp);
-        return "student/list";
+        if (authenticate(UserType.ADMIN)) {
+            try {
+
+                SchoolClass temp = schoolclassdao.getById(Integer.parseInt(request.getParameter("id")));
+                map.put("students", studentDao.getStudentsBySchoolclass(temp));
+                map.put("schoolclass", temp);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                return "redirect:../school/list";
+            }
+            return "student/list";
+        }
+        return "redirect:../";
     }
 
     //Back button
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public String back(ModelMap map, HttpServletRequest request) {
-        SchoolClass schoolclass = schoolclassdao.getById(Integer.parseInt(request.getParameter("id")));
-        School school = schoolclass.getSchool();
-        return "redirect:../schoolclass/list?id=" + school.getId();
+        if (authenticate(UserType.ADMIN)) {
+            SchoolClass schoolclass = schoolclassdao.getById(Integer.parseInt(request.getParameter("id")));
+            School school = schoolclass.getSchool();
+            return "redirect:../schoolclass/list?id=" + school.getId();
+
+        }
+        return "redirect:../";
+
     }
 
     //Student aanpassen
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(ModelMap map, HttpServletRequest request) {
-        map.put("student", studentDao.getById(Integer.parseInt(request.getParameter("id"))));
+        if (authenticate(UserType.ADMIN)) {
+            map.put("student", studentDao.getById(Integer.parseInt(request.getParameter("id"))));
 
-        return "student/edit";
+            return "student/edit";
+        }
+        return "redirect:../";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String post(ModelMap map, HttpServletRequest request) {
+        if (authenticate(UserType.ADMIN)) {
+            Student temp = studentDao.getById(Integer.parseInt(request.getParameter("id")));
+            if (temp != null) {
+                temp.setAddress(request.getParameter("address"));
+                temp.setName(request.getParameter("name"));
+                temp.setCity(request.getParameter("city"));
+                temp.setZipcode(request.getParameter("zipcode"));
+                temp.setUsername(request.getParameter("username"));
+                studentDao.save(temp);
+                return "redirect:list?id=" + temp.getSchoolclass_id();
 
-        Student temp = studentDao.getById(Integer.parseInt(request.getParameter("id")));
-        if (temp != null) {
-            temp.setAddress(request.getParameter("address"));
-            temp.setName(request.getParameter("name"));
-            temp.setCity(request.getParameter("city"));
-            temp.setZipcode(request.getParameter("zipcode"));
-            temp.setUsername(request.getParameter("username"));
-            studentDao.save(temp);
-            return "redirect:list?id=" + temp.getSchoolclass_id();
-
-        } else {
-            System.out.println("Invalid ID");
-            return "redirect:../school/list";
+            } else {
+                System.out.println("Invalid ID");
+                return "redirect:../";
+            }
         }
-
+        return "redirect:../school/list";
     }
 
     //Toevoegen student

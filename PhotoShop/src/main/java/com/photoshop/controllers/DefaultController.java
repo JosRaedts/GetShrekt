@@ -115,6 +115,6 @@ public class DefaultController extends AbstractController {
         request.getSession().setAttribute("UserID", null);
         request.getSession().setAttribute("UserName", "");
         request.getSession().setAttribute("UserType", "");
-        return "home";      
+        return "redirect:";      
    }
 }

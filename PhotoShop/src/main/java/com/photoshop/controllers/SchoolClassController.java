@@ -5,6 +5,7 @@
  */
 package com.photoshop.controllers;
 
+import com.photoshop.models.UserType;
 import com.photoshop.models.school.School;
 import com.photoshop.models.school.SchoolDao;
 import com.photoshop.models.schoolClass.SchoolClass;
@@ -22,52 +23,58 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @RequestMapping("/schoolclass")
 @Controller
-public class SchoolClassController {
+public class SchoolClassController extends AbstractController {
 
     @Autowired
     private SchoolDao schooldao;
-    
+
     @Autowired
     private SchoolClassDao schoolclassDao;
-    
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(ModelMap map, HttpServletRequest request)
-    {       
-        School temp = schooldao.getById(Integer.parseInt(request.getParameter("id")));
-        map.put("schoolclasses", temp.getSchoolClasses());
-        
-        return "schoolclass/list";
+    public String list(ModelMap map, HttpServletRequest request) {
+        if (authenticate(UserType.ADMIN)) {
+            try {
+                School temp = schooldao.getById(Integer.parseInt(request.getParameter("id")));
+                map.put("schoolclasses", temp.getSchoolClasses());
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                return "redirect:../school/list";
+            }
+
+            return "schoolclass/list";
+        }
+        return "redirect:../";
     }
-    
+
     //Student aanpassen
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public String edit(ModelMap map, HttpServletRequest request)
-    {
-        map.put("schoolclass", schoolclassDao.getById(Integer.parseInt(request.getParameter("id"))));
-        
-        return "schoolclass/edit";
+    public String edit(ModelMap map, HttpServletRequest request) {
+        if (authenticate(UserType.ADMIN)) {
+            map.put("schoolclass", schoolclassDao.getById(Integer.parseInt(request.getParameter("id"))));
+
+            return "schoolclass/edit";
+        }
+        return "redirect:../";
     }
-    
+
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String post(ModelMap map, HttpServletRequest request)
-    {
-        
-        SchoolClass temp = schoolclassDao.getById(Integer.parseInt(request.getParameter("id")));
-        int schoolid = 0;
-        if(temp != null)
-        {
-            temp.setName(request.getParameter("name"));
-            schoolid = temp.getId();
-            schoolclassDao.save(temp);
-            
+    public String post(ModelMap map, HttpServletRequest request) {
+        if (authenticate(UserType.ADMIN)) {
+            SchoolClass temp = schoolclassDao.getById(Integer.parseInt(request.getParameter("id")));
+            int schoolid = 0;
+            if (temp != null) {
+                temp.setName(request.getParameter("name"));
+                schoolid = temp.getId();
+                schoolclassDao.save(temp);
+
+            } else {
+                System.out.println("Invalid ID");
+            }
+
+            return "redirect:list?id=" + schoolid;
         }
-        else
-        {
-            System.out.println("Invalid ID");
-        }
-        
-        
-        return "redirect:list?id="+schoolid;
-    } 
-    
+        return "redirect:../";
+    }
+
 }
