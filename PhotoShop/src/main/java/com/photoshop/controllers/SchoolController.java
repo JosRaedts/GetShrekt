@@ -28,7 +28,7 @@ public class SchoolController extends AbstractController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN,UserType.PHOTOGRAPHER)) {
             map.put("schools", schoolDao.getList());
             return "school/list";
         }
@@ -45,7 +45,7 @@ public class SchoolController extends AbstractController {
     //Student aanpassen
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN,UserType.PHOTOGRAPHER)) {
             map.put("school", schoolDao.getById(Integer.parseInt(request.getParameter("id"))));
 
             return "school/edit";
@@ -55,7 +55,7 @@ public class SchoolController extends AbstractController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String post(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN,UserType.PHOTOGRAPHER)) {
             School temp = schoolDao.getById(Integer.parseInt(request.getParameter("id")));
 
             if (temp != null) {
@@ -76,7 +76,7 @@ public class SchoolController extends AbstractController {
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addpage(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             return "school/add";
         }
         return "redirect:../";
@@ -84,7 +84,7 @@ public class SchoolController extends AbstractController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String add(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             School temp = new School();
 
             try {
