@@ -51,7 +51,7 @@
                                         <spring:message code="username" text="%username" /><br>
                                         <input type="text" name="username" value="${photographer.username}"><br><br>
                                         <spring:message code="password" text="%password" /><br>
-                                        <input type="password" name="password" value="${photographer.password}"><br><br>
+                                        <input type="password" name="password"><br><br>
                                         <input type="submit" name="save" value="<spring:message code="save" text="%save" />">
                                     </form>
                                 </div>

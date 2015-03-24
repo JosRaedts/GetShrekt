@@ -44,14 +44,16 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
+                                    <div class="col-lg-4">
                                     <form class="form-signin" method="post" action="${baseurl}/photographer/add/addphotographer">
-                                        <h2 class="form-signin center"><spring:message code="photographerText" text="%photographerText" /></h2>
+                                        <h2 class="Tekstcenter"><spring:message code="photographerText" text="%photographerText" /></h2>
                                         <label for="photographerName" class="sr-only">Name:</label>
                                         <input type="text" id="inputName" name="name" class="form-control" placeholder="<spring:message code="photographerName" text="%photographerName" />" required autofocus>
                                         <label for="Wachtwoord" class="sr-only">Password:</label>
                                         <input type="password" name="password" id="inputSchoolcode" class="form-control" placeholder="<spring:message code="password" text="%password" />" required>
                                         <button class="btn btn-lg btn-primary btn-block" type="submit"><spring:message code="createphotographer" text="%createphotographer" /></button>
                                     </form>
+                                    </div>
                                 </div> <!-- /container -->
                             </div>
                             <!-- /.table-responsive -->

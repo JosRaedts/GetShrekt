@@ -170,12 +170,12 @@ code {
   border-top-right-radius: 0;
 }
 
-hr {
+.hr {
     border-color: #7DBDFF;
     background-color: #7DBDFF;
 }
 
-Tekstcenter
+.Tekstcenter
 {
     text-align: center;
 }
