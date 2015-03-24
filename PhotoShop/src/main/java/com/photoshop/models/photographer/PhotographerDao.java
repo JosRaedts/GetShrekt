@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -131,17 +132,21 @@ public class PhotographerDao extends Database  {
     
     public Photographer authenticate(String username, String password)
     {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Photographer photographer = null;
         try {
-            String querystring = "SELECT * FROM photographers WHERE username = ? AND password = ?";
+            String querystring = "SELECT * FROM photographers WHERE username = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setString(1, username);
-            stat.setString(2, password);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
             {
                 photographer = build(rs);
+                if(!passwordEncoder.matches(password, rs.getString("password")))
+                {
+                    photographer = null;
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(PhotographerDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -157,7 +162,6 @@ public class PhotographerDao extends Database  {
             photographer.setId(rs.getInt("id"));
             photographer.setName(rs.getString("name"));
             photographer.setUsername(rs.getString("username"));
-            photographer.setPassword(rs.getString("password"));
             
         } catch (SQLException ex) {
             Logger.getLogger(PhotographerDao.class.getName()).log(Level.SEVERE, null, ex);
