@@ -206,6 +206,7 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        </c:if>
                         <li>
                             <a href="#"><i class="fa fa-building fa-fw"></i> <spring:message code="schools" text="%schools" /><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -230,7 +231,6 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        </c:if>
                         <li>
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
