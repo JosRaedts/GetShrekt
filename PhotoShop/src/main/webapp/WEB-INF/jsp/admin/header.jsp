@@ -189,18 +189,29 @@
                             <a href="admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-camera fa-fw"></i> <spring:message code="photographer" text="%photographer" /><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="flot.html">Flot Charts</a>
+                                    <a href="${baseurl}/photographer/add"><i class="fa fa-plus fa-fw"></i> <spring:message code="add" text="%add" /></a>
                                 </li>
                                 <li>
-                                    <a href="morris.html">Morris.js Charts</a>
+                                    <a href="${baseurl}/photographer/list"><i class="fa fa-list-ul fa-fw"></i> <spring:message code="overview" text="%overview" /></a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        
+                        <li>
+                            <a href="#"><i class="fa fa-building fa-fw"></i> <spring:message code="schools" text="%schools" /><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="${baseurl}/school/add"><i class="fa fa-plus fa-fw"></i> <spring:message code="add" text="%add" /></a>
+                                </li>
+                                <li>
+                                    <a href="${baseurl}/school/list"><i class="fa fa-list-ul fa-fw"></i> <spring:message code="overview" text="%overview" /></a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
                         <li>
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
