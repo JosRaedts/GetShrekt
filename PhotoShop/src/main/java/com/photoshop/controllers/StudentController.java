@@ -103,21 +103,20 @@ public class StudentController extends AbstractController {
     }
     
     @RequestMapping(value="/add/studentadd", method = RequestMethod.POST)
-    public String Addphotographer(@RequestParam("name") String name,
-            @RequestParam("password") String password, ModelMap map, HttpServletRequest request) {
-        if (name.equals("") && password.equals("")) {
+    public String Addphotographer(ModelMap map, HttpServletRequest request) {
+        if (request.getParameter("name").equals("") && request.getParameter("password1").equals(request.getParameter("password2"))){
             System.out.println("mislukt");
             return "student/add";
         } else {
             System.out.println("gelukt");
             Student student = new Student();
-            student.setAddress(name);
-            student.setCity(name);
-            student.setName(name);
-            student.setPassword(password);
-            student.setStudentnr(studentnr);
-            student.setUsername(name);
-            student.setZipcode(name);
+            student.setAddress(request.getParameter("Address"));
+            student.setCity(request.getParameter("City"));
+            student.setName(request.getParameter("Name"));
+            student.setPassword("password1");
+            student.setStudentnr(Integer.parseInt("studentnr"));
+            student.setUsername("Username");
+            student.setZipcode("Zipcode");
             studentDao.save(student);
             return "redirect:../../admin"; 
         }
