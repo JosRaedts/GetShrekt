@@ -90,7 +90,12 @@
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
-                
+                <li>
+                    <a href="<c:url value='?lang=en'/>"><img class="lang-img" height="20px" src="${baseurl}/resources/img/en.png"/></a>
+                </li>
+                <li>
+                    <a href="<c:url value='?lang=nl'/>"><img class="lang-img" height="20px" src="${baseurl}/resources/img/nl.png"/></a>
+                </li>
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -157,7 +162,7 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <li><a href="${baseurl}/admin/accountgegevens"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
@@ -186,10 +191,10 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="${baseurl}/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-camera fa-fw"></i> <spring:message code="photographer" text="%photographer" /><span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-camera fa-fw"></i> <spring:message code="photographers" text="%photographers" /><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="${baseurl}/photographer/add"><i class="fa fa-plus fa-fw"></i> <spring:message code="add" text="%add" /></a>
