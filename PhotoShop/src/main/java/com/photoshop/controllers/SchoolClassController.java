@@ -39,7 +39,8 @@ public class SchoolClassController extends AbstractController {
                 map.put("schoolclasses", temp.getSchoolClasses());
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
-                return "redirect:../school/list";
+                map.put("schoolclasses", schoolclassDao.getList());
+                return "schoolclass/list";
             }
 
             return "schoolclass/list";
