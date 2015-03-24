@@ -218,6 +218,18 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
+                            <a href="#"><i class="fa fa-graduation-cap fa-fw"></i> <spring:message code="schoolClasses" text="%schoolClasses" /><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="${baseurl}/schoolclass/add"><i class="fa fa-plus fa-fw"></i> <spring:message code="add" text="%add" /></a>
+                                </li>
+                                <li>
+                                    <a href="${baseurl}/schoolclass/list"><i class="fa fa-list-ul fa-fw"></i> <spring:message code="overview" text="%overview" /></a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
