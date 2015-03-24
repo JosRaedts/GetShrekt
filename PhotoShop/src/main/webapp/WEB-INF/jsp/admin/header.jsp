@@ -193,6 +193,7 @@
                         <li>
                             <a href="${baseurl}/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
+                        <c:if test="${sessionScope.UserType == 'ADMIN' && sessionScope.UserID != null}">
                         <li>
                             <a href="#"><i class="fa fa-camera fa-fw"></i> <spring:message code="photographers" text="%photographers" /><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -229,6 +230,7 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        </c:if>
                         <li>
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
