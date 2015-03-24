@@ -48,6 +48,11 @@
                                             <input type="text" name="Studentcode" class="form-control" placeholder="<spring:message code="studentnr" text="&studentnr" />" required autofocus>
                                             <input type="password" name="Password1" class="form-control" placeholder="<spring:message code="password" text="&password" />" required autofocus>
                                             <input type="password" name="Password2" class="form-control" placeholder="<spring:message code="confirmpassword" text="&confirmpassword" />" required autofocus>
+                                            <select name ="Schoolclassid">
+                                                <c:forEach var="schoolclass" items="${schoolclasses}">
+                                                    <option name ="schoolclass" value="${schoolclass.id}">${schoolclass.name}</option>
+                                                </c:forEach>
+                                            </select>
                                             <button class="btn btn-lg btn-primary btn-block" type="submit"><spring:message code="createstudent" text="%createstudent" /></button>
                                         </form>
                                     </div>

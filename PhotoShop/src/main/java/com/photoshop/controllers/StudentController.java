@@ -99,6 +99,7 @@ public class StudentController extends AbstractController {
     //Toevoegen student
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(ModelMap map) {
+        map.put("schoolclasses", schoolclassdao.getList());
         return "student/add";
     }
     
@@ -117,9 +118,9 @@ public class StudentController extends AbstractController {
             student.setStudentnr(Integer.parseInt(request.getParameter("Studentcode")));
             student.setUsername(request.getParameter("Username"));
             student.setZipcode(request.getParameter("ZipCode"));
-            student.setSchoolclass_id(1);
+            student.setSchoolclass_id(Integer.parseInt(request.getParameter("Schoolclassid")));
             studentDao.save(student);
-            return "redirect:../add"; 
+            return "redirect:../student/add"; 
         }
     }
 
