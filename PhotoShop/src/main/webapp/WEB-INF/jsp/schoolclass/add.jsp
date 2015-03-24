@@ -49,15 +49,15 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
-                                    <div class="col-lg-6>
-                                         <form method="post"  action="${baseurl}/schoolclass/add">
+                                    <div class="col-lg-6">
+                                         <form method="POST" action="${baseurl}/schoolclass/add">
                                          <table>
                                             <tr>
                                                 <td width="200px"><spring:message code="name" text="%name" /></td>
                                                 <td><input type="text" name="name" class="form-control formphotograaf" style="margin-bot: 10px"></td>
                                             </tr>
                                             <tr>
-                                                <td width="200px">School</td>
+                                                <td width="200px"><spring:message code="schools" text="%schools" /></td>
                                                 <td><select name="school">
                                                         <c:forEach var="school" items="${schools}">
                                                             <option name ="school" value="${school.id}">${school.name}</option>
