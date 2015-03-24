@@ -19,3 +19,11 @@ and open the template in the editor.
     z-index: 10;
     position: relative;
 }
+
+.formphotograaf {
+    margin-bottom: 5px;
+}
+
+.photographerBtn {
+    margin-top: 20px
+}
