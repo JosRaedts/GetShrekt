@@ -4,7 +4,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"><spring:message code="photographers" text="%photographers" /></a></h1>
+            <h1 class="page-header"><spring:message code="students" text="%students" /></a></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -24,9 +24,9 @@
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="${baseurl}/photographer/add"><spring:message code="photographerText" text="%Add photographer" /></a>
+                                    <li><a href="${baseurl}/student/add"><spring:message code="addstudent" text="%addstudent" /></a>
                                     </li>
-                                    <li><a href="${baseurl}/photographer/edit"><spring:message code="photographers" text="%photographers" /></a>
+                                    <li><a href="${baseurl}/student/list"><spring:message code="editstudentaction" text="%editstudentaction" /></a>
                                     </li>
                                 </ul>
                             </div>
