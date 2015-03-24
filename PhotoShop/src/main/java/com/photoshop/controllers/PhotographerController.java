@@ -69,24 +69,25 @@ public class PhotographerController extends AbstractController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String post(ModelMap map, HttpServletRequest request)
     {
-       try {      
-            if(authenticate(UserType.ADMIN))
-            {
+        try {
+            if (authenticate(UserType.ADMIN)) {
                 Photographer temp = photographerDao.getById(Integer.parseInt(request.getParameter("id")));
-               if (temp != null) {
-                   temp.setName(request.getParameter("name"));
-                   temp.setUsername(request.getParameter("username"));
-                   temp.setPassword(request.getParameter("password"));
-                   photographerDao.save(temp);
-               } else {
-                   System.out.println("Invalid ID");
-               }
-               map.put("photographer", photographerDao.getList());
-               return "photographer/list";
-           }
-       } catch(Exception e) {
+                if (temp != null) {
+                    temp.setName(request.getParameter("name"));
+                    temp.setUsername(request.getParameter("username"));
+                    if (!request.getParameter("password").equals("")) {
+                        temp.setPassword(request.getParameter("password"));
+                    }
+                    photographerDao.save(temp);
+                } else {
+                    System.out.println("Invalid ID");
+                }
+                map.put("photographer", photographerDao.getList());
+                return "photographer/list";
+            }
+        } catch (Exception e) {
             return "/";
-       }
+        }
         
        return "redirect:/";      
     }    
