@@ -38,7 +38,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-6">
                                         <form class="form-signin" method="post" action="${baseurl}/photographer/add/addphotographer">
                                             <h2><spring:message code="photographerText" text="%photographerText" /></h2>                                        
                                             <table border="0" style="">
