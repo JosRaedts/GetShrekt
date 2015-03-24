@@ -49,20 +49,39 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
-                                    <form method="post"  action="${baseurl}/school/add">
-                                        <spring:message code="name" text="%name" /><br> 
-                                        <input type="text" name="name" ><br><br>
-                                        <spring:message code="address" text="%address" /><br>
-                                        <input type="text" name="address"><br><br>
-                                        <spring:message code="city" text="%city" /><br>
-                                        <input type="text"  name="city"><br><br>
-                                        <spring:message code="zipcode" text="%zipcode" /><br>
-                                        <input type="text" name="zipcode"><br><br>
-                                        Code<br>
-                                        <input type="text" name="code">
-                                        <br><br>
-                                        <input type="submit" name="save" value="<spring:message code="save" text="%save" />">
-                                    </form>
+                                    <div class="col-lg-6">
+                                        <form method="post"  action="${baseurl}/school/add">
+                                            <table border="0" style="">
+                                                <tr>
+                                                    <td width="200px"><spring:message code="name" text="%name" /></td>
+                                                    <td><input type="text" name="name" class="form-control formphotograaf"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="200px"><spring:message code="address" text="%address" /></td>
+                                                    <td><input type="text" name="address" class="form-control formphotograaf"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="200px"><spring:message code="city" text="%city" /></td>
+                                                    <td><input type="text"  name="city" class="form-control formphotograaf"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="200px"><spring:message code="zipcode" text="%zipcode" /></td>
+                                                    <td><input type="text" name="zipcode" class="form-control formphotograaf"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="200px"><spring:message code="code" text="%code" /></td>
+                                                    <td><input type="text" name="code" class="form-control formphotograaf"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        <input type="submit" class="btn btn-lg btn-primary btn-block photographerBtn" name="save" value="<spring:message code="save" text="%save" />">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </form>
+                                    </div>
                                 </div>
                                 <!-- /.table-responsive -->
                             </div>

@@ -49,17 +49,26 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
-                                    <form method="post"  action="${baseurl}/schoolclass/add">
-                                        <spring:message code="name" text="%name" /><br> 
-                                        <input type="text" name="name" ><br><br> 
-                                        School<br>
-                                        <select name="school">
-                                            <c:forEach var="school" items="${schools}">
-                                                <option name ="school" value="${school.id}">${school.name}</option>
-                                            </c:forEach>
-                                        </select><br><br>
-                                        <input type="submit" name="save" value="<spring:message code="save" text="%save" />">
-                                    </form>
+                                    <div class="col-lg-6>
+                                         <form method="post"  action="${baseurl}/schoolclass/add">
+                                         <table>
+                                            <tr>
+                                                <td width="200px"><spring:message code="name" text="%name" /></td>
+                                                <td><input type="text" name="name" class="form-control formphotograaf" style="margin-bot: 10px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="200px">School</td>
+                                                <td><select name="school">
+                                                        <c:forEach var="school" items="${schools}">
+                                                            <option name ="school" value="${school.id}">${school.name}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <input class="btn btn-primary photographerBtn" type="submit" name="save" value="<spring:message code="save" text="%save" />">
+                                        </form>
+                                    </div>
                                 </div>
                                 <!-- /.table-responsive -->
                             </div>
