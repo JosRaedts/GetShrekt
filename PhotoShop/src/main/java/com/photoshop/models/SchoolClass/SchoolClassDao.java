@@ -115,18 +115,19 @@ public class SchoolClassDao extends Database  {
             boolean exists = idExists(schoolclass.getId());
             if(exists)
             {
-                querystring = "UPDATE schoolclasses SET name = ? WHERE id = ?";                                
+                querystring = "UPDATE schoolclasses SET name = ?, school_id = ? WHERE id = ?";                                
             }
             else
             {
-                querystring = "INSERT INTO schoolclasses(name) VALUES(?)";
+                querystring = "INSERT INTO schoolclasses(name, school_id) VALUES(?, ?)";
             }
             
             PreparedStatement stat = this.conn.prepareStatement(querystring);
             stat.setString(1, schoolclass.getName());
+            stat.setInt(2, schoolclass.getSchool_id());
             if(exists)
             {
-                stat.setInt(2, schoolclass.getId());
+                stat.setInt(3, schoolclass.getId());
             }
             stat.execute();
         } catch (SQLException ex) {
@@ -153,6 +154,7 @@ public class SchoolClassDao extends Database  {
             schoolclass = new SchoolClass(this);
             schoolclass.setId(rs.getInt("id"));
             schoolclass.setName(rs.getString("name"));
+            schoolclass.setSchool_id(rs.getInt("school_id"));
         } catch (SQLException ex) {
             Logger.getLogger(SchoolClassDao.class.getName()).log(Level.SEVERE, null, ex);
         }
