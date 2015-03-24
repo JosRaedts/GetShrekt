@@ -10,7 +10,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Dashboard</h1>
+            <h1 class="page-header"><spring:message code="overview" text="%overview" /></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -61,12 +61,12 @@
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th></th><!-- View classes / edit -->
                                                 <th><spring:message code="name" text="%name" /></th>
                                                 <th><spring:message code="address" text="%address" /></th>
                                                 <th><spring:message code="city" text="%city" /></th>  
                                                 <th><spring:message code="zipcode" text="%zipcode" /></th>
-                                                <th>Code</th>
+                                                <th><spring:message code="code" text="%code" /></th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -74,12 +74,13 @@
                                             <input type="hidden" id="hiddenIdfield" name="id" value="${school.id}">
                                             <tr>
                                                 <td><a href="${baseurl}/school/edit?id=${school.id}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>
-                                                <td><a href="${baseurl}/schoolclass/list?id=${school.id}">View classes</a></td>
                                                 <td>${school.name}</td>
                                                 <td>${school.address}</td>
                                                 <td>${school.city}</td>
                                                 <td>${school.zipcode}</td>
                                                 <td>${school.code}</td>
+                                                <td><a href="${baseurl}/schoolclass/list?id=${school.id}"><spring:message code="viewclasses" text="%viewclasses" /></a></td>
+
                                             </tr>
                                         </c:forEach>
 

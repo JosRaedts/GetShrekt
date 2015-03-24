@@ -10,7 +10,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Dashboard</h1>
+            <h1 class="page-header"><spring:message code="overview" text="%overview" /></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -65,7 +65,7 @@
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th>StudentNr</th>
+                                                <th><spring:message code="studentnr" text="%studentnr" /></th>
                                                 <th><spring:message code="name" text="%name" /></th>
                                                 <th><spring:message code="address" text="%address" /></th>
                                                 <th><spring:message code="city" text="%city" /></th>  

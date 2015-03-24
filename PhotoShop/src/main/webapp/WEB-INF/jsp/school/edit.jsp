@@ -10,7 +10,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Dashboard</h1>
+            <h1 class="page-header"><spring:message code="editschool" text="%editschool" /></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -59,7 +59,7 @@
                                         <input type="text"  name="city" value="${school.city}"><br><br>
                                         <spring:message code="zipcode" text="%zipcode" /><br>
                                         <input type="text" name="zipcode" value="${school.zipcode}"><br><br>
-                                        Code<br>
+                                        <spring:message code="code" text="%code" /><br>
                                         <input type="text" name="code" value="${school.code}">
                                         <br><br>
                                         <input type="submit" name="save" value="<spring:message code="save" text="%save" />">

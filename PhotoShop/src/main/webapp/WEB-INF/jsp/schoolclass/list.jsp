@@ -10,7 +10,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Dashboard</h1>
+            <h1 class="page-header"><spring:message code="overview" text="%overview" /></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -61,17 +61,16 @@
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th></th><!-- View/edit -->
                                                 <th><spring:message code="name" text="%name" /></th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <c:forEach var="schoolclass" items="${schoolclasses}">
                                                 <tr>
                                                     <td><a href="${baseurl}/schoolclass/edit?id=${schoolclass.id}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>
-                                                    <td><a href="${baseurl}/student/list?id=${schoolclass.id}">view students</a></td>
                                                     <td>${schoolclass.name}</td>
-
+                                                    <td><a href="${baseurl}/student/list?id=${schoolclass.id}"><spring:message code="viewstudents" text="%viewstudents" /></a></td>
                                                 </tr>
                                             </c:forEach>
 
