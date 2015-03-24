@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -161,15 +162,19 @@ public class StudentDao extends Database  {
     {
         Student student = null;
         try {
-            String querystring = "SELECT * FROM students WHERE username = ? AND password = ?";
+            String querystring = "SELECT * FROM students WHERE username = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setString(1, username);
-            stat.setString(2, password);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
             {
                 student = build(rs);
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                if(!passwordEncoder.matches(password, rs.getString("password")))
+                {
+                    student = null;
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -186,7 +191,6 @@ public class StudentDao extends Database  {
             student.setStudentnr(rs.getInt("studentnr"));
             student.setName(rs.getString("name"));
             student.setUsername(rs.getString("username"));
-            student.setPassword(rs.getString("password"));
             student.setAddress(rs.getString("address"));
             student.setCity(rs.getString("city"));
             student.setZipcode(rs.getString("zipcode"));

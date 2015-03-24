@@ -9,6 +9,7 @@ import com.photoshop.models.UserType;
 import com.photoshop.models.IUser;
 import com.photoshop.models.schoolClass.SchoolClass;
 import com.photoshop.models.schoolClass.SchoolClassDao;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -110,7 +111,8 @@ public class Student implements IUser {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.encode(password);
     }    
     
     public SchoolClass getSchoolClass(){
