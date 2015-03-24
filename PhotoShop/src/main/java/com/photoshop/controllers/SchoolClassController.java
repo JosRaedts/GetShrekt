@@ -78,4 +78,31 @@ public class SchoolClassController extends AbstractController {
         return "redirect:../";
     }
 
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String addpage(ModelMap map, HttpServletRequest request) {
+        if (authenticate(UserType.ADMIN)) {
+            map.put("schools", schooldao.getList());
+            return "schoolclass/add";
+        }
+        return "redirect:../";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String add(ModelMap map, HttpServletRequest request) {
+        if (authenticate(UserType.ADMIN)) {
+            SchoolClass temp = new SchoolClass();
+            try {
+                temp.setName(request.getParameter("name"));
+                temp.setSchool_id(Integer.parseInt(request.getParameter("school")));
+                schoolclassDao.save(temp);
+
+            } catch(Exception ex) {
+                System.out.println("Invalid ID");
+                System.out.println(ex.getMessage());
+            }
+
+            return "redirect:../school/list";
+        }
+        return "redirect:../";
+    }
 }

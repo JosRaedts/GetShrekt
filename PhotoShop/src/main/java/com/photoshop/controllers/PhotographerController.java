@@ -75,7 +75,7 @@ public class PhotographerController extends AbstractController {
                 if (temp != null) {
                     temp.setName(request.getParameter("name"));
                     temp.setUsername(request.getParameter("username"));
-                    if (!request.getParameter("password").equals("")) {
+                    if (!request.getParameter("password").equals("") && request.getParameter("password").equals(request.getParameter("confirmationPassword"))) {
                         temp.setPassword(request.getParameter("password"));
                     }
                     photographerDao.save(temp);
@@ -106,24 +106,25 @@ public class PhotographerController extends AbstractController {
        return "redirect:/";     
    }
    
-       
-    @RequestMapping(value="/add/addphotographer", method = RequestMethod.POST)
+    @RequestMapping(value = "/add/addphotographer", method = RequestMethod.POST)
     public String Addphotographer(@RequestParam("name") String name,
-            @RequestParam("password") String password, ModelMap map, HttpServletRequest request) {
-        if (name.equals("") && password.equals("")) {
-            System.out.println("mislukt");
-            return "photographer/add";
-        } else {
-            System.out.println("gelukt");
+            @RequestParam("username") String username,
+            @RequestParam("newpassword") String newpassword,
+            @RequestParam("confirmpassword") String confirmpassword,
+            ModelMap map, HttpServletRequest request) {
+
+        if (newpassword.equals(confirmpassword) && !newpassword.equals("")) {
             Photographer Photographer = new Photographer();
             Photographer.setName(name);
-            Photographer.setPassword(password);
-            Photographer.setUsername(name);
-            if(photographerDao.save(Photographer))
-            {
+            Photographer.setPassword(newpassword);
+            Photographer.setUsername(username);
+            if (photographerDao.save(Photographer)) {
                 request.getSession().setAttribute("Accountmade", "Accountmade");
             }
-            return "redirect:../../admin"; 
+            return "redirect:../../admin";
+        }
+        else {
+            return "photographer/add";
         }
     }
     

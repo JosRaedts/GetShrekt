@@ -10,7 +10,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"><spring:message code="editschool" text="%editschool" /></h1>
+            <h1 class="page-header"><spring:message code="addschoolclass" text="%addschoolclass" /></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -49,19 +49,15 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
-                                    <form method="post"  action="${baseurl}/school/edit">
-                                        <input type="hidden" id="hiddenIdfield" name="id" value="${school.id}">
+                                    <form method="post"  action="${baseurl}/schoolclass/add">
                                         <spring:message code="name" text="%name" /><br> 
-                                        <input type="text" name="name" value="${school.name}"><br><br>
-                                        <spring:message code="address" text="%address" /><br>
-                                        <input type="text" name="address" value="${school.address}"><br><br>
-                                        <spring:message code="city" text="%city" /><br>
-                                        <input type="text"  name="city" value="${school.city}"><br><br>
-                                        <spring:message code="zipcode" text="%zipcode" /><br>
-                                        <input type="text" name="zipcode" value="${school.zipcode}"><br><br>
-                                        <spring:message code="code" text="%code" /><br>
-                                        <input type="text" name="code" value="${school.code}">
-                                        <br><br>
+                                        <input type="text" name="name" ><br><br> 
+                                        School<br>
+                                        <select name="school">
+                                            <c:forEach var="school" items="${schools}">
+                                                <option name ="school" value="${school.id}">${school.name}</option>
+                                            </c:forEach>
+                                        </select><br><br>
                                         <input type="submit" name="save" value="<spring:message code="save" text="%save" />">
                                     </form>
                                 </div>

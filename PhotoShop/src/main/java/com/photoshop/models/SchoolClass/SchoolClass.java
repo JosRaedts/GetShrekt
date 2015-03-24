@@ -20,6 +20,7 @@ public class SchoolClass {
     private String name;
     private final SchoolClassDao dao;
     private List<Student> students;
+    private int school_id;
     
     public SchoolClass()
     {
@@ -62,12 +63,22 @@ public class SchoolClass {
     }
     
     public School getSchool(){
+        
         SchoolDao schooldao = new SchoolDao();
-        return schooldao.getSchoolBySchoolClass(this.id);
+        return schooldao.getById(this.school_id);
     }
     
     public void setSchool(School school){
         //todo
+        this.school_id = school.getId();
+    }
+
+    public int getSchool_id() {
+        return school_id;
+    }
+
+    public void setSchool_id(int school_id) {
+        this.school_id = school_id;
     }
     
     public List<Student> getStudents()
