@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -132,17 +133,21 @@ public class AdminDao extends Database  {
     
     public Admin authenticate(String username, String password)
     {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Admin admin = null;
         try {
-            String querystring = "SELECT * FROM admins WHERE username = ? AND password = ?";
+            String querystring = "SELECT * FROM admins WHERE username = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setString(1, username);
-            stat.setString(2, password);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
             {
                 admin = build(rs);
+                if(!passwordEncoder.matches(password, admin.getPassword()))
+                {
+                    admin = null;
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
