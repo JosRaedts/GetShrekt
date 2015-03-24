@@ -99,8 +99,6 @@ public class StudentController extends AbstractController {
     //Toevoegen student
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(ModelMap map) {
-        map.put("admin", "Admin panel");
-        map.put("photographer", "Register of a photographer");
         return "student/add";
     }
 
