@@ -92,14 +92,26 @@ code {
     color: #fff; 
 }
 
-.lang-container{
+.dropdown ul>li>a{
+    color: #000 !important;
+}
+
+.menuright{
     float: right;
+}   
+
+.lang-container{
+    float: left;
     margin-top: 15px;
 }
 
 .lang-container .lang-img{
     height: 20px;
     width: 20px;
+}
+
+.lang-container .dropdown ul{
+    list-style-type: none;
 }
 
 .footer {
