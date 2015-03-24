@@ -49,8 +49,15 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('#schoolclasstable').DataTable({
+                                                responsive: true
+                                            });
+                                        });
+                                    </script>
                                     <a href="${baseurl}/school/list"><i class="fa fa-long-arrow-left" title="<spring:message code="back" text="%back" />"></i></a>
-                                    <table>
+                                    <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schoolclasstable">
                                         <thead>
                                             <tr>
                                                 <th></th>

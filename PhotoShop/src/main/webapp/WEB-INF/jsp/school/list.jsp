@@ -49,8 +49,15 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('#schooltable').DataTable({
+                                                responsive: true
+                                            });
+                                        });
+                                    </script>
                                     <br>
-                                    <table>
+                                    <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
                                         <thead>
                                             <tr>
                                                 <th></th>

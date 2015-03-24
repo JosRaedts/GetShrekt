@@ -49,12 +49,19 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('#studenttable').DataTable({
+                                                responsive: true
+                                            });
+                                        });
+                                    </script>
                                     <form id="formid" method="post" action="${baseurl}/student/list">
                                         <input type="hidden" id="hiddenIdfield" name="id" value="${schoolclass.id}">
-                                             <a href="#" onclick="document.getElementById('formid').submit()"><i class="fa fa-long-arrow-left" title="<spring:message code="back" text="%back" />"></i></a>
-                                       
+                                        <a href="#" onclick="document.getElementById('formid').submit()"><i class="fa fa-long-arrow-left" title="<spring:message code="back" text="%back" />"></i></a>
+
                                     </form>
-                                    <table>
+                                    <table class="table table-striped table-bordered table-hover dataTable no-footer" id="studenttable"> 
                                         <thead>
                                             <tr>
                                                 <th></th>
