@@ -34,7 +34,7 @@ public class PhotographerController extends AbstractController {
     public String list(ModelMap map, HttpServletRequest request)
     {
        try {      
-            if(authenticate(UserType.PHOTOGRAPHER))
+            if(authenticate(UserType.ADMIN))
             {
                 map.put("photographer", photographerDao.getList());
                 return "photographer/list";
@@ -51,7 +51,7 @@ public class PhotographerController extends AbstractController {
     public String edit(ModelMap map, HttpServletRequest request)
     {
         try {
-            if (authenticate(UserType.PHOTOGRAPHER)) {
+            if (authenticate(UserType.ADMIN)) {
                 if (request.getParameter("id") != null) {
                     System.out.println(request.getParameter("id"));
                     map.put("photographer", photographerDao.getById(Integer.parseInt(request.getParameter("id"))));
@@ -70,7 +70,7 @@ public class PhotographerController extends AbstractController {
     public String post(ModelMap map, HttpServletRequest request)
     {
        try {      
-            if(authenticate(UserType.PHOTOGRAPHER))
+            if(authenticate(UserType.ADMIN))
             {
                 Photographer temp = photographerDao.getById(Integer.parseInt(request.getParameter("id")));
                if (temp != null) {
@@ -95,7 +95,7 @@ public class PhotographerController extends AbstractController {
    @RequestMapping(value = "/add", method = RequestMethod.GET)
    public String add(ModelMap map) {
        try {      
-            if(authenticate(UserType.PHOTOGRAPHER))
+            if(authenticate(UserType.ADMIN))
             {
                 return "photographer/add";
             }
