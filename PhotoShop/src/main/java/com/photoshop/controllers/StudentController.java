@@ -99,8 +99,12 @@ public class StudentController extends AbstractController {
     //Toevoegen student
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(ModelMap map) {
-        map.put("schoolclasses", schoolclassdao.getList());
-        return "student/add";
+        if (authenticate(UserType.ADMIN,UserType.PHOTOGRAPHER)) {
+            map.put("schoolclasses", schoolclassdao.getList());
+            return "student/add";
+        } else {
+            return "redirect:../";
+        }
     }
     
     @RequestMapping(value="/add", method = RequestMethod.POST)
