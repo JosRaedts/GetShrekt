@@ -75,7 +75,7 @@ public class PhotographerController extends AbstractController {
                 if (temp != null) {
                     temp.setName(request.getParameter("name"));
                     temp.setUsername(request.getParameter("username"));
-                    if (!request.getParameter("password").equals("")) {
+                    if (!request.getParameter("password").equals("") && request.getParameter("password").equals(request.getParameter("confirmationPassword"))) {
                         temp.setPassword(request.getParameter("password"));
                     }
                     photographerDao.save(temp);

@@ -46,6 +46,8 @@
                                         <input type="text" name="username" value="${photographer.username}"><br><br>
                                         <spring:message code="password" text="%password" /><br>
                                         <input type="password" name="password"><br><br>
+                                        <spring:message code="password" text="%confirmationPassword" /><br>
+                                        <input type="password" name="confirmationPassword"><br><br>
                                         <input type="submit" name="save" value="<spring:message code="save" text="%save" />">
                                     </form>
                                 </div>
