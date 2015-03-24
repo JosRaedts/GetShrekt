@@ -144,7 +144,7 @@ public class AdminDao extends Database  {
             while(rs.next())
             {
                 admin = build(rs);
-                if(!passwordEncoder.matches(password, admin.getPassword()))
+                if(!passwordEncoder.matches(password, rs.getString("password")))
                 {
                     admin = null;
                 }
@@ -162,9 +162,7 @@ public class AdminDao extends Database  {
             admin = new Admin(this);
             admin.setId(rs.getInt("id"));
             admin.setName(rs.getString("name"));
-            admin.setUsername(rs.getString("username"));
-            admin.setPassword(rs.getString("password"));
-            
+            admin.setUsername(rs.getString("username"));          
         } catch (SQLException ex) {
             Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
         }

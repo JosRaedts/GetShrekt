@@ -7,6 +7,7 @@ package com.photoshop.models.admin;
 
 import com.photoshop.models.UserType;
 import com.photoshop.models.IUser;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -69,7 +70,8 @@ public class Admin implements IUser {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.encode(password);
     }
 
     @Override
