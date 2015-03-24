@@ -31,14 +31,9 @@
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="#">Action</a>
+                                    <li><a href="${baseurl}/photographer/add"><spring:message code="photographerText" text="%Add photographer" /></a>
                                     </li>
-                                    <li><a href="#">Another action</a>
-                                    </li>
-                                    <li><a href="#">Something else here</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a>
+                                    <li><a href="${baseurl}/photographer/edit"><spring:message code="photographers" text="%photographers" /></a>
                                     </li>
                                 </ul>
                             </div>
