@@ -44,6 +44,19 @@
                     <td width="200px"><input required type="textfield" name="address" value="${Address}" /></td>
                 </tr>
             </table>
+            <br>
+            <spring:message code="changepassword" text="%changepassword" />:
+            <br>
+            <table border="0" style="">
+                <tr>
+                    <td width="200px"><spring:message code="newPassword" text="%newPassword" />:</td>
+                    <td><input type="password" name="newPassword" /></td>
+                </tr>
+                <tr>
+                    <td width="200px"><spring:message code="confirmPassword" text="%confirmPassword" />:</td>
+                    <td><input type="password" name="confirmPassword" /></td>
+                </tr>
+            </table>
         </c:if>
         <br>
         <button style="width: 100px" class="btn btn-lg btn-primary btn-block" type="submit"><spring:message code="save" text="%save" /></button>

@@ -173,6 +173,16 @@ public class StudentController {
                 } else {
                     System.out.println("student was null");
                 }
+                
+                String newP = request.getParameter("newPassword");
+                String confP = request.getParameter("confirmPassword");
+                    
+                if (!newP.equals("") && !confP.equals("") && newP.equals(confP)) {
+                    student.setPassword(newP);
+                    student.save();
+                } else {
+                    System.out.println("password not changed");
+                }
 
             } catch (Exception e) {
                 System.out.println("Student was null");
