@@ -15,12 +15,15 @@ import com.photoshop.models.student.StudentDao;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *
@@ -120,32 +123,16 @@ public class DefaultController extends AbstractController {
         request.getSession().setAttribute("UserType", "");
         return "redirect:";      
    }
-   
-   @Autowired
-   private StudentDao studentdao;
-   @Autowired
-   private PhotographerDao photographerdao;
-   @Autowired
-   private AdminDao admindoa;
-   
-   @RequestMapping(value = "/test", method = RequestMethod.GET)
-   public String test(ModelMap map, HttpServletRequest request) {
-       BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        for(Student s : studentdao.getList())
-        {
-            s.setPassword(passwordEncoder.encode(s.getPassword()));
-            s.save();
-        }
-        for(Photographer s : photographerDao.getList())
-        {
-            s.setPassword(passwordEncoder.encode(s.getPassword()));
-            s.save();
-        }
-        for(Admin s : adminDao.getList())
-        {
-            s.setPassword(passwordEncoder.encode(s.getPassword()));
-            s.save();
-        }
-        return "home";      
-   }
+      
+   @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleResourceNotFoundException() {
+        return "404";
+    }
+    
+     @RequestMapping(value="/404")
+    public String error404(){
+       // DO stuff here 
+        return "404";
+    }
 }
