@@ -7,6 +7,8 @@ package com.photoshop.models.photo;
 
 import com.photoshop.models.IUser;
 import com.photoshop.models.UserType;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -101,6 +103,9 @@ public class Photo {
     }
     
     public void setDate(Date date){
+        DateFormat datum = new SimpleDateFormat("ddmmYYYY");
+        datum.format(date);
+        System.out.println(date);
         this.date = date;
     }
 }
