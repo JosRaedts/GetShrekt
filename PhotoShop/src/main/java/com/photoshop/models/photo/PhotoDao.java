@@ -155,17 +155,31 @@ public class PhotoDao extends Database {
     public List<Photo> getPhotosByStudent(int id){
         ArrayList<Photo> photos = new ArrayList<Photo>();
         try {
-            String querystring = "SELECT p.id, p.lowresURL, sp.photoID, sp.studentID FROM photos p, student_photos sp WHERE p.id = sp.photoID AND sp.studentID = ?";
+            String querystring = "SELECT p.id AS id, p.height AS height, p.width AS width, p.lowresURL AS lowresURL, p.highresURL AS highresURL, p.photographerID AS photographerID, p.active AS active, p.date AS date, sp.photoID, sp.studentID FROM photos p, student_photos sp WHERE p.id = sp.photoID AND sp.studentID = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
             while (rs.next()) {
-
                 photos.add(build(rs));
             }
         } catch (Exception ex) {
             Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
-
+        }
+        return photos;
+    }
+    
+    public List<Photo> getPhotosByPhotographer(int id){
+        ArrayList<Photo> photos = new ArrayList<Photo>();
+        try {
+            String querystring = "SELECT id, height, width, lowresURL, highresURL, photographerID, active, date FROM photos WHERE photographerID = ?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, id);
+            ResultSet rs = stat.executeQuery();
+            while (rs.next()) {
+                photos.add(build(rs));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return photos;
     }
