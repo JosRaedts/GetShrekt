@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="152.0" prefWidth="439.0" style="background-color: blue;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="photoshopfototagger.FototaggerController">
+  <children>
+    <TextField fx:id="BarcodeTB" layoutX="174.0" layoutY="34.0" onKeyPressed="#ChangeFotoName" prefWidth="250.0" />
+    <Label layoutX="179.0" layoutY="14.0" text="Barcode:" />
+    <TextArea fx:id="StatusTB" focusTraversable="false" layoutX="174.0" layoutY="86.0" prefHeight="57.0" prefWidth="250.0" wrapText="true" />
+    <Label layoutX="179.0" layoutY="66.0" text="Status:" />
+    <ImageView fitHeight="114.0" fitWidth="152.0" layoutX="14.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image url="file:/C:/Users/Willem/Documents/GitHub/GetShrekt/PhotoShop/src/main/webapp/WEB-INF/resources/img/Photoshop_black.png" />
+      </image>
+    </ImageView>
+    <Label layoutX="92.0" layoutY="82.0" text="Foto tagger">
+      <font>
+        <Font name="Kristen ITC" size="13.0" />
+      </font>
+    </Label>
+  </children>
+</AnchorPane>
