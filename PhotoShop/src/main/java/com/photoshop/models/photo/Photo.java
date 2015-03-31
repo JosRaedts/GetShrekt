@@ -19,6 +19,7 @@ public class Photo {
     private int width;
     private String lowResURL;
     private String highResURL;
+    private int photographerid;
     private final PhotoDao dao;
     
     public Photo()
@@ -74,6 +75,14 @@ public class Photo {
     
     public void setLowResURL(String URL) {
         this.lowResURL = URL;
+    }
+    
+    public int getPhotographerID(){
+        return photographerid;
+    }
+    
+    public void setPhotographerID(int id){
+        this.photographerid = id;
     }
 }
 

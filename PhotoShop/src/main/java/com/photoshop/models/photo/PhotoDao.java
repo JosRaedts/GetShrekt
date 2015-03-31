@@ -1,7 +1,6 @@
 package com.photoshop.models.photo;
 
 import com.photoshop.models.Database;
-import com.photoshop.models.photo.Photo;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
