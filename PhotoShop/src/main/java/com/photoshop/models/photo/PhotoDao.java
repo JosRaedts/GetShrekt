@@ -171,6 +171,7 @@ public class PhotoDao extends Database {
     public List<Photo> getPhotosByPhotographer(int id){
         ArrayList<Photo> photos = new ArrayList<Photo>();
         try {
+            String querystring = "SELECT id, height, width, lowresURL, highresURL, photographerID, active, DATE_FORMAT(date,'%Y%m%d') AS date FROM photos WHERE photographerID = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
