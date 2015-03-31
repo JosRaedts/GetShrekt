@@ -77,34 +77,36 @@ public class PhotoDao extends Database {
         return exists;
     }
     
-    /*public boolean save(Photo photo)
+    public boolean save(Photo photo)
     {
         try {
             String querystring = null;
             boolean exists = idExists(photo.getId());
             if(exists)
             {
-                querystring = "UPDATE photos SET name = ?, username = ?, password = ? WHERE id = ?";                                
+                querystring = "UPDATE photos SET height = ?, width = ?, lowresURL = ?, highresURL = ? WHERE id = ?";                                
             }
             else
             {
-                querystring = "INSERT INTO photographers(name, username, password) VALUES(?, ?, ?)";
+                querystring = "INSERT INTO photos(height, width, lowresURL, highresURL) VALUES(?, ?, ?, ?)";
             }
             
             PreparedStatement stat = conn.prepareStatement(querystring);
-            stat.setString(2, photographer.getUsername());
-            stat.setString(3, photographer.getPassword());
+            stat.setInt(1, photo.getHeight());
+            stat.setInt(2, photo.getWidth());
+            stat.setString(3, photo.getLowResURL());
+            stat.setString(4, photo.getHighResURL());
             if(exists)
             {
-                stat.setInt(4, photographer.getId());
+                stat.setInt(5, photo.getId());
             }
             stat.execute();
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(PhotographerDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-    }*/
+    }
     
     public void delete(Photo photo)
     {

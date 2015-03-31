@@ -11,4 +11,74 @@ package com.photoshop.models.product;
  */
 public class Product {
     
+    private int id;
+    private String name;
+    private int height;
+    private int width;
+    private String imageURL;
+    private boolean active;
+    private final ProductDao dao;
+    
+    public Product()
+    {
+        this.dao = new ProductDao();
+    }
+    
+    public Product(ProductDao dao)
+    {
+        this.dao = dao;
+    }
+    
+    public void delete()
+    {
+        this.dao.delete(this);
+    }
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+    
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String URL) {
+        this.imageURL = URL;
+    }
+    
+    public boolean getActive(){
+        return active;
+    }
+    
+    public void setActive(boolean active){
+        this.active = active;
+    }
 }
