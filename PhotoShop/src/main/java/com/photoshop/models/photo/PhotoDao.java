@@ -155,7 +155,7 @@ public class PhotoDao extends Database {
     public List<Photo> getPhotosByStudent(int id){
         ArrayList<Photo> photos = new ArrayList<Photo>();
         try {
-            String querystring = "SELECT p.id AS id, p.height AS height, p.width AS width, p.lowresURL AS lowresURL, p.highresURL AS highresURL, p.photographerID AS photographerID, p.active AS active, p.date AS date, sp.photoID, sp.studentID FROM photos p, student_photos sp WHERE p.id = sp.photoID AND sp.studentID = ?";
+            String querystring = "SELECT p.id AS id, p.height AS height, p.width AS width, p.lowresURL AS lowresURL, p.highresURL AS highresURL, p.photographerID AS photographerID, p.active AS active, DATE_FORMAT(p.date,'%m/%d/%Y') AS date, sp.photoID, sp.studentID FROM photos p, student_photos sp WHERE p.id = sp.photoID AND sp.studentID = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
@@ -171,7 +171,7 @@ public class PhotoDao extends Database {
     public List<Photo> getPhotosByPhotographer(int id){
         ArrayList<Photo> photos = new ArrayList<Photo>();
         try {
-            String querystring = "SELECT id, height, width, lowresURL, highresURL, photographerID, active, date FROM photos WHERE photographerID = ?";
+            String querystring = "SELECT id, height, width, lowresURL, highresURL, photographerID, active, DATE_FORMAT(date,'%m/%d/%Y') AS date FROM photos WHERE photographerID = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
