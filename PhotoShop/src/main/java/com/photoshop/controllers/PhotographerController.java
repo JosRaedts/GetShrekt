@@ -28,6 +28,7 @@ public class PhotographerController extends AbstractController {
     
     @Autowired
     private PhotographerDao photographerDao;
+    @Autowired
     private PhotoDao photoDao;
     
     
@@ -207,11 +208,13 @@ public class PhotographerController extends AbstractController {
     
     //Foto's fotograaf
     @RequestMapping(value = "/photo", method = RequestMethod.GET)
-    public String foto(ModelMap map) {
+    public String foto(ModelMap map,HttpServletRequest request) {
         {
             try {
                 if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
-                    //map.put("Photos", photoDao.getList());
+                    HttpSession session = request.getSession();       
+                    int userID = (int)session.getAttribute("UserID");
+                    map.put("Photos",photoDao.getPhotosByPhotographer(userID));
                     return "photographer/photo";
                 }
             } catch (Exception e) {

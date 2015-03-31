@@ -57,12 +57,12 @@
                                         </thead>
                                         <tbody>
                                             <c:forEach var="Photo" items="${Photos}">
-                                                <tr>
-                                                    <td><a href="${baseurl}/photographer/edit?id=${Photo.id}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>
-                                                    <td>${Photo.LowResURL}</td>
-                                                    <td>${Photo.Height}</td>
-                                                    <td>${Photo.Width}</td>
-                                                    <td>${Photo.Date}</td>                                                                                                        
+                                                <tr> 
+                                                    <td>${Photo.id}</td>
+                                                    <td><img SRC=${Photo.lowResURL} width="100" height="100"></td>
+                                                    <td>${Photo.height}</td>
+                                                    <td>${Photo.width}</td>
+                                                    <td>${Photo.date}</td>                                                                                                        
                                                 </tr>
                                             </c:forEach>            
                                         </tbody>
