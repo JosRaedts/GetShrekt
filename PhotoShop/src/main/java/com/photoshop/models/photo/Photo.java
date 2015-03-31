@@ -7,6 +7,7 @@ package com.photoshop.models.photo;
 
 import com.photoshop.models.IUser;
 import com.photoshop.models.UserType;
+import java.util.Date;
 
 /**
  *
@@ -19,6 +20,8 @@ public class Photo {
     private int width;
     private String lowResURL;
     private String highResURL;
+    private boolean active;
+    private Date date;
     private int photographerid;
     private final PhotoDao dao;
     
@@ -83,6 +86,22 @@ public class Photo {
     
     public void setPhotographerID(int id){
         this.photographerid = id;
+    }
+    
+    public boolean getActive(){
+        return active;
+    }
+    
+    public void setActive(boolean active){
+        this.active = active;
+    }
+    
+    public Date getDate(){
+        return date;
+    }
+    
+    public void setDate(Date date){
+        this.date = date;
     }
 }
 
