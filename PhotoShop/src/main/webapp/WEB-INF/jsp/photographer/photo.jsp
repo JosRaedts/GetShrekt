@@ -40,25 +40,29 @@
                                 <div class="dataTable_wrapper">
                                     <script>
                                         $(document).ready(function() {
-                                            $('#photographertable').DataTable({
+                                            $('#phototable').DataTable({
                                                 responsive: true
                                             });
                                         });
                                     </script>
-                                    <table class="table table-striped table-bordered table-hover dataTable no-footer" id="photographertable">
+                                    <table class="table table-striped table-bordered table-hover dataTable no-footer" id="phototable">
                                         <thead>
                                             <tr>
-                                                <th></th>
-                                                <th><spring:message code="name" text="%name" /></th>
-                                                <th><spring:message code="username" text="%username" /></th>
+                                                <th><spring:message code="Photoid" text="%Photoid" /></th>
+                                                <th><spring:message code="LowResURL" text="%LowResURL" /></th> 
+                                                <th><spring:message code="Height" text="%Height" /></th>
+                                                <th><spring:message code="Width" text="%Width" /></th>    
+                                                <th><spring:message code="Date" text="%Date" /></th> 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach var="photographer" items="${photographer}">
-                                                <tr>
-                                                    <td><a href="${baseurl}/photographer/edit?id=${photographer.id}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>
-                                                    <td>${photographer.name}</td> 
-                                                    <td>${photographer.username}</td>                                                                                                                  
+                                            <c:forEach var="Photo" items="${Photos}">
+                                                <tr> 
+                                                    <td>${Photo.id}</td>
+                                                    <td><img SRC=${Photo.lowResURL} width="100" height="100"></td>
+                                                    <td>${Photo.height}</td>
+                                                    <td>${Photo.width}</td>
+                                                    <td>${Photo.date}</td>                                                                                                        
                                                 </tr>
                                             </c:forEach>            
                                         </tbody>

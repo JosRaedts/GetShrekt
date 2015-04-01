@@ -7,6 +7,9 @@ package com.photoshop.models.photo;
 
 import com.photoshop.models.IUser;
 import com.photoshop.models.UserType;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -19,6 +22,9 @@ public class Photo {
     private int width;
     private String lowResURL;
     private String highResURL;
+    private boolean active;
+    private Date date;
+    private int photographerid;
     private final PhotoDao dao;
     
     public Photo()
@@ -74,6 +80,33 @@ public class Photo {
     
     public void setLowResURL(String URL) {
         this.lowResURL = URL;
+    }
+    
+    public int getPhotographerID(){
+        return photographerid;
+    }
+    
+    public void setPhotographerID(int id){
+        this.photographerid = id;
+    }
+    
+    public boolean getActive(){
+        return active;
+    }
+    
+    public void setActive(boolean active){
+        this.active = active;
+    }
+    
+    public Date getDate(){
+        return date;
+    }
+    
+    public void setDate(Date date){
+        DateFormat datum = new SimpleDateFormat("ddmmYYYY");
+        datum.format(date);
+        System.out.println(date);
+        this.date = date;
     }
 }
 

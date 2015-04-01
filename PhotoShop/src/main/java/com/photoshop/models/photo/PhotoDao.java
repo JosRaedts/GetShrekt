@@ -1,7 +1,8 @@
 package com.photoshop.models.photo;
 
 import com.photoshop.models.Database;
-import com.photoshop.models.photo.Photo;
+import com.photoshop.models.student.Student;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -84,11 +85,11 @@ public class PhotoDao extends Database {
             boolean exists = idExists(photo.getId());
             if(exists)
             {
-                querystring = "UPDATE photos SET height = ?, width = ?, lowresURL = ?, highresURL = ? WHERE id = ?";                                
+                querystring = "UPDATE photos SET height = ?, width = ?, lowresURL = ?, highresURL = ?, photographerID = ?, active = ?, date = ? WHERE id = ?";                                
             }
             else
             {
-                querystring = "INSERT INTO photos(height, width, lowresURL, highresURL) VALUES(?, ?, ?, ?)";
+                querystring = "INSERT INTO photos(height, width, lowresURL, highresURL, photographerID, active, date) VALUES(?, ?, ?, ?, ?, ?, ?)";
             }
             
             PreparedStatement stat = conn.prepareStatement(querystring);
@@ -96,9 +97,17 @@ public class PhotoDao extends Database {
             stat.setInt(2, photo.getWidth());
             stat.setString(3, photo.getLowResURL());
             stat.setString(4, photo.getHighResURL());
+            stat.setInt(5, photo.getPhotographerID());
+            if(photo.getActive()){
+                stat.setInt(6, 1);
+            }
+            else{
+                stat.setInt(6, 0);
+            }
+            stat.setDate(7, (Date)photo.getDate());
             if(exists)
             {
-                stat.setInt(5, photo.getId());
+                stat.setInt(8, photo.getId());
             }
             stat.execute();
             return true;
@@ -130,10 +139,48 @@ public class PhotoDao extends Database {
             photo.setWidth(rs.getInt("width"));
             photo.setLowResURL(rs.getString("lowresURL"));
             photo.setHighResURL(rs.getString("highresURL"));
-            
+            if(rs.getInt("active") == 1){
+                photo.setActive(true);
+            }
+            else{
+                photo.setActive(false);
+            }            
+            photo.setDate(rs.getDate("date"));
         } catch (SQLException ex) {
             Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return photo;
+    }
+
+    public List<Photo> getPhotosByStudent(int id){
+        ArrayList<Photo> photos = new ArrayList<Photo>();
+        try {
+            String querystring = "SELECT p.id AS id, p.height AS height, p.width AS width, p.lowresURL AS lowresURL, p.highresURL AS highresURL, p.photographerID AS photographerID, p.active AS active, p.date AS date, sp.photoID, sp.studentID FROM photos p, student_photos sp WHERE p.id = sp.photoID AND sp.studentID = ? ORDER BY date";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, id);
+            ResultSet rs = stat.executeQuery();
+            while (rs.next()) {
+                photos.add(build(rs));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return photos;
+    }
+    
+    public List<Photo> getPhotosByPhotographer(int id){
+        ArrayList<Photo> photos = new ArrayList<Photo>();
+        try {
+            String querystring = "SELECT id, height, width, lowresURL, highresURL, photographerID, active, date FROM photos WHERE photographerID = ? ORDER BY date";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, id);
+            ResultSet rs = stat.executeQuery();
+            while (rs.next()) {
+                photos.add(build(rs));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return photos;
     }
 }
