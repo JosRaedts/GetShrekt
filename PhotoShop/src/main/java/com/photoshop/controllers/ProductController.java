@@ -6,6 +6,8 @@
 package com.photoshop.controllers;
 
 import com.photoshop.models.UserType;
+import com.photoshop.models.product.Product;
+import com.photoshop.models.product.ProductDao;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ProductController extends AbstractController{
     
-    /*@Autowired
+    @Autowired
     private ProductDao productDao;
     
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -31,5 +33,37 @@ public class ProductController extends AbstractController{
             return "product/list";
         }
         return "redirect:../";
-    }*/
+    }
+    
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String addpage(ModelMap map, HttpServletRequest request) {
+        if (authenticate(UserType.ADMIN)) {
+            return "product/add";
+        }
+        return "redirect:../";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String add(ModelMap map, HttpServletRequest request) {
+        if (authenticate(UserType.ADMIN)) {
+            Product temp = new Product();
+            try {
+                int bi = Integer.valueOf(request.getParameter("active"));
+                temp.setActive(bi != 0);
+                temp.setImageURL(request.getParameter("preview"));
+                temp.setName(request.getParameter("name"));
+                temp.setHeight(Integer.parseInt(request.getParameter("height")));
+                temp.setWidth(Integer.parseInt(request.getParameter("width")));
+                System.out.println(temp.getHeight());
+                System.out.println(temp.getWidth());
+                productDao.save(temp);
+
+            } catch(Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            return "redirect:../product/list";
+        }
+        return "redirect:../";
+    }
 }
