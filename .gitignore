@@ -24,3 +24,10 @@ PhotoShop/target/**
 PhotoShop/target/PhotoShop-1.0-SNAPSHOT.war
 *.lst
 PhotoShop/target/maven-archiver/pom.properties
+PhotoShop/PhotoShop.iml
+PhotoShop/.idea
+PhotoShop/.idea/*
+PhotoShop/.idea/**
+PhotoShop/out
+PhotoShop/out/*
+PhotoShop/out/**
