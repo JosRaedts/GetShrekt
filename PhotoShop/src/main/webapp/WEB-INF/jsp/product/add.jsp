@@ -49,6 +49,39 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="dataTable_wrapper">
+                                        <div class="col-lg-6">
+                                            <form method="post"  action="${baseurl}/product/add">
+                                                <table border="0">
+                                                    <tr>
+                                                        <td width="200px"><spring:message code="active" text="%active" />:</td>
+                                                        <td><input type="radio" name="active" value="1" checked>Ja<br>
+                                                            <input type="radio" name="active" value="0">Nee</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="200px"><spring:message code="preview" text="%preview" />:</td>
+                                                        <td><input type="text" name="preview" class="form-control formphotograaf"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="200px"><spring:message code="productName" text="%productName" />:</td>
+                                                        <td><input type="text" name="name" class="form-control formphotograaf"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="200px"><spring:message code="width" text="%width" />:</td>
+                                                        <td><input type="text" name="width" class="form-control formphotograaf"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="200px"><spring:message code="height" text="%height" />:</td>
+                                                        <td><input type="text" name="height" class="form-control formphotograaf"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>
+                                                            <input type="submit" class="btn btn-lg btn-primary btn-block photographerBtn" name="save" value="<spring:message code="save" text="%save" />">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </form>
+                                        </div>
                                     </div>
                                     <!-- /.table-responsive -->
                                 </div>

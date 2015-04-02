@@ -13,11 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Jos
  */
+@Component
 public class ProductDao extends Database{
     public ProductDao()
     {
@@ -144,6 +146,7 @@ public class ProductDao extends Database{
             product.setHeight(rs.getInt("height"));
             product.setWidth(rs.getInt("width"));
             product.setImageURL(rs.getString("imageURL"));
+            product.setActive(rs.getInt("active") != 0);
             
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);

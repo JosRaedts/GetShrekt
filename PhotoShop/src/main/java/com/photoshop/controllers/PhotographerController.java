@@ -6,6 +6,7 @@
 package com.photoshop.controllers;
 
 import com.photoshop.models.UserType;
+import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.photographer.Photographer;
 import com.photoshop.models.photographer.PhotographerDao;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,8 @@ public class PhotographerController extends AbstractController {
     
     @Autowired
     private PhotographerDao photographerDao;
+    @Autowired
+    private PhotoDao photoDao;
     
     
     //Lijst weergaven
@@ -201,5 +204,24 @@ public class PhotographerController extends AbstractController {
         }
         
         return "home";
+    }
+    
+    //Foto's fotograaf
+    @RequestMapping(value = "/photo", method = RequestMethod.GET)
+    public String foto(ModelMap map,HttpServletRequest request) {
+        {
+            try {
+                if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
+                    HttpSession session = request.getSession();       
+                    int userID = (int)session.getAttribute("UserID");
+                    map.put("Photos",photoDao.getPhotosByPhotographer(userID));
+                    return "photographer/photo";
+                }
+            } catch (Exception e) {
+                return "/";
+            }
+
+            return "redirect:/";
+        }
     }
 }

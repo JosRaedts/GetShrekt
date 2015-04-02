@@ -7,8 +7,11 @@ package com.photoshop.models.student;
 
 import com.photoshop.models.UserType;
 import com.photoshop.models.IUser;
+import com.photoshop.models.photo.Photo;
+import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.schoolClass.SchoolClass;
 import com.photoshop.models.schoolClass.SchoolClassDao;
+import java.util.List;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -126,6 +129,11 @@ public class Student implements IUser {
 
     public void setSchoolclass_id(int schoolclass_id) {
         this.schoolclass_id = schoolclass_id;
+    }
+    
+    public List<Photo> getStudentPhotos(){
+        PhotoDao photodao = new PhotoDao();
+        return photodao.getPhotosByStudent(this.id);
     }
 
     @Override
