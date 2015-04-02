@@ -103,9 +103,6 @@ public class Photo {
     }
     
     public void setDate(Date date){
-        DateFormat datum = new SimpleDateFormat("ddmmYYYY");
-        datum.format(date);
-        System.out.println(date);
         this.date = date;
     }
 }
