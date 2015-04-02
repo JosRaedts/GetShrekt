@@ -28,4 +28,11 @@ public class PhotoController extends AbstractController {
     {
         return "photo/upload";
     }
+    
+    @RequestMapping(value = "/upload/do_upload", method = RequestMethod.GET)
+    public String do_upload()
+    {
+        return "photo/upload";
+    }
 }
+

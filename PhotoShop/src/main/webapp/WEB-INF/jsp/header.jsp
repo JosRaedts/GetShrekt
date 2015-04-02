@@ -20,6 +20,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="${baseurl}/resources/js/js.js"></script>
         <script src="${baseurl}/resources/js/bootstrap.min.js"></script>
+        <script src="${baseurl}/resources/admin/js/jquery.fileupload.js"></script>
+        <script src="${baseurl}/resources/admin/js/jquery.fileupload-image.js"></script>
         <title>PhotoShop</title>
     </head>
     <body>
