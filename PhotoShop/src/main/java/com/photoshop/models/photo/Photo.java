@@ -5,10 +5,6 @@
  */
 package com.photoshop.models.photo;
 
-import com.photoshop.models.IUser;
-import com.photoshop.models.UserType;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -41,6 +37,8 @@ public class Photo {
     {
         this.dao.delete(this);
     }
+
+    public void save() { this.dao.save(this); }
     
     public int getId() {
         return id;

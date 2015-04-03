@@ -11,6 +11,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -22,6 +24,8 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Configuration
@@ -86,7 +90,17 @@ public class Config extends WebMvcConfigurerAdapter {
         commonsMultipartResolver.setMaxUploadSize(50000000);
         return commonsMultipartResolver;
     }
- 
+
+    @Bean
+    public ByteArrayHttpMessageConverter byteArrayHttpMessageConverter() {
+        ByteArrayHttpMessageConverter byteArrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
+        List<MediaType> mediaTypeList = new ArrayList();
+        mediaTypeList.add(MediaType.IMAGE_JPEG);
+        byteArrayHttpMessageConverter.setSupportedMediaTypes(mediaTypeList);
+        return new ByteArrayHttpMessageConverter();
+    }
+
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
