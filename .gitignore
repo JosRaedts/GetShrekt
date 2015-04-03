@@ -31,3 +31,4 @@ PhotoShop/.idea/**
 PhotoShop/out
 PhotoShop/out/*
 PhotoShop/out/**
+PhotoShop/src/main/resources/uploads.properties
