@@ -32,7 +32,7 @@ import java.util.Locale;
 @ComponentScan("com.photoshop")
 @PropertySource("classpath:uploads.properties")
 @EnableWebMvc   
-public class Config extends WebMvcConfigurerAdapter {  
+public class WebConfig extends WebMvcConfigurerAdapter {
       
     @Bean  
     public UrlBasedViewResolver setupViewResolver() {  
@@ -99,7 +99,6 @@ public class Config extends WebMvcConfigurerAdapter {
         byteArrayHttpMessageConverter.setSupportedMediaTypes(mediaTypeList);
         return new ByteArrayHttpMessageConverter();
     }
-
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

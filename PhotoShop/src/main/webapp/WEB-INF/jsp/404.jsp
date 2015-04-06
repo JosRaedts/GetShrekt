@@ -1,17 +1,12 @@
-<%-- 
-    Document   : 404
-    Created on : Mar 24, 2015, 2:01:48 PM
-    Author     : Casper
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<jsp:include page="/WEB-INF/jsp/header.jsp" />
+<div class="container">
+    <div class="page-header">
+        <h1 class="MainTitle"><spring:message code="404Title" text="%404title" /></h1>
+    </div>
+    <div>
+        <p><spring:message code="404Text" text="%404title" /></p>
+    </div>
+</div>
+<jsp:include page="/WEB-INF/jsp/footer.jsp" />
