@@ -1,5 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <jsp:include page="/WEB-INF/jsp/admin/header.jsp" />
 <div id="page-wrapper">
     <div class="row">
@@ -62,7 +64,7 @@
                                                     <td><img SRC=${Photo.lowResURL} width="100" height="100"></td>
                                                     <td>${Photo.height}</td>
                                                     <td>${Photo.width}</td>
-                                                    <td>${Photo.date}</td>                                                                                                        
+                                                    <td><fmt:formatDate value="${Photo.date}" type="both" pattern="dd-MM-yyyy" /></td>   
                                                 </tr>
                                             </c:forEach>            
                                         </tbody>
