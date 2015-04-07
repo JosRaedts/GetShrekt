@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  *
- * @author Jos
+ * @author Casper
  */
 public class Photo {
     

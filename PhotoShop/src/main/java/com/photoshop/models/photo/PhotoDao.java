@@ -1,6 +1,7 @@
 package com.photoshop.models.photo;
 
 import com.photoshop.models.Database;
+import com.photoshop.models.student.Student;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,10 +11,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.stereotype.Component;
-
-/**
- * @author Jos
- */
 
 @Component
 public class PhotoDao extends Database {
