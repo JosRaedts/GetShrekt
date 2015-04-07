@@ -12,6 +12,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public String handleException(Exception e){
+        System.err.println(e);
         return "404";
     }
 
