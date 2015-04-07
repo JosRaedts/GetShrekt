@@ -81,6 +81,7 @@ public class FototaggerController implements Initializable {
                     }
                     this.AppendedNumber++;
                     move(tempfile.toPath(), NewExistingFile.toPath(), REPLACE_EXISTING);
+                    this.StatusTB.appendText("Foto is aangemaakt " + newFile.getName() + "\n");
                 } catch (IOException ex) {
                     this.StatusTB.appendText("Foto niet hernoemd" + "\n");
                     ex.printStackTrace();
