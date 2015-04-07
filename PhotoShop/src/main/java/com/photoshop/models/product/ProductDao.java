@@ -6,6 +6,8 @@
 package com.photoshop.models.product;
 
 import com.photoshop.models.Database;
+import com.photoshop.models.photographer.Photographer;
+import com.photoshop.models.photographer.PhotographerDao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,6 +24,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProductDao extends Database{
+    
+    @Autowired
+    private PhotographerDao photographerdao;
+    
     public ProductDao()
     {
         super();
@@ -42,6 +49,25 @@ public class ProductDao extends Database{
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return photos;
+    }
+    
+    public List<Product> getPriceList(Photographer photographer)
+    {
+        List<Product> products = new ArrayList();
+        try {
+            String querystring = "SELECT p.id AS id, p.name AS name, p.height AS height, p.width AS width, p.imageURL AS imageURL, p.active AS active, pp.photographer_id AS photographer_id, pp.product_id AS product_id, pp.price AS price FROM products p, productprice_photographer pp WHERE pp.product_id = p.id AND pp.photographer_id = ?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photographer.getId());
+            ResultSet rs = stat.executeQuery();
+            
+            while(rs.next())
+            {
+                products.add(build(rs)); 
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return products;
     }
     
     public Product getById(int id)
@@ -146,8 +172,16 @@ public class ProductDao extends Database{
             product.setHeight(rs.getInt("height"));
             product.setWidth(rs.getInt("width"));
             product.setImageURL(rs.getString("imageURL"));
-            product.setActive(rs.getInt("active") != 0);
-            
+            if(rs.getInt("active") != 0){
+                product.setActive(true);
+            }
+            else{
+                product.setActive(false);
+            }
+            if(rs.getDouble("price") != 0.0){
+                Photographer photographer = photographerdao.getById(rs.getInt("photographer_id"));
+                product.setPrice(photographer, rs.getDouble("price"));
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }

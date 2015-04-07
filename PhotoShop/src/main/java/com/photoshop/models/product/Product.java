@@ -5,6 +5,8 @@
  */
 package com.photoshop.models.product;
 
+import com.photoshop.models.photographer.Photographer;
+
 /**
  *
  * @author Jos
@@ -17,6 +19,7 @@ public class Product {
     private int width;
     private String imageURL;
     private boolean active;
+    private Double price;
     private final ProductDao dao;
     
     public Product()
@@ -80,5 +83,13 @@ public class Product {
     
     public void setActive(boolean active){
         this.active = active;
+    }
+    
+    public void setPrice(Photographer photographer, Double price){
+        this.price = price;
+    }
+    
+    public Double getPrice(){
+        return price;
     }
 }
