@@ -6,9 +6,13 @@
 package com.photoshop.controllers;
 
 import com.photoshop.models.UserType;
+import com.photoshop.models.photo.Photo;
 import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.photographer.Photographer;
 import com.photoshop.models.photographer.PhotographerDao;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -214,6 +218,12 @@ public class PhotographerController extends AbstractController {
                 if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
                     HttpSession session = request.getSession();       
                     int userID = (int)session.getAttribute("UserID");
+                    for(Photo temp: photoDao.getPhotosByPhotographer(userID))
+                    {
+                        DateFormat targetFormat = new SimpleDateFormat("ddMMyyyy");
+                        Date date = targetFormat.parse(temp.getDate().toString());
+                        temp.setDate(date);
+                    }
                     map.put("Photos",photoDao.getPhotosByPhotographer(userID));
                     return "photographer/photo";
                 }
