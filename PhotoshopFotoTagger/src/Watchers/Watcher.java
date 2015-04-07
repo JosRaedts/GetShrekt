@@ -174,6 +174,7 @@ public class Watcher implements Runnable {
                     System.out.println("New picture detected " + filename.toString());
                     File file = new File(filename.toString());
                     controller.SetFile(file);
+                    controller.ChangeFotoName();
                 }
             }
             // reset key (because you just handled it, and remove from set if directory no longer accessible
