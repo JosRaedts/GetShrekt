@@ -54,12 +54,10 @@ public class DefaultController extends AbstractController {
             {
                 System.out.println("Photographer ingelogd");
             }
-            System.out.println("test123");
             return "home";
        } catch(Exception e) {
             map.put("msg", "Hello new user, please sign in");
             map.put("test", "testen van github account");
-            System.out.println("testdefault");
             return "home";
        }
    }  

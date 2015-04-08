@@ -32,7 +32,6 @@ public class AbstractController {
     
     public AbstractController()
     {
-        System.out.println("testAbstract");
     }
         
     public IUser getUser()
@@ -61,12 +60,11 @@ public class AbstractController {
                             break;
                     }
                 }
-                System.out.println("re-get user");
             }
         }
         catch(Exception ex)
         {
-            System.out.println(ex+"exception JONGUH");
+            System.out.println(ex.getMessage());
         }
         return user;
     }
