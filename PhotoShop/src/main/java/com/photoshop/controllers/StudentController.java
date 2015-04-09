@@ -152,6 +152,7 @@ public class StudentController extends AbstractController {
             request.getSession().setAttribute("UserID", student.getId());
             request.getSession().setAttribute("UserName", student.getUsername());
             request.getSession().setAttribute("UserType", UserType.STUDENT);
+            request.getSession().setAttribute("redirectURL", null);
             return redirectURL; //hij zou nu ingelogd moeten zijn.
         } else {
             request.getSession().setAttribute("UserID", null);
