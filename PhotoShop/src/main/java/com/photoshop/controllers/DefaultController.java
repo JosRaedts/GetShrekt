@@ -13,9 +13,11 @@ import com.photoshop.models.photographer.PhotographerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.FlashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,6 +36,9 @@ public class DefaultController extends AbstractController {
     
     @Autowired
     private AdminDao adminDao;
+
+    @Autowired
+    private FlashMap flashMap;
     
             
    @RequestMapping(value = {"/", "/index.html"}, method = RequestMethod.GET)
@@ -80,32 +85,42 @@ public class DefaultController extends AbstractController {
    }
    
    @RequestMapping(value = "/admin/login", method = RequestMethod.GET)
-    public String Login(ModelMap map,HttpServletRequest request) {
+    public String Login(ModelMap map,HttpServletRequest request, @ModelAttribute("redirectURI") String redirecto ) {
         map.put("Accountmade", request.getSession().getAttribute("Accountmade"));
         request.getSession().removeAttribute("Accountmade");
+
+        System.out.println("puzza2" + flashMap.get("redirectURI"));
         return "login";
     }
     
     @RequestMapping(value="/admin/checkLogin", method = RequestMethod.POST)
-    public String checkLogin(@RequestParam("name") String name,
-            @RequestParam("password") String password, ModelMap map, HttpServletRequest request) {
+    public String checkLogin(@RequestParam("name") String name, @RequestParam("password") String password, ModelMap map, HttpServletRequest request) {
+        String redirectURL = "redirect:../../admin";
+
+        if(request.getSession().getAttribute("redirectURL") != null)
+        {
+            redirectURL = (String) request.getSession().getAttribute("redirectURL");
+        }
+
         Admin admin = adminDao.authenticate(name, password);
         Photographer photographer = photographerDao.authenticate(name, password);
         if(admin != null){
             request.getSession().setAttribute("UserID", admin.getId());
             request.getSession().setAttribute("UserName", admin.getUsername());
             request.getSession().setAttribute("UserType", UserType.ADMIN);
-            return "redirect:../../admin";
+            request.getSession().setAttribute("redirectURL", null);
+            return redirectURL;
         } else if (photographer != null) {
             request.getSession().setAttribute("UserID", photographer.getId());
             request.getSession().setAttribute("UserName", photographer.getUsername());
             request.getSession().setAttribute("UserType", UserType.PHOTOGRAPHER);
-            return "redirect:../../admin"; 
+            request.getSession().setAttribute("redirectURL", null);
+            return redirectURL;
         } else{
             request.getSession().setAttribute("UserID", null);
             request.getSession().setAttribute("UserName", "");
             request.getSession().setAttribute("UserType", "");
-            return "redirect:../login";
+            return "redirect:../../admin/login";
         }
     }
    

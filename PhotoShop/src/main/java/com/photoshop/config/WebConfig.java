@@ -14,6 +14,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -21,6 +22,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
@@ -53,8 +56,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             = new ResourceBundleMessageSource();
  
         String[] basenames = {
-            "i18n.setA.setA",
-            "i18n.setB.setB"
+            "i18n.setA.setA"
         };
  
         result.setBasenames(basenames);
@@ -98,6 +100,18 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         mediaTypeList.add(MediaType.IMAGE_JPEG);
         byteArrayHttpMessageConverter.setSupportedMediaTypes(mediaTypeList);
         return new ByteArrayHttpMessageConverter();
+    }
+
+    @Bean
+    public RedirectAttributes redirectAttributes()
+    {
+        return new RedirectAttributesModelMap();
+    }
+
+    @Bean
+    public FlashMap flashMap()
+    {
+        return new FlashMap();
     }
 
     @Override

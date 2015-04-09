@@ -58,7 +58,7 @@ public class PhotoController extends AbstractController {
         }
         else
         {
-            return "redirect:/admin/login";
+            return this.backendLogin();
         }
     }
 
