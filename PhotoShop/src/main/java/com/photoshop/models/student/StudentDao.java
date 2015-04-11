@@ -6,6 +6,7 @@
 package com.photoshop.models.student;
 
 import com.photoshop.models.Database;
+import com.photoshop.models.photo.Photo;
 import com.photoshop.models.schoolClass.SchoolClass;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -114,7 +115,8 @@ public class StudentDao extends Database  {
     public void save(Student student)
     {
         try {
-            String querystring = null;
+            String querystring;
+            querystring = "INSERT INTO students(studentnr, name, address, city, zipcode, username, password, schoolclass_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             boolean exists = idExists(student.getId());
             if(exists)
             {
@@ -140,6 +142,20 @@ public class StudentDao extends Database  {
             {
                 stat.setInt(9, student.getId());
             }
+            stat.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void addPhoto(Student student, Photo photo)
+    {
+        try {
+            String querystring;
+            querystring = "INSERT INTO student_photos(studentID, photoID) VALUES(?, ?)";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, student.getId());
+            stat.setInt(2, photo.getId());
             stat.execute();
         } catch (SQLException ex) {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);

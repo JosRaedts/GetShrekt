@@ -135,6 +135,11 @@ public class Student implements IUser {
         PhotoDao photodao = new PhotoDao();
         return photodao.getPhotosByStudent(this.id);
     }
+    
+    public void addPhoto(Photo photo)
+    {
+        this.dao.addPhoto(this, photo);
+    }
 
     @Override
     public UserType getType() {
