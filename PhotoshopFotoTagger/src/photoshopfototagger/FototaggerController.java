@@ -36,6 +36,9 @@ public class FototaggerController implements Initializable {
     private static Path path;
     private static File latestFile;
 
+    private String TempString = "";
+    private int AppendedNumber = 1;
+
     /**
      * Initializes the controller class.
      */
@@ -44,45 +47,57 @@ public class FototaggerController implements Initializable {
         // TODO
     }
 
-    public void ChangeFotoName(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            if (latestFile != null) {
-                File tempfile = new File(path.toString() + "\\" + this.latestFile.toString());
+    public void ChangeFotoName() {
+        if (latestFile != null) {
+            File tempfile = new File(path.toString() + "\\" + this.latestFile.toString());
 
-                String extension = "";
-                int i = tempfile.getName().lastIndexOf('.');                
-                if (i > 0) {
-                    extension = tempfile.getName().substring(i + 1);
-                }
-
-                System.out.println(path.toString() + "\\" + this.latestFile.toString());
-                System.out.println(path.toString() + "\\" + this.BarcodeTB.getText() + "." + extension);
-                
-                File newFile = new File(path.toString() + "\\" +  this.BarcodeTB.getText() + "." + extension);
-
-                if (newFile.exists()) {
-                    String name = newFile.getName();
-                    int i2 = name.contains(".") ? name.lastIndexOf('.') : name.length();
-                    String dstName = name.substring(0, i) + "(Copy)" + name.substring(i);
-                    File dest = new File(newFile.getParent(), dstName);
-                    tempfile.delete();
-                } else {
-                    try {
-//                    boolean success = tempfile.renameTo(newFile);
-//                    if (!success) {
-//                        this.StatusTB.appendText("Foto kon niet worden hernoemd \n");
-//                    } else {
-//                        this.StatusTB.appendText("Foto is aangemaakt en hernoemd \n");
-//                    }
-                        move(tempfile.toPath(), newFile.toPath(), REPLACE_EXISTING);
-                        this.StatusTB.appendText("Foto is aangemaakt en hernoemd naar " + newFile.getName() + "\n \n");
-                    } catch (IOException ex) {
-                        this.StatusTB.appendText("Foto kon niet worden hernoemd naar " + newFile.getName() + "\n \n");
-                    }
-                }
-                this.latestFile = null;
-                this.BarcodeTB.requestFocus();
+            String extension = "";
+            int i = tempfile.getName().lastIndexOf('.');
+            if (i > 0) {
+                extension = tempfile.getName().substring(i + 1);
             }
+
+            System.out.println(path.toString() + "\\" + this.latestFile.toString());
+            System.out.println(path.toString() + "\\" + this.BarcodeTB.getText() + "." + extension);
+
+            File newFile = new File(path.toString() + "\\..\\Gemaakte Foto's\\" + this.BarcodeTB.getText() + "." + extension);
+            try {
+                newFile.getParentFile().mkdirs();
+                //newFile.createNewFile();
+            } catch (Exception e) {
+                System.out.println("File == null");
+            }
+            System.out.println(newFile.getPath());
+
+            if (newFile.exists()) {
+                try {
+                    System.out.println("File existed");
+                    File NewExistingFile = new File(path.toString() + "\\..\\Gemaakte Foto's\\" + this.BarcodeTB.getText() + "-" + this.AppendedNumber + "." + extension);
+                    try {
+                        NewExistingFile.getParentFile();
+                        //NewExistingFile.createNewFile();
+                    } catch (Exception e) {
+                        System.out.println("File == null");
+                    }
+                    this.AppendedNumber++;
+                    move(tempfile.toPath(), NewExistingFile.toPath(), REPLACE_EXISTING);
+                    this.StatusTB.appendText("Foto is aangemaakt " + newFile.getName() + "\n");
+                } catch (IOException ex) {
+                    this.StatusTB.appendText("Foto niet hernoemd" + "\n");
+                    ex.printStackTrace();
+                }
+
+            } else {
+                try {
+                    move(tempfile.toPath(), newFile.toPath(), REPLACE_EXISTING);
+                    this.StatusTB.appendText("Foto is aangemaakt " + newFile.getName() + "\n");
+                } catch (IOException ex) {
+                    this.StatusTB.appendText("Foto niet aangemaakt" + "\n");
+                    ex.printStackTrace();
+                }
+            }
+            //this.latestFile = null;
+            this.BarcodeTB.requestFocus();
         }
     }
 
@@ -92,5 +107,15 @@ public class FototaggerController implements Initializable {
 
     public void SetFile(File file) {
         this.latestFile = file;
+    }
+
+    public void SetLatestCode(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            if (!this.BarcodeTB.getText().equals("")) {
+                this.TempString = this.BarcodeTB.getText();
+                this.AppendedNumber = 1;
+                this.StatusTB.appendText("Student gescand: " + this.BarcodeTB.getText() + "\n");
+            }
+        }
     }
 }

@@ -11,13 +11,14 @@ import com.photoshop.models.schoolClass.SchoolClass;
 import com.photoshop.models.schoolClass.SchoolClassDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -138,14 +139,21 @@ public class StudentController extends AbstractController {
 
     //Post van login
     @RequestMapping(value = "/login/checkLogin", method = RequestMethod.POST)
-    public String checkLogin(@RequestParam("name") String name,
-            @RequestParam("schoolcode") String code, ModelMap map, HttpServletRequest request) {
+    public String checkLogin(@RequestParam("name") String name, @RequestParam("schoolcode") String code, ModelMap map, HttpServletRequest request) {
+        String redirectURL = "redirect:../../";
+
+        if(request.getSession().getAttribute("redirectURL") != null)
+        {
+            redirectURL = (String) request.getSession().getAttribute("redirectURL");
+        }
+
         Student student = studentDao.authenticate(name, code);
         if (student != null) {
             request.getSession().setAttribute("UserID", student.getId());
             request.getSession().setAttribute("UserName", student.getUsername());
             request.getSession().setAttribute("UserType", UserType.STUDENT);
-            return "redirect:../../"; //hij zou nu ingelogd moeten zijn.
+            request.getSession().setAttribute("redirectURL", null);
+            return redirectURL; //hij zou nu ingelogd moeten zijn.
         } else {
             request.getSession().setAttribute("UserID", null);
             request.getSession().setAttribute("UserName", "");

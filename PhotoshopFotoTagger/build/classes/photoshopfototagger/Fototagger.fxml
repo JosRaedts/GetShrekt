@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="152.0" prefWidth="439.0" style="background-color: blue;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="photoshopfototagger.FototaggerController">
   <children>
-    <TextField fx:id="BarcodeTB" layoutX="174.0" layoutY="34.0" onKeyPressed="#ChangeFotoName" prefWidth="250.0" />
+    <TextField fx:id="BarcodeTB" layoutX="174.0" layoutY="34.0" onKeyPressed="#SetLatestCode" prefWidth="250.0" />
     <Label layoutX="179.0" layoutY="14.0" text="Barcode:" />
     <TextArea fx:id="StatusTB" focusTraversable="false" layoutX="174.0" layoutY="86.0" prefHeight="57.0" prefWidth="250.0" wrapText="true" />
     <Label layoutX="179.0" layoutY="66.0" text="Status:" />
