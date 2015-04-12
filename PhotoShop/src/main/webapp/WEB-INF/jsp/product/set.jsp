@@ -1,5 +1,5 @@
 <%-- 
-    Document   : home
+    Document   : set
     Created on : Mar 17, 2015, 10:14:29 AM
     Author     : Casper
 --%>
@@ -10,7 +10,7 @@
 <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header"><spring:message code="addProduct" text="%addProduct" /></h1>
+                    <h1 class="page-header">Dashboard</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -31,9 +31,14 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="${baseurl}/product/list"><spring:message code="products" text="%products" /></a>
+                                        <li><a href="#">Action</a>
                                         </li>
-                                        <li><a href="${baseurl}/product/add"><spring:message code="addProduct" text="%addProduct" /></a>
+                                        <li><a href="#">Another action</a>
+                                        </li>
+                                        <li><a href="#">Something else here</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Separated link</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -45,29 +50,16 @@
                                 <div class="col-lg-12">
                                     <div class="dataTable_wrapper">
                                         <div class="col-lg-6">
-                                            <form method="post"  action="${baseurl}/product/add" enctype="multipart/form-data">
+                                            <form method="post"  action="${baseurl}/product/set">
                                                 <table border="0">
-                                                    <tr>
-                                                        <td width="200px"><spring:message code="active" text="%active" />:</td>
-                                                        <td><input type="radio" name="active" value="1" checked>Ja<br>
-                                                            <input type="radio" name="active" value="0">Nee</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="200px"><spring:message code="preview" text="%preview" />:</td>
-                                                        <td><input type="file" name="file"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="200px"><spring:message code="productName" text="%productName" />:</td>
-                                                        <td><input type="text" name="name" class="form-control formphotograaf"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="200px"><spring:message code="width" text="%width" />:</td>
-                                                        <td><input type="text" name="width" class="form-control formphotograaf"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="200px"><spring:message code="height" text="%height" />:</td>
-                                                        <td><input type="text" name="height" class="form-control formphotograaf"></td>
-                                                    </tr>
+                                                    <c:forEach var="product" items="${products}">
+                                                        <tr>
+                                                            <td width="200px"><c:out value="${product.name}"/>:</td>
+                                                            <td> &euro; <input type="text" name="${product.id}" class="form-control formphotograaf" style="width: auto; display: inline"></td>
+                                                        </tr>
+                                                        
+                                                    </c:forEach>
+                                                    
                                                     <tr>
                                                         <td></td>
                                                         <td>

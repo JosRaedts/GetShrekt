@@ -33,7 +33,7 @@
                                     <ul class="dropdown-menu pull-right" role="menu">
                                         <li><a href="${baseurl}/product/list"><spring:message code="products" text="%products" /></a>
                                         </li>
-                                        <li><a href="#">Another action</a>
+                                        <li><a href="${baseurl}/product/add"><spring:message code="addProduct" text="%addProduct" /></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -68,7 +68,7 @@
                                             <input type="hidden" id="hiddenIdfield" name="id" value="${product.id}">
                                             <tr>
                                                 <td><a href="${baseurl}/product/edit?id=${product.id}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>
-                                                <td>img</td>
+                                                <td style="text-align: center"><img style="height: 100px" src="${baseurl}/product/view/${product.id}" /></td>
                                                 <td>${product.name}</td>
                                                 <c:choose>
                                                     <c:when test="${product.width > 0}">
