@@ -5,6 +5,7 @@
  */
 package com.photoshop.models.school;
 
+import com.photoshop.models.photo.Photo;
 import com.photoshop.models.schoolClass.SchoolClass;
 import com.photoshop.models.schoolClass.SchoolClassDao;
 import java.util.List;
@@ -96,5 +97,15 @@ public class School{
         //to do
         SchoolClassDao schoolclassdao = new SchoolClassDao();
         return schoolclassdao.getSchoolClassesBySchool(this);
+    }
+
+    public void addPhoto(Photo photo)
+    {
+        this.dao.addPhoto(this, photo);
+    }
+
+    public void removePhoto(Photo photo)
+    {
+        this.dao.removePhoto(this, photo);
     }
 }

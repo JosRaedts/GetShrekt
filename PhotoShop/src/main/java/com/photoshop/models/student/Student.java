@@ -5,14 +5,15 @@
  */
 package com.photoshop.models.student;
 
-import com.photoshop.models.UserType;
 import com.photoshop.models.IUser;
+import com.photoshop.models.UserType;
 import com.photoshop.models.photo.Photo;
 import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.schoolClass.SchoolClass;
 import com.photoshop.models.schoolClass.SchoolClassDao;
-import java.util.List;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.List;
 
 /**
  *
@@ -139,6 +140,11 @@ public class Student implements IUser {
     public void addPhoto(Photo photo)
     {
         this.dao.addPhoto(this, photo);
+    }
+
+    public void removePhoto(Photo photo)
+    {
+        this.dao.removePhoto(this, photo);
     }
 
     @Override

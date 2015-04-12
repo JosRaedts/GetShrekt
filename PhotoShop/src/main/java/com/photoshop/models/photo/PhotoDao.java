@@ -1,6 +1,9 @@
 package com.photoshop.models.photo;
 
+import com.mysql.jdbc.Statement;
 import com.photoshop.models.Database;
+import org.springframework.stereotype.Component;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Jos
@@ -84,18 +86,20 @@ public class PhotoDao extends Database {
     public boolean save(Photo photo)
     {
         try {
+            PreparedStatement stat;
             String querystring = null;
             boolean exists = idExists(photo.getId());
             if(exists)
             {
-                querystring = "UPDATE photos SET height = ?, width = ?, lowresURL = ?, highresURL = ?, photographerID = ?, active = ?, date = ? WHERE id = ?";                                
+                querystring = "UPDATE photos SET height = ?, width = ?, lowresURL = ?, highresURL = ?, photographerID = ?, active = ?, date = ? WHERE id = ?";
+                stat = conn.prepareStatement(querystring);
             }
             else
             {
                 querystring = "INSERT INTO photos(height, width, lowresURL, highresURL, photographerID, active, date) VALUES(?, ?, ?, ?, ?, ?, ?)";
+                stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             }
-            
-            PreparedStatement stat = conn.prepareStatement(querystring);
+
             stat.setInt(1, photo.getHeight());
             stat.setInt(2, photo.getWidth());
             stat.setString(3, photo.getLowResURL());
@@ -113,6 +117,12 @@ public class PhotoDao extends Database {
                 stat.setInt(8, photo.getId());
             }
             stat.execute();
+            if(!exists)
+            {
+                ResultSet rs = stat.getGeneratedKeys();
+                rs.next();
+                photo.setId(rs.getInt(1));
+            }
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);

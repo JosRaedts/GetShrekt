@@ -8,7 +8,14 @@ package com.photoshop.controllers;
 import com.photoshop.models.UserType;
 import com.photoshop.models.photo.Photo;
 import com.photoshop.models.photo.PhotoDao;
+import com.photoshop.models.photo.PhotoJson;
 import com.photoshop.models.photographer.Photographer;
+import com.photoshop.models.school.School;
+import com.photoshop.models.school.SchoolDao;
+import com.photoshop.models.schoolClass.SchoolClass;
+import com.photoshop.models.schoolClass.SchoolClassDao;
+import com.photoshop.models.student.Student;
+import com.photoshop.models.student.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
@@ -25,6 +32,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.imageio.ImageIO;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
@@ -50,6 +60,15 @@ public class PhotoController extends AbstractController {
     @Autowired
     private Environment env;
 
+    @Autowired
+    private StudentDao studentDao;
+
+    @Autowired
+    private SchoolClassDao schoolClassDao;
+
+    @Autowired
+    private SchoolDao schoolDao;
+
     @RequestMapping(value = {"/upload", "/upload/do_upload"}, method = RequestMethod.GET)
     public String upload()
     {
@@ -62,8 +81,8 @@ public class PhotoController extends AbstractController {
         }
     }
 
-    @RequestMapping(value = "/upload/do_upload", headers = "content-type=multipart/*", method = RequestMethod.POST)
-    public String do_upload(MultipartHttpServletRequest request, HttpServletRequest response)
+    @RequestMapping(value = "/upload/do_upload", method = RequestMethod.POST)
+    public @ResponseBody JsonObject do_upload(MultipartHttpServletRequest request, HttpServletRequest response)
     {
         if(this.authenticate(UserType.PHOTOGRAPHER)) {
             Photographer photographer = (Photographer) this.getUser();
@@ -72,10 +91,11 @@ public class PhotoController extends AbstractController {
                 try {
                     MultipartFile mpf = request.getFile(itr.next());
                     String path = env.getProperty("uploadDir");
-                    String filename = System.currentTimeMillis() + "-" + mpf.getOriginalFilename();
-                    FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(path + filename));
+                    String originalFilename = mpf.getOriginalFilename();
+                    String newFilename = System.currentTimeMillis() + "-" + mpf.getOriginalFilename();
+                    FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(path + newFilename));
 
-                    BufferedImage bimg = ImageIO.read(new File(path + filename));
+                    BufferedImage bimg = ImageIO.read(new File(path + newFilename));
 
                     Photo photo = new Photo();
                     photo.setActive(true);
@@ -83,21 +103,49 @@ public class PhotoController extends AbstractController {
                     photo.setDate(new Date(utilDate.getTime()));
                     photo.setHeight(bimg.getHeight());
                     photo.setWidth(bimg.getWidth());
-                    photo.setHighResURL(filename);
-                    photo.setLowResURL(filename);
+                    photo.setHighResURL(newFilename);
+                    photo.setLowResURL(newFilename);
                     photo.setPhotographerID(photographer.getId());
                     photo.save();
 
+                    String[] file = originalFilename.split("\\.");
+                    String type = file[0].split("-")[0];
+                    int id = Integer.parseInt(file[0].split("-")[1]);
+
+                    switch (type)
+                    {
+                        case "student":
+                            Student student = studentDao.getById(id);
+                            student.addPhoto(photo);
+                            break;
+                        case "school":
+                            School school = schoolDao.getById(id);
+                            school.addPhoto(photo);
+                            break;
+                        case "schoolclass":
+                            SchoolClass schoolClass = schoolClassDao.getById(id);
+                            schoolClass.addPhoto(photo);
+                            break;
+                    }
+
+                    PhotoJson photoJson = new PhotoJson(request.getRequestURI() + "/photo/view/low/" + photo.getId(),
+                            request.getRequestURI() + "/photo/view/low/" + photo.getId(),
+                            originalFilename,
+                            "image/jpeg",
+                            String.valueOf(mpf.getBytes()),
+                            "",
+                            "POST");
+                    //JSON
+                    JsonObjectBuilder jsonArrayBuilder = Json.createObjectBuilder();
+                    jsonArrayBuilder.add("files", Json.createArrayBuilder()
+                            .add(Json.createArrayBuilder()));
+                    return jsonArrayBuilder.build();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            return "photo/upload";
         }
-        else
-        {
-            return "redirect:/admin/login";
-        }
+        return null;
     }
 
     @RequestMapping(value = "/view/{format:low|high}/{photoId:^[0-9]+$}", method = RequestMethod.GET)

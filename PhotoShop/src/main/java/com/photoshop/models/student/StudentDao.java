@@ -8,15 +8,17 @@ package com.photoshop.models.student;
 import com.photoshop.models.Database;
 import com.photoshop.models.photo.Photo;
 import com.photoshop.models.schoolClass.SchoolClass;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
 /**
  *
@@ -115,21 +117,20 @@ public class StudentDao extends Database  {
     public void save(Student student)
     {
         try {
+            PreparedStatement stat;
             String querystring;
-            querystring = "INSERT INTO students(studentnr, name, address, city, zipcode, username, password, schoolclass_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             boolean exists = idExists(student.getId());
             if(exists)
             {
-               
-                querystring = "UPDATE students SET studentnr = ?, name = ?, address = ?, city = ?, zipcode = ?, username = ?, password = ?, schoolclass_id = ? WHERE id = ?";                                
+                querystring = "UPDATE students SET studentnr = ?, name = ?, address = ?, city = ?, zipcode = ?, username = ?, password = ?, schoolclass_id = ? WHERE id = ?";
+                stat = conn.prepareStatement(querystring);
             }
             else
             {
                 querystring = "INSERT INTO students(studentnr, name, address, city, zipcode, username, password, schoolclass_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+                stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             }
-            
-            
-            PreparedStatement stat = conn.prepareStatement(querystring);
+
             stat.setInt(1, student.getStudentnr());
             stat.setString(2, student.getName());
             stat.setString(3, student.getAddress());
@@ -143,6 +144,11 @@ public class StudentDao extends Database  {
                 stat.setInt(9, student.getId());
             }
             stat.execute();
+            if(!exists)
+            {
+                ResultSet rs = stat.getGeneratedKeys();
+                student.setId(rs.getInt(1));
+            }
         } catch (SQLException ex) {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -153,6 +159,19 @@ public class StudentDao extends Database  {
         try {
             String querystring;
             querystring = "INSERT INTO student_photos(studentID, photoID) VALUES(?, ?)";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, student.getId());
+            stat.setInt(2, photo.getId());
+            stat.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void removePhoto(Student student, Photo photo) {
+        try {
+            String querystring;
+            querystring = "DELETE FROM student_photos WHERE studentID = ? AND photoID = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, student.getId());
             stat.setInt(2, photo.getId());
