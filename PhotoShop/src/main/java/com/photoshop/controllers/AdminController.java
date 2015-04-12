@@ -8,6 +8,8 @@ package com.photoshop.controllers;
 import com.photoshop.models.UserType;
 import com.photoshop.models.admin.Admin;
 import com.photoshop.models.admin.AdminDao;
+import com.photoshop.models.school.SchoolDao;
+import com.photoshop.models.schoolClass.SchoolClassDao;
 import com.photoshop.models.student.Student;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AdminController {
     @Autowired
     private AdminDao adminDao;
+    @Autowired
+    private SchoolDao schooldao;
     
        @RequestMapping(value = "/accountgegevens", method = RequestMethod.GET)
     public String VraagAccountInfoOp(ModelMap map, HttpServletRequest request) {
@@ -90,5 +94,13 @@ public class AdminController {
         }
         
         return "home";
+    }
+    
+    @RequestMapping(value = "/barcodes", method = RequestMethod.GET)
+    public String getbarcodes(ModelMap map, HttpServletRequest request) {
+        System.out.println("barcode function called..");
+        map.put("Scholen", this.schooldao.getList());
+        return "admin/barcodes";
+        
     }
 }
