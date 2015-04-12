@@ -150,6 +150,24 @@ public class ProductDao extends Database{
         }
     }
     
+    public boolean saveProductPrice(Product product, Photographer photographer)
+    {
+        try {
+            String querystring = null;
+                        
+            querystring = "UPDATE productprice_photographer SET price = ? WHERE photographer_id = ? AND product_id = ?";                                
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setDouble(1, product.getPrice());
+            stat.setInt(2, photographer.getId());
+            stat.setInt(3, product.getId());
+            stat.execute();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+    
     public void delete(Product photo)
     {
         try {
