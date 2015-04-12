@@ -99,7 +99,7 @@ public class DefaultController extends AbstractController {
 
         if(request.getSession().getAttribute("redirectURL") != null)
         {
-            redirectURL = (String) request.getSession().getAttribute("redirectURL");
+            redirectURL = "redirect:"+(String) request.getSession().getAttribute("redirectURL");
         }
 
         Admin admin = adminDao.authenticate(name, password);
