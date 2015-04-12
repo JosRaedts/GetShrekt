@@ -6,7 +6,10 @@
 package com.photoshop.models.schoolClass;
 
 import com.photoshop.models.Database;
+import com.photoshop.models.photo.Photo;
 import com.photoshop.models.school.School;
+import org.springframework.stereotype.Component;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.stereotype.Component;
 
 /**
  *
@@ -106,6 +108,33 @@ public class SchoolClassDao extends Database  {
         }
 
         return exists;
+    }
+
+    public void addPhoto(SchoolClass schoolClass, Photo photo)
+    {
+        try {
+            String querystring;
+            querystring = "INSERT INTO schoolclass_photos(schoolclassID, photoID) VALUES(?, ?)";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, schoolClass.getId());
+            stat.setInt(2, photo.getId());
+            stat.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(SchoolClass.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void removePhoto(SchoolClass schoolClass, Photo photo) {
+        try {
+            String querystring;
+            querystring = "DELETE FROM schoolclass_photos WHERE schoolclassID = ? AND photoID = ?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, schoolClass.getId());
+            stat.setInt(2, photo.getId());
+            stat.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(SchoolClass.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void save(SchoolClass schoolclass)
