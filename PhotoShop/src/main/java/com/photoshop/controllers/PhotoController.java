@@ -237,4 +237,9 @@ public class PhotoController extends AbstractController {
         map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
         return "photo/mypictures";
     }
+    
+    @RequestMapping(value = "/photodetail", method = RequestMethod.GET)
+    public String detail(ModelMap map, HttpServletRequest request) {
+        return "photo/photodetail";
+    }
 }
