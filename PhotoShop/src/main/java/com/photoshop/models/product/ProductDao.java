@@ -55,7 +55,7 @@ public class ProductDao extends Database{
     {
         List<Product> products = new ArrayList();
         try {
-            String querystring = "SELECT p.id AS id, p.name AS name, p.height AS height, p.width AS width, p.imageURL AS imageURL, p.active AS active, pp.photographer_id AS photographer_id, pp.product_id AS product_id, pp.price AS price FROM products p, productprice_photographer pp WHERE pp.product_id = p.id AND pp.photographer_id = ?";
+            String querystring = "SELECT p.id AS id, p.name AS name, p.height AS height, p.width AS width, p.imageURL AS imageURL, p.active AS active, pp.photographer_id AS photographer_id, pp.price AS price FROM productprice_photographer pp LEFT JOIN products p ON pp.product_id = p.id WHERE pp.photographer_id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, photographerid);
             ResultSet rs = stat.executeQuery();
@@ -154,13 +154,25 @@ public class ProductDao extends Database{
     {
         try {
             String querystring = null;
-                        
-            querystring = "UPDATE productprice_photographer SET price = ? WHERE photographer_id = ? AND product_id = ?";                                
-            PreparedStatement stat = conn.prepareStatement(querystring);
-            stat.setDouble(1, product.getPrice());
-            stat.setInt(2, photographerid);
-            stat.setInt(3, product.getId());
-            stat.execute();
+            boolean exists = photographerProductExists(photographerid, product.getId());
+            if(exists)
+            {
+                querystring = "UPDATE productprice_photographer SET price = ? WHERE photographer_id = ? AND product_id = ?";
+                PreparedStatement stat = conn.prepareStatement(querystring);
+                stat.setDouble(1, product.getPrice());
+                stat.setInt(2, photographerid);
+                stat.setInt(3, product.getId());
+                stat.execute();
+            }
+            else
+            {
+                querystring = "INSERT INTO productprice_photographer(photographer_id, product_id, price) VALUES(?, ?, ?)";
+                PreparedStatement stat = conn.prepareStatement(querystring);
+                stat.setInt(1, photographerid);
+                stat.setInt(2, product.getId());
+                stat.setDouble(3, product.getPrice());
+                stat.execute();
+            }                               
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -204,5 +216,29 @@ public class ProductDao extends Database{
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return product;
+    }
+    
+    public boolean photographerProductExists(int photographerid, int productid)
+    {
+        try{
+            String querystring = null;
+            boolean exists = false;
+            querystring = "SELECT * FROM productprice_photographer WHERE photographer_id = ? AND product_id = ?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photographerid);
+            stat.setInt(2, productid);
+            ResultSet rs = stat.executeQuery();
+            
+            while(rs.next())
+            {
+               exists = true;
+            }
+            
+            return exists;
+        }
+        catch(SQLException ex){
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 }
