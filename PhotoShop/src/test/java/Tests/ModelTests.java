@@ -5,6 +5,7 @@
  */
 package Tests;
 
+import com.photoshop.misc.ImageManager;
 import com.photoshop.models.admin.Admin;
 import com.photoshop.models.admin.AdminDao;
 import com.photoshop.models.photographer.Photographer;
@@ -15,6 +16,9 @@ import com.photoshop.models.schoolClass.SchoolClass;
 import com.photoshop.models.schoolClass.SchoolClassDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -199,5 +203,17 @@ public class ModelTests {
         assertEquals("SchoolClass name should be test", "test", schoolClass.getName());
         
         schoolClass.setName("SE42");
+    }
+    
+    @Test
+    public void testResize()
+    {
+        ImageManager IM = new ImageManager();
+        Image testpicture = Toolkit.getDefaultToolkit().createImage("C:\\Users\\pc\\Pictures\\doge.jpg");
+        System.out.println(testpicture.getHeight(null));
+        System.out.println(testpicture.getWidth(null));
+        BufferedImage bufftestpicture = IM.resize(testpicture, 100, 100);
+        System.out.println(bufftestpicture.getHeight());
+        System.out.println(bufftestpicture.getWidth());
     }
 }
