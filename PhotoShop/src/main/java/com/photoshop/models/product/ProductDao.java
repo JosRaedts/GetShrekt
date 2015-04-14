@@ -53,16 +53,21 @@ public class ProductDao extends Database{
     
     public List<Product> getPriceList(int photographerid)
     {
-        List<Product> products = new ArrayList();
+        List<Product> products = getList();
         try {
-            String querystring = "SELECT p.id AS id, p.name AS name, p.height AS height, p.width AS width, p.imageURL AS imageURL, p.active AS active, pp.photographer_id AS photographer_id, pp.price AS price FROM productprice_photographer pp LEFT JOIN products p ON pp.product_id = p.id WHERE pp.photographer_id = ?";
+            String querystring = "SELECT * FROM productprice_photographer WHERE photographer_id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, photographerid);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
             {
-                products.add(build(rs)); 
+                for(Product p : products){
+                    if(p.getId() == rs.getInt("product_id"))
+                    {
+                        p.setPrice(rs.getDouble("price"));
+                    }
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
