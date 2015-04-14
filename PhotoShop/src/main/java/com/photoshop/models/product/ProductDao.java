@@ -51,13 +51,13 @@ public class ProductDao extends Database{
         return photos;
     }
     
-    public List<Product> getPriceList(Photographer photographer)
+    public List<Product> getPriceList(int photographerid)
     {
         List<Product> products = new ArrayList();
         try {
             String querystring = "SELECT p.id AS id, p.name AS name, p.height AS height, p.width AS width, p.imageURL AS imageURL, p.active AS active, pp.photographer_id AS photographer_id, pp.product_id AS product_id, pp.price AS price FROM products p, productprice_photographer pp WHERE pp.product_id = p.id AND pp.photographer_id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
-            stat.setInt(1, photographer.getId());
+            stat.setInt(1, photographerid);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
@@ -150,7 +150,7 @@ public class ProductDao extends Database{
         }
     }
     
-    public boolean saveProductPrice(Product product, Photographer photographer)
+    public boolean saveProductPrice(Product product, int photographerid)
     {
         try {
             String querystring = null;
@@ -158,7 +158,7 @@ public class ProductDao extends Database{
             querystring = "UPDATE productprice_photographer SET price = ? WHERE photographer_id = ? AND product_id = ?";                                
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setDouble(1, product.getPrice());
-            stat.setInt(2, photographer.getId());
+            stat.setInt(2, photographerid);
             stat.setInt(3, product.getId());
             stat.execute();
             return true;
@@ -198,7 +198,7 @@ public class ProductDao extends Database{
             }
             if(rs.getDouble("price") != 0.0){
                 Photographer photographer = photographerdao.getById(rs.getInt("photographer_id"));
-                product.setPrice(photographer, rs.getDouble("price"));
+                product.setPrice(rs.getDouble("price"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);

@@ -131,6 +131,52 @@ public class ProductController extends AbstractController{
         return "redirect:../";
     }
     
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String editPost(@RequestParam("file") MultipartFile file, ModelMap map, HttpServletRequest request) {
+        if (authenticate(UserType.ADMIN)) {
+            Product temp = productDao.getById(Integer.parseInt(request.getParameter("id")));
+            if (temp != null) {
+                 if (!file.isEmpty()) {
+                try {
+                    byte[] bytes = file.getBytes();
+
+                    // Creating the directory to store file
+                    String rootPath = env.getProperty("uploadDir");
+                    File dir = new File(rootPath + "products");
+                    if (!dir.exists())
+                        dir.mkdirs();
+
+                    // Create the file on server
+                    File serverFile = new File(dir.getAbsolutePath()
+                            + File.separator + file.getOriginalFilename());
+                    BufferedOutputStream stream = new BufferedOutputStream(
+                            new FileOutputStream(serverFile));
+                    stream.write(bytes);
+                    stream.close();
+                    temp.setImageURL(file.getOriginalFilename());
+                    //System.out.println("Server File Location="+ serverFile.getAbsolutePath());
+
+                    //System.out.println("You successfully uploaded file=" + file.getOriginalFilename());
+                } catch (Exception e) {
+                    System.out.println( "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage());
+                }}
+                int bi = Integer.valueOf(request.getParameter("active"));
+                    temp.setActive(bi != 0);
+                    //temp.setImageURL(file.getOriginalFilename());
+                    temp.setName(request.getParameter("name"));
+                    temp.setHeight(Integer.parseInt(request.getParameter("height")));
+                    temp.setWidth(Integer.parseInt(request.getParameter("width")));
+                    temp.save();
+                return "redirect:list";
+
+            } else {
+                System.out.println("Invalid ID");
+                return "redirect:../";
+            }
+        }
+        return "redirect:../";
+    }
+        
     @RequestMapping(value = "/view/{photoId:^[0-9]+$}", method = RequestMethod.GET)
     @ResponseBody
     public HttpEntity<byte[]> getPhoto(HttpServletRequest response, @PathVariable("photoId") int id) throws IOException {
@@ -161,7 +207,8 @@ public class ProductController extends AbstractController{
     @RequestMapping(value = "/set", method = RequestMethod.GET)
     public String setPrice(ModelMap map, HttpServletRequest request) {
         if (authenticate(UserType.PHOTOGRAPHER)) {
-            map.put("products", productDao.getList());
+            int userID = (int)request.getSession().getAttribute("UserID");
+            map.put("products", productDao.getPriceList(userID));
             return "product/set";
         }
         return "redirect:../";
@@ -175,11 +222,12 @@ public class ProductController extends AbstractController{
                 {
                     if(Integer.parseInt(id)>0)
                     {
-                        System.out.println("jeej"+id);
-                    /*Product p = new Product();
-                      p = productDao.getById(Integer.parseInt(id));
-                      p.setPrice(Double.parseDouble(request.getParameter(id)));
-                      p.Save();*/
+                        int userID = (int)request.getSession().getAttribute("UserID");
+                        Product p = new Product();
+                        p = productDao.getById(Integer.parseInt(id));
+                        p.setPrice(Double.parseDouble(request.getParameter(id)));
+                        p.save();
+                        productDao.saveProductPrice(p, userID);
                     }
                 }
             } catch(Exception ex) {
