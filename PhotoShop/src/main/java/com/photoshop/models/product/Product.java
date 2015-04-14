@@ -32,6 +32,11 @@ public class Product {
         this.dao = dao;
     }
     
+    public void save()
+    {
+        this.dao.save(this);
+    }
+    
     public void delete()
     {
         this.dao.delete(this);
@@ -85,7 +90,7 @@ public class Product {
         this.active = active;
     }
     
-    public void setPrice(Photographer photographer, Double price){
+    public void setPrice(Double price){
         this.price = price;
     }
     

@@ -55,7 +55,7 @@
                                                     <c:forEach var="product" items="${products}">
                                                         <tr>
                                                             <td width="200px"><c:out value="${product.name}"/>:</td>
-                                                            <td> &euro; <input type="text" name="${product.id}" class="form-control formphotograaf" style="width: auto; display: inline"></td>
+                                                            <td> &euro; <input type="text" value="${product.price}" name="${product.id}" class="form-control formphotograaf" style="width: auto; display: inline"></td>
                                                         </tr>
                                                         
                                                     </c:forEach>

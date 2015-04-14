@@ -131,6 +131,27 @@ public class ProductController extends AbstractController{
         return "redirect:../";
     }
     
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String editPost(ModelMap map, HttpServletRequest request) {
+        if (authenticate(UserType.ADMIN)) {
+            Product temp = productDao.getById(Integer.parseInt(request.getParameter("id")));
+            if (temp != null) {
+                int bi = Integer.valueOf(request.getParameter("active"));
+                    temp.setActive(bi != 0);
+                    //temp.setImageURL(file.getOriginalFilename());
+                    temp.setName(request.getParameter("name"));
+                    temp.setHeight(Integer.parseInt(request.getParameter("height")));
+                    temp.setWidth(Integer.parseInt(request.getParameter("width")));
+                    temp.save();
+                return "redirect:list";
+
+            } else {
+                System.out.println("Invalid ID");
+                return "redirect:../";
+            }
+        }
+        return "redirect:../";
+    }
     @RequestMapping(value = "/view/{photoId:^[0-9]+$}", method = RequestMethod.GET)
     @ResponseBody
     public HttpEntity<byte[]> getPhoto(HttpServletRequest response, @PathVariable("photoId") int id) throws IOException {
@@ -161,7 +182,8 @@ public class ProductController extends AbstractController{
     @RequestMapping(value = "/set", method = RequestMethod.GET)
     public String setPrice(ModelMap map, HttpServletRequest request) {
         if (authenticate(UserType.PHOTOGRAPHER)) {
-            map.put("products", productDao.getList());
+            int userID = (int)request.getSession().getAttribute("UserID");
+            map.put("products", productDao.getPriceList(userID));
             return "product/set";
         }
         return "redirect:../";
@@ -175,11 +197,12 @@ public class ProductController extends AbstractController{
                 {
                     if(Integer.parseInt(id)>0)
                     {
-                        System.out.println("jeej"+id);
-                    /*Product p = new Product();
-                      p = productDao.getById(Integer.parseInt(id));
-                      p.setPrice(Double.parseDouble(request.getParameter(id)));
-                      p.Save();*/
+                        int userID = (int)request.getSession().getAttribute("UserID");
+                        Product p = new Product();
+                        p = productDao.getById(Integer.parseInt(id));
+                        p.setPrice(Double.parseDouble(request.getParameter(id)));
+                        p.save();
+                        productDao.saveProductPrice(p, userID);
                     }
                 }
             } catch(Exception ex) {

@@ -45,7 +45,8 @@
                                 <div class="col-lg-12">
                                     <div class="dataTable_wrapper">
                                         <div class="col-lg-6">
-                                            <form method="post"  action="${baseurl}/product/add" enctype="multipart/form-data">
+                                            <form method="post"  action="${baseurl}/product/edit" enctype="multipart/form-data">
+                                                <input type="hidden" id="hiddenIdfield" name="id" value="${product.id}">
                                                 <table border="0">
                                                     <tr>
                                                         <td width="200px"><spring:message code="active" text="%active" />:</td>
