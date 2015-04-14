@@ -213,8 +213,7 @@ public class ProductDao extends Database{
             else{
                 product.setActive(false);
             }
-            Photographer photographer = photographerdao.getById(rs.getInt("photographer_id"));
-            product.setPrice(rs.getDouble("price"));
+            product.setPrice(0.00);
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
