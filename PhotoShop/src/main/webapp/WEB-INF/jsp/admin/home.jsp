@@ -46,7 +46,7 @@
                                     <i class="fa fa-picture-o fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">12</div>
+                                    <div class="huge">${Photocount}</div>
                                     <div>Photo's</div>
                                 </div>
                             </div>
