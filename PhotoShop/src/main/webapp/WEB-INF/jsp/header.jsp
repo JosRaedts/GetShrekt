@@ -39,6 +39,11 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="${baseurl}"><spring:message code="home" text="%home" /></a></li>
+            <c:if test="${sessionScope.UserType == 'STUDENT' && sessionScope.UserID != null}">
+            <li><a href="${baseurl}"><spring:message code="mypicturs" text="%mypicturs" /></a></li>
+            <li><a href="${baseurl}"><spring:message code="myschoolklasspictures" text="%myschoolklasspictures" /></a></li>
+            <li><a href="${baseurl}"><spring:message code="myschoolpictures" text="%myschoolpictures" /></a></li>
+            </c:if>
             <li><a href="${baseurl}/contact"><spring:message code="contact" text="%contact" /></a></li>
           </ul>
           <div class="menuright">
