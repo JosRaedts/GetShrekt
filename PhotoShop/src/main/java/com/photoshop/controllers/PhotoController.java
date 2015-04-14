@@ -46,11 +46,10 @@ import java.util.Iterator;
  *
  * @author Bram
  */
-
 @RequestMapping("/photo")
 @Controller
 public class PhotoController extends AbstractController {
-    
+
     @Autowired
     private PhotoDao photodao;
 
@@ -70,21 +69,18 @@ public class PhotoController extends AbstractController {
     private SchoolDao schoolDao;
 
     @RequestMapping(value = {"/upload", "/upload/do_upload"}, method = RequestMethod.GET)
-    public String upload()
-    {
-        if(this.authenticate(UserType.PHOTOGRAPHER)) {
+    public String upload() {
+        if (this.authenticate(UserType.PHOTOGRAPHER)) {
             return "photo/upload";
-        }
-        else
-        {
+        } else {
             return this.backendLogin();
         }
     }
 
     @RequestMapping(value = "/upload/do_upload", method = RequestMethod.POST)
-    public @ResponseBody JsonObject do_upload(MultipartHttpServletRequest request, HttpServletRequest response)
-    {
-        if(this.authenticate(UserType.PHOTOGRAPHER)) {
+    public @ResponseBody
+    JsonObject do_upload(MultipartHttpServletRequest request, HttpServletRequest response) {
+        if (this.authenticate(UserType.PHOTOGRAPHER)) {
             Photographer photographer = (Photographer) this.getUser();
             Iterator<String> itr = request.getFileNames();
             while (itr.hasNext()) {
@@ -112,8 +108,7 @@ public class PhotoController extends AbstractController {
                     String type = file[0].split("-")[0];
                     int id = Integer.parseInt(file[0].split("-")[1]);
 
-                    switch (type)
-                    {
+                    switch (type) {
                         case "student":
                             Student student = studentDao.getById(id);
                             student.addPhoto(photo);
@@ -152,9 +147,9 @@ public class PhotoController extends AbstractController {
     @ResponseBody
     public HttpEntity<byte[]> getPhoto(HttpServletRequest response, @PathVariable("format") String format, @PathVariable("photoId") int id) throws IOException {
         Photo photo = photodao.getById(id);
-        if(photo != null) {
+        if (photo != null) {
             String filename = "";
-            switch(format) {
+            switch (format) {
                 case "high":
                     filename = env.getProperty("uploadDir") + photo.getHighResURL();
                     break;
@@ -175,19 +170,17 @@ public class PhotoController extends AbstractController {
             headers.setContentLength(image.length);
 
             return new HttpEntity<byte[]>(image, headers);
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
-
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(ModelMap map, HttpServletRequest request)
-    {
-        map.put("pictures", photodao.getList());
-        return "photo/list";
+    public String list(ModelMap map, HttpServletRequest request) {
+        if (this.authenticate(UserType.ADMIN)) {
+            map.put("pictures", photodao.getList());
+            return "photo/list";
+        }
+        return null;
     }
 }
-
