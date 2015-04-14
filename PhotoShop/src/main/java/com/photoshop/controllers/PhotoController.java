@@ -181,6 +181,6 @@ public class PhotoController extends AbstractController {
             map.put("pictures", photodao.getList());
             return "photo/list";
         }
-        return null;
+        return "redirect:../";
     }
 }

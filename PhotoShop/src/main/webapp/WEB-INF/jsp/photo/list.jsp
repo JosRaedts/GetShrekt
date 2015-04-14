@@ -60,7 +60,6 @@
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
                                         <thead>
                                             <tr>
-                                                <th></th>
                                                 <th>Picture</th>
                                                 <th>Date</th>
                                                 <th>Width</th>  
@@ -73,8 +72,7 @@
                                             <c:forEach var="picture" items="${pictures}">
                                             <input type="hidden" id="hiddenIdfield" name="id" value="${school.id}">
                                             <tr>
-                                                <td><a href="${baseurl}/school/edit?id=${picture.id}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>
-                                                <td><img src="${baseurl}/photo/view/low/${picture.id}" width="200" height="200"/></td>
+                                                <td><img src="${baseurl}/photo/view/low/${picture.id}"/></td>
                                                 <td>${picture.date}</td>
                                                 <td>${picture.width}</td>
                                                 <td>${picture.height}</td>
