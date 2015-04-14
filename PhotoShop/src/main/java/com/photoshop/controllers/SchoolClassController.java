@@ -105,4 +105,10 @@ public class SchoolClassController extends AbstractController {
         }
         return "redirect:../";
     }
+    
+    @RequestMapping(value = "/view/{ClassId:^[0-9]+$}", method = RequestMethod.GET)
+@ResponseBody
+public HttpEntity<byte[]> getPhoto(HttpServletRequest response, @PathVariable("ClassId") int id) throws IOException {
+    
+}
 }

@@ -31,7 +31,7 @@
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="#">Action</a>
+                                    <li><a href="${baseurl}/admin/barcodes"><spring:message code="generate" text="%generate" /></a>
                                     </li>
                                     <li><a href="#">Another action</a>
                                     </li>
