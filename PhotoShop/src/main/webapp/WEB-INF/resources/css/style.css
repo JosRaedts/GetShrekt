@@ -182,3 +182,15 @@ code {
 {
     text-align: center;
 }
+
+.Titelphotoview{
+    font-size: 30px;
+    text-decoration: underline;
+    color: lightblue;
+    text-align: center;
+}
+
+.box{
+    border: 1px solid black;
+    margin: 10px;
+}

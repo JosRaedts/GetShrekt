@@ -228,4 +228,13 @@ public class PhotoController extends AbstractController {
         }
         return "redirect:../";
     }
+    
+    @RequestMapping(value = "/mypictures", method = RequestMethod.GET)
+    public String mypictures(ModelMap map, HttpServletRequest request)
+    {
+        int userID = (int)request.getSession().getAttribute("UserID");
+        map.put("Photo", photodao.getPhotosByStudent(userID));
+        map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
+        return "photo/mypictures";
+    }
 }
