@@ -193,6 +193,44 @@
                         <li>
                             <a href="${baseurl}/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
+                        <li>
+                            <a href="#"><i class="fa fa-picture-o fa-fw"></i> <spring:message code="photos" text="%photos" /><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <c:if test="${sessionScope.UserType == 'PHOTOGRAPHER' && sessionScope.UserID != null}">
+                                <li>
+                                    <a href="${baseurl}/photo/upload"><i class="fa fa-plus fa-fw"></i> <spring:message code="add" text="%add" /></a>
+                                </li>
+                                <li>
+                                    <a href="${baseurl}/photographer/photo"><i class="fa fa-list-ul fa-fw"></i> <spring:message code="overview" text="%overview" /></a>
+                                </li>
+                                </c:if>
+                                <c:if test="${sessionScope.UserType == 'ADMIN' && sessionScope.UserID != null}">
+                                <li>
+                                    <a href="${baseurl}/photo/list"><i class="fa fa-list-ul fa-fw"></i> <spring:message code="overview" text="%overview" /></a>
+                                </li>
+                                </c:if>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-beer fa-fw"></i> <spring:message code="products" text="%products" /><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <c:if test="${sessionScope.UserType == 'PHOTOGRAPHER' && sessionScope.UserID != null}">
+                                <li>
+                                    <a href="${baseurl}/product/set"><i class="fa fa-eur fa-fw"></i> <spring:message code="setPrice" text="%setPrice" /></a>
+                                </li>
+                                </c:if>
+                                <c:if test="${sessionScope.UserType == 'ADMIN' && sessionScope.UserID != null}">
+                                <li>
+                                    <a href="${baseurl}/product/add"><i class="fa fa-plus fa-fw"></i> <spring:message code="add" text="%add" /></a>
+                                </li>
+                                <li>
+                                    <a href="${baseurl}/product/list"><i class="fa fa-list-ul fa-fw"></i> <spring:message code="overview" text="%overview" /></a>
+                                </li>
+                                </c:if>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
                         <c:if test="${sessionScope.UserType == 'ADMIN' && sessionScope.UserID != null}">
                         <li>
                             <a href="#"><i class="fa fa-camera fa-fw"></i> <spring:message code="photographers" text="%photographers" /><span class="fa arrow"></span></a>
