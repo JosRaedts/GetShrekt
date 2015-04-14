@@ -5,6 +5,7 @@
  */
 package com.photoshop.controllers;
 
+import com.photoshop.misc.ImageManager;
 import com.photoshop.models.UserType;
 import com.photoshop.models.photo.Photo;
 import com.photoshop.models.photo.PhotoDao;
@@ -67,6 +68,9 @@ public class PhotoController extends AbstractController {
 
     @Autowired
     private SchoolDao schoolDao;
+    
+    @Autowired
+    private ImageManager imageManager;
 
     @RequestMapping(value = {"/upload", "/upload/do_upload"}, method = RequestMethod.GET)
     public String upload() {
@@ -90,8 +94,49 @@ public class PhotoController extends AbstractController {
                     String originalFilename = mpf.getOriginalFilename();
                     String newFilename = System.currentTimeMillis() + "-" + mpf.getOriginalFilename();
                     FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(path + newFilename));
-
                     BufferedImage bimg = ImageIO.read(new File(path + newFilename));
+                    
+                    BufferedImage blowres = bimg;
+                    BufferedImage bthumbnail = bimg;
+                    
+                    if(bimg.getHeight() > bimg.getWidth())
+                    {
+                        if(bimg.getHeight() > 1024)
+                        {
+                            int ratio = bimg.getHeight() / 1024;
+                            blowres = imageManager.resize(bimg, 1024, bimg.getWidth()/ratio);
+                        }
+                        if(bimg.getHeight() > 100)
+                        {
+                            int ratio = bimg.getHeight() / 100;
+                            blowres = imageManager.resize(bimg, 100, bimg.getWidth()/ratio);
+                        }
+                    }
+                    else
+                    if(bimg.getWidth()> bimg.getHeight())
+                    {
+                        if(bimg.getWidth() > 1024)
+                        {
+                            int ratio = bimg.getWidth() / 1024;
+                            blowres = imageManager.resize(bimg, bimg.getHeight()/ratio, 1024);
+                        }
+                        if(bimg.getWidth() > 100)
+                        {
+                            int ratio = bimg.getWidth() / 100;
+                            blowres = imageManager.resize(bimg, bimg.getHeight()/ratio, 100);
+                        }
+                    }
+
+
+                    File lowdir = new File(path + "/low");
+                    if (!lowdir.exists()){ lowdir.mkdirs(); }
+                    File thumbdir = new File(path + "/thumb");
+                    if (!thumbdir.exists()){ thumbdir.mkdirs(); }
+                    
+                    String lowres = path + "/low/lowres-" + newFilename;
+                    String thumbnail = path + "/thumb/thumb-" + newFilename;
+                    ImageIO.write(blowres, "jpg", new FileOutputStream(lowres));
+                    ImageIO.write(bthumbnail, "jpg", new FileOutputStream(thumbnail));
 
                     Photo photo = new Photo();
                     photo.setActive(true);
@@ -100,7 +145,7 @@ public class PhotoController extends AbstractController {
                     photo.setHeight(bimg.getHeight());
                     photo.setWidth(bimg.getWidth());
                     photo.setHighResURL(newFilename);
-                    photo.setLowResURL(newFilename);
+                    photo.setLowResURL(lowres);
                     photo.setPhotographerID(photographer.getId());
                     photo.save();
 
