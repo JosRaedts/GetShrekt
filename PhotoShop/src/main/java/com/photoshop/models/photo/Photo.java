@@ -16,6 +16,7 @@ public class Photo {
     private int id;
     private int height;
     private int width;
+    private String thumbnailURL;
     private String lowResURL;
     private String highResURL;
     private boolean active;
@@ -63,6 +64,10 @@ public class Photo {
     public void setWidth(int width) {
         this.width = width;
     }
+    
+    public String getThumbnailURL() {
+        return thumbnailURL;
+    }
 
     public String getLowResURL() {
         return lowResURL;
@@ -72,6 +77,10 @@ public class Photo {
         return highResURL;
     }
 
+    public void setThumbnailURL(String URL) {
+        this.thumbnailURL = URL;
+    }
+    
     public void setHighResURL(String URL) {
         this.highResURL = URL;
     }

@@ -53,16 +53,21 @@ public class ProductDao extends Database{
     
     public List<Product> getPriceList(int photographerid)
     {
-        List<Product> products = new ArrayList();
+        List<Product> products = getList();
         try {
-            String querystring = "SELECT p.id AS id, p.name AS name, p.height AS height, p.width AS width, p.imageURL AS imageURL, p.active AS active, pp.photographer_id AS photographer_id, pp.product_id AS product_id, pp.price AS price FROM products p, productprice_photographer pp WHERE pp.product_id = p.id AND pp.photographer_id = ?";
+            String querystring = "SELECT * FROM productprice_photographer WHERE photographer_id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, photographerid);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
             {
-                products.add(build(rs)); 
+                for(Product p : products){
+                    if(p.getId() == rs.getInt("product_id"))
+                    {
+                        p.setPrice(rs.getDouble("price"));
+                    }
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -154,13 +159,25 @@ public class ProductDao extends Database{
     {
         try {
             String querystring = null;
-                        
-            querystring = "UPDATE productprice_photographer SET price = ? WHERE photographer_id = ? AND product_id = ?";                                
-            PreparedStatement stat = conn.prepareStatement(querystring);
-            stat.setDouble(1, product.getPrice());
-            stat.setInt(2, photographerid);
-            stat.setInt(3, product.getId());
-            stat.execute();
+            boolean exists = photographerProductExists(photographerid, product.getId());
+            if(exists)
+            {
+                querystring = "UPDATE productprice_photographer SET price = ? WHERE photographer_id = ? AND product_id = ?";
+                PreparedStatement stat = conn.prepareStatement(querystring);
+                stat.setDouble(1, product.getPrice());
+                stat.setInt(2, photographerid);
+                stat.setInt(3, product.getId());
+                stat.execute();
+            }
+            else
+            {
+                querystring = "INSERT INTO productprice_photographer(photographer_id, product_id, price) VALUES(?, ?, ?)";
+                PreparedStatement stat = conn.prepareStatement(querystring);
+                stat.setInt(1, photographerid);
+                stat.setInt(2, product.getId());
+                stat.setDouble(3, product.getPrice());
+                stat.execute();
+            }                               
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -196,13 +213,34 @@ public class ProductDao extends Database{
             else{
                 product.setActive(false);
             }
-            if(rs.getDouble("price") != 0.0){
-                Photographer photographer = photographerdao.getById(rs.getInt("photographer_id"));
-                product.setPrice(rs.getDouble("price"));
-            }
+            product.setPrice(0.00);
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return product;
+    }
+    
+    public boolean photographerProductExists(int photographerid, int productid)
+    {
+        try{
+            String querystring = null;
+            boolean exists = false;
+            querystring = "SELECT * FROM productprice_photographer WHERE photographer_id = ? AND product_id = ?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photographerid);
+            stat.setInt(2, productid);
+            ResultSet rs = stat.executeQuery();
+            
+            while(rs.next())
+            {
+               exists = true;
+            }
+            
+            return exists;
+        }
+        catch(SQLException ex){
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 }

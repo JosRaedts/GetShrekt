@@ -91,30 +91,31 @@ public class PhotoDao extends Database {
             boolean exists = idExists(photo.getId());
             if(exists)
             {
-                querystring = "UPDATE photos SET height = ?, width = ?, lowresURL = ?, highresURL = ?, photographerID = ?, active = ?, date = ? WHERE id = ?";
+                querystring = "UPDATE photos SET height = ?, width = ?, thumbnailURL = ?, lowresURL = ?, highresURL = ?, photographerID = ?, active = ?, date = ? WHERE id = ?";
                 stat = conn.prepareStatement(querystring);
             }
             else
             {
-                querystring = "INSERT INTO photos(height, width, lowresURL, highresURL, photographerID, active, date) VALUES(?, ?, ?, ?, ?, ?, ?)";
+                querystring = "INSERT INTO photos(height, width, thumbnailURL = ?, lowresURL, highresURL, photographerID, active, date) VALUES(?, ?, ?, ?, ?, ?, ?)";
                 stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             }
 
             stat.setInt(1, photo.getHeight());
             stat.setInt(2, photo.getWidth());
-            stat.setString(3, photo.getLowResURL());
-            stat.setString(4, photo.getHighResURL());
-            stat.setInt(5, photo.getPhotographerID());
+            stat.setString(3, photo.getThumbnailURL());
+            stat.setString(4, photo.getLowResURL());
+            stat.setString(5, photo.getHighResURL());
+            stat.setInt(6, photo.getPhotographerID());
             if(photo.getActive()){
-                stat.setInt(6, 1);
+                stat.setInt(7, 1);
             }
             else{
-                stat.setInt(6, 0);
+                stat.setInt(7, 0);
             }
-            stat.setDate(7, (Date)photo.getDate());
+            stat.setDate(8, (Date)photo.getDate());
             if(exists)
             {
-                stat.setInt(8, photo.getId());
+                stat.setInt(9, photo.getId());
             }
             stat.execute();
             if(!exists)
@@ -150,6 +151,7 @@ public class PhotoDao extends Database {
             photo.setId(rs.getInt("id"));
             photo.setHeight(rs.getInt("height"));
             photo.setWidth(rs.getInt("width"));
+            photo.setThumbnailURL("thumnailURL");
             photo.setLowResURL(rs.getString("lowresURL"));
             photo.setHighResURL(rs.getString("highresURL"));
             if(rs.getInt("active") == 1){

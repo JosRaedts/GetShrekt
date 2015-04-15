@@ -8,6 +8,7 @@ package com.photoshop.controllers;
 import com.photoshop.models.UserType;
 import com.photoshop.models.admin.Admin;
 import com.photoshop.models.admin.AdminDao;
+import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.photographer.Photographer;
 import com.photoshop.models.photographer.PhotographerDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class DefaultController extends AbstractController {
    
+    @Autowired
+    private PhotoDao photoDao;
+    
     @Autowired
     private PhotographerDao photographerDao;
     
@@ -75,9 +79,12 @@ public class DefaultController extends AbstractController {
    }
    
    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-   public String admin(ModelMap map) {
+   public String admin(ModelMap map,HttpServletRequest request) {
         if(authenticate(UserType.ADMIN,UserType.PHOTOGRAPHER))
         {    
+            int photocount = this.photoDao.getPhotosByPhotographer(Integer.parseInt(request.getSession().getAttribute("UserID").toString())).size();
+            map.put("Photocount", photocount);
+            System.out.println(photocount);
             return "admin/home";
         }
         return "redirect:admin/login";

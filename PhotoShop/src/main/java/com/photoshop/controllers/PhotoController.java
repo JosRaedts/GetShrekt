@@ -5,11 +5,13 @@
  */
 package com.photoshop.controllers;
 
+import com.photoshop.misc.ImageManager;
 import com.photoshop.models.UserType;
 import com.photoshop.models.photo.Photo;
 import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.photo.PhotoJson;
 import com.photoshop.models.photographer.Photographer;
+import com.photoshop.models.product.ProductDao;
 import com.photoshop.models.school.School;
 import com.photoshop.models.school.SchoolDao;
 import com.photoshop.models.schoolClass.SchoolClass;
@@ -46,13 +48,15 @@ import java.util.Iterator;
  *
  * @author Bram
  */
-
 @RequestMapping("/photo")
 @Controller
 public class PhotoController extends AbstractController {
-    
+
     @Autowired
     private PhotoDao photodao;
+    
+    @Autowired
+    private ProductDao productdao;
 
     @Autowired
     private ServletContext servletContext;
@@ -68,23 +72,23 @@ public class PhotoController extends AbstractController {
 
     @Autowired
     private SchoolDao schoolDao;
+    
+    @Autowired
+    private ImageManager imageManager;
 
     @RequestMapping(value = {"/upload", "/upload/do_upload"}, method = RequestMethod.GET)
-    public String upload()
-    {
-        if(this.authenticate(UserType.PHOTOGRAPHER)) {
+    public String upload() {
+        if (this.authenticate(UserType.PHOTOGRAPHER)) {
             return "photo/upload";
-        }
-        else
-        {
+        } else {
             return this.backendLogin();
         }
     }
 
     @RequestMapping(value = "/upload/do_upload", method = RequestMethod.POST)
-    public @ResponseBody JsonObject do_upload(MultipartHttpServletRequest request, HttpServletRequest response)
-    {
-        if(this.authenticate(UserType.PHOTOGRAPHER)) {
+    public @ResponseBody
+    JsonObject do_upload(MultipartHttpServletRequest request, HttpServletRequest response) {
+        if (this.authenticate(UserType.PHOTOGRAPHER)) {
             Photographer photographer = (Photographer) this.getUser();
             Iterator<String> itr = request.getFileNames();
             while (itr.hasNext()) {
@@ -94,8 +98,49 @@ public class PhotoController extends AbstractController {
                     String originalFilename = mpf.getOriginalFilename();
                     String newFilename = System.currentTimeMillis() + "-" + mpf.getOriginalFilename();
                     FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(path + newFilename));
-
                     BufferedImage bimg = ImageIO.read(new File(path + newFilename));
+                    
+                    BufferedImage blowres = bimg;
+                    BufferedImage bthumbnail = bimg;
+                    
+                    if(bimg.getHeight() > bimg.getWidth())
+                    {
+                        if(bimg.getHeight() > 1024)
+                        {
+                            int ratio = bimg.getHeight() / 1024;
+                            blowres = imageManager.resize(bimg, 1024, bimg.getWidth()/ratio);
+                        }
+                        if(bimg.getHeight() > 100)
+                        {
+                            int ratio = bimg.getHeight() / 100;
+                            blowres = imageManager.resize(bimg, 100, bimg.getWidth()/ratio);
+                        }
+                    }
+                    else
+                    if(bimg.getWidth()> bimg.getHeight())
+                    {
+                        if(bimg.getWidth() > 1024)
+                        {
+                            int ratio = bimg.getWidth() / 1024;
+                            blowres = imageManager.resize(bimg, bimg.getHeight()/ratio, 1024);
+                        }
+                        if(bimg.getWidth() > 100)
+                        {
+                            int ratio = bimg.getWidth() / 100;
+                            blowres = imageManager.resize(bimg, bimg.getHeight()/ratio, 100);
+                        }
+                    }
+
+
+                    File lowdir = new File(path + "/low");
+                    if (!lowdir.exists()){ lowdir.mkdirs(); }
+                    File thumbdir = new File(path + "/thumb");
+                    if (!thumbdir.exists()){ thumbdir.mkdirs(); }
+                    
+                    String lowres = path + "/low/lowres-" + newFilename;
+                    String thumbnail = path + "/thumb/thumb-" + newFilename;
+                    ImageIO.write(blowres, "jpg", new FileOutputStream(lowres));
+                    ImageIO.write(bthumbnail, "jpg", new FileOutputStream(thumbnail));
 
                     Photo photo = new Photo();
                     photo.setActive(true);
@@ -104,7 +149,7 @@ public class PhotoController extends AbstractController {
                     photo.setHeight(bimg.getHeight());
                     photo.setWidth(bimg.getWidth());
                     photo.setHighResURL(newFilename);
-                    photo.setLowResURL(newFilename);
+                    photo.setLowResURL(lowres);
                     photo.setPhotographerID(photographer.getId());
                     photo.save();
 
@@ -112,8 +157,7 @@ public class PhotoController extends AbstractController {
                     String type = file[0].split("-")[0];
                     int id = Integer.parseInt(file[0].split("-")[1]);
 
-                    switch (type)
-                    {
+                    switch (type) {
                         case "student":
                             Student student = studentDao.getById(id);
                             student.addPhoto(photo);
@@ -152,9 +196,9 @@ public class PhotoController extends AbstractController {
     @ResponseBody
     public HttpEntity<byte[]> getPhoto(HttpServletRequest response, @PathVariable("format") String format, @PathVariable("photoId") int id) throws IOException {
         Photo photo = photodao.getById(id);
-        if(photo != null) {
+        if (photo != null) {
             String filename = "";
-            switch(format) {
+            switch (format) {
                 case "high":
                     filename = env.getProperty("uploadDir") + photo.getHighResURL();
                     break;
@@ -175,19 +219,33 @@ public class PhotoController extends AbstractController {
             headers.setContentLength(image.length);
 
             return new HttpEntity<byte[]>(image, headers);
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
-
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String list(ModelMap map, HttpServletRequest request)
+    public String list(ModelMap map, HttpServletRequest request) {
+        if (this.authenticate(UserType.ADMIN)) {
+            map.put("pictures", photodao.getList());
+            return "photo/list";
+        }
+        return "redirect:../";
+    }
+    
+    @RequestMapping(value = "/mypictures", method = RequestMethod.GET)
+    public String mypictures(ModelMap map, HttpServletRequest request)
     {
-        map.put("pictures", photodao.getList());
-        return "photo/list";
+        int userID = (int)request.getSession().getAttribute("UserID");
+        map.put("Photo", photodao.getPhotosByStudent(userID));
+        map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
+        return "photo/mypictures";
+    }
+    
+    @RequestMapping(value = "/photodetail", method = RequestMethod.GET)
+    public String detail(ModelMap map, HttpServletRequest request) {
+        map.put("testphoto", "../resources/img/photobackground.png");
+        map.put("products", productdao.getList());
+        return "photo/photodetail";
     }
 }
-
