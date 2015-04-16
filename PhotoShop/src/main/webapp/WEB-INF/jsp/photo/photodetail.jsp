@@ -20,7 +20,11 @@
                 <input type="radio" name="sex" value="male"><img src="${baseurl}/product/view/${products.id}" height="125px" width="125px" />                       
             </div>
         </c:forEach>
-        <input type="submit" name="submit" value="Betalen">
+        <div id="betalingsInfoDetail" width="100px" height="100px">
+            <label name="total Amount">Totaalbedrag:</label>
+            <input type="text" name="totalAmount" value=${amount}><br />
+            <input type="submit" name="submit" value="Betalen"> 
+        </div>
     </div>
 </div>
 <jsp:include page="/WEB-INF/jsp/footer.jsp" />

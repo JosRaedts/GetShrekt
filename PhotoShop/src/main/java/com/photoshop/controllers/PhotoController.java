@@ -244,8 +244,10 @@ public class PhotoController extends AbstractController {
     
     @RequestMapping(value = "/photodetail", method = RequestMethod.GET)
     public String detail(ModelMap map, HttpServletRequest request) {
+        double amount = 24.95;
         map.put("testphoto", "../resources/img/photobackground.png");
         map.put("products", productdao.getList());
+        map.put("amount", "&euro;" + amount);
         return "photo/photodetail";
     }
 }
