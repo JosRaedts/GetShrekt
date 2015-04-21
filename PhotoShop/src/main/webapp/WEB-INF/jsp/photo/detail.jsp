@@ -18,16 +18,46 @@
         <div class="col-md-6">
             <div id="boxes">
             <c:forEach var="products" items="${products}">
-                <div class="col-md-4 col-sm-6 col-xs-12 borders">
+                <div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="box">
-                        <input type="checkbox" name="sex" value="male"><img src="${baseurl}/product/view/${products.id}" height="100%" width="100%" /> 
+                        <input type="checkbox" name="products" value="products"><img src="${baseurl}/product/view/${products.id}" height="100%" width="90%" /> 
+                        <div class="col-md-6">
+                            <input type="text" name="amount" style="width: 100%;">
+                        </div>
+                        <div class="col-md-6">
+                            <label name="productprice">&euro; ${products.price}</label>
+                        </div>
                     </div>
                 </div>
             </c:forEach>
             </div>
             <div class="col-md-12">
-                <label name="total Amount">Totaal bedrag: ${amount}</label> 
+                <label name="total Amount">Totaal bedrag: ${amount}</label><br />
                 <input type="submit" name="submit" value="Toevoegen aan winkelwagen"> 
+                <script>
+                    $(document).ready(function(){
+
+                        update_amounts();
+                        $('.qty').change(function() {
+                            update_amounts();
+                        });
+                    });
+
+
+                    function update_amounts()
+                    {
+                        var sum = 0.0;
+                        $('#myTable > tbody  > tr').each(function() {
+                            var qty = $(this).find('option:selected').val();
+                            var price = $(this).find('.price').val();
+                            var amount = (qty*price)
+                            sum+=amount;
+                            $(this).find('.amount').text(''+amount);
+                        });
+                        //just update the total to sum  
+                        $('.total').text(sum);
+                    }
+                </script>
             </div>
         </div>
     </div>
