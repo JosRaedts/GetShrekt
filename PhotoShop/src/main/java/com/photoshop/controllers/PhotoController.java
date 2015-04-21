@@ -260,27 +260,38 @@ public class PhotoController extends AbstractController {
     @RequestMapping(value = "/mypictures", method = RequestMethod.GET)
     public String mypictures(ModelMap map, HttpServletRequest request)
     {
-        int userID = (int)request.getSession().getAttribute("UserID");
-        map.put("Photo", photodao.getPhotosByStudent(userID));
-        map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
-        return "photo/mypictures";
+        if (this.authenticate(UserType.PHOTOGRAPHER,UserType.STUDENT,UserType.ADMIN)) {
+            int userID = (int)request.getSession().getAttribute("UserID");
+            map.put("Photo", photodao.getPhotosByStudent(userID));
+            map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
+            return "photo/mypictures";
+        } else {
+            return "redirect:../";
+        }
+        
     }
     
 
     @RequestMapping(value = "/myschoolclasspictures", method = RequestMethod.GET)
     public String myschoolklasspictures(ModelMap map, HttpServletRequest request)
     {
+        if (this.authenticate(UserType.PHOTOGRAPHER,UserType.STUDENT,UserType.ADMIN))
+        {
         int userID = (int)request.getSession().getAttribute("UserID");
-        
         int schoolclassid = studentDao.getById(userID).getSchoolclass_id();
         map.put("Photo", photodao.getClassPhotosByStudentclass(schoolclassid));
         map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
         return "photo/myschoolclasspictures";
+        } else {
+            return "redirect:../";
+        }
     }
     
     @RequestMapping(value = "/myschoolpictures", method = RequestMethod.GET)
     public String myschoolpictures(ModelMap map, HttpServletRequest request)
     {    
+        if (this.authenticate(UserType.PHOTOGRAPHER,UserType.STUDENT,UserType.ADMIN))
+        {
         int userID = (int)request.getSession().getAttribute("UserID");
         Student student = this.studentDao.getById(userID);
         SchoolClass schoolclass = student.getSchoolClass();
@@ -288,6 +299,9 @@ public class PhotoController extends AbstractController {
         map.put("Photo", photodao.getSchoolPhotos(school.getId()));
         map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
         return "photo/myschoolpictures";
+        } else {
+            return "redirect:../";
+        }
     }
 
     @RequestMapping(value = "/detail/{PhotoId:^[0-9]+$}", method = RequestMethod.GET)
