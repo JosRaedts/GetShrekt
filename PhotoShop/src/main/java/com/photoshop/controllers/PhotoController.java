@@ -193,7 +193,7 @@ public class PhotoController extends AbstractController {
         return null;
     }
 
-    @RequestMapping(value = "/view/{format:low|high}/{photoId:^[0-9]+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/view/{format:low|high|thumb}/{photoId:^[0-9]+$}", method = RequestMethod.GET)
     @ResponseBody
     public HttpEntity<byte[]> getPhoto(HttpServletRequest response, @PathVariable("format") String format, @PathVariable("photoId") int id) throws IOException {
         Photo photo = photodao.getById(id);
@@ -205,6 +205,9 @@ public class PhotoController extends AbstractController {
                     break;
                 case "low":
                     filename = env.getProperty("uploadDir") + photo.getLowResURL();
+                    break;
+                case "thumb":
+                    filename = env.getProperty("uploadDir") + photo.getThumbnailURL();
                     break;
             }
 
