@@ -3,7 +3,7 @@
 <jsp:include page="/WEB-INF/jsp/header.jsp" />
 <div class="container">
     <div class="Titelphotoview">
-        <h> Persoonlijke photo's van ${studentnaam} </h>    
+        <h1> Persoonlijke photo's van ${studentnaam} </h1>    
     </div>
 
     <c:forEach var="Photo" items="${Photo}">

@@ -12,18 +12,19 @@
         <div class="titeldetailpagina" style="margin-top: 60px;">
             <h1>Photo detail pagina </h1>
         </div>
-        <div class="col-md-6" width="500px">
+        <div class="col-md-6">
             <img src="${testphoto}" width="500px" height="400px"/>
         </div>
-        <c:forEach var="products" items="${products}">
-            <div class="col-md-2 col-sm-4 col-xs-8">
-                <input type="radio" name="sex" value="male"><img src="${baseurl}/product/view/${products.id}" height="125px" width="125px" />                       
+        <div class="col-md-6">
+            <c:forEach var="products" items="${products}">
+                <div class="col-md-4 col-sm-6 col-xs-12 borders box">
+                    <input type="checkbox" name="sex" value="male"><img src="${baseurl}/product/view/${products.id}" height="100%" width="100%" />                       
+                </div>
+            </c:forEach>
+            <div class="col-md-12">
+                <label name="total Amount">Totaal bedrag: ${amount}</label> 
+                <input type="submit" name="submit" value="Toevoegen aan winkelwagen"> 
             </div>
-        </c:forEach>
-        <div id="betalingsInfoDetail" width="100px" height="100px">
-            <label name="total Amount">Totaalbedrag:</label>
-            <input type="text" name="totalAmount" value=${amount}><br />
-            <input type="submit" name="submit" value="Betalen"> 
         </div>
     </div>
 </div>
