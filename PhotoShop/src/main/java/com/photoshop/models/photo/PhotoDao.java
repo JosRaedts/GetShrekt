@@ -174,7 +174,8 @@ public class PhotoDao extends Database {
             photo.setThumbnailURL(rs.getString("thumbnailURL"));
             photo.setLowResURL(rs.getString("lowresURL"));
             photo.setHighResURL(rs.getString("highresURL"));
-            if(rs.getInt("active") == 1){
+            photo.setPhotographerID(rs.getInt("photographerID"));
+            if(rs.getInt("active") == 1){   
                 photo.setActive(true);
             }
             else{
