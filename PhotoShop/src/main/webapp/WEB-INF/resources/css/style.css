@@ -183,15 +183,19 @@ code {
 }
 
 .Titelphotoview {
-  font-size: 30px;
-  text-decoration: underline;
-  color: lightblue;
-  text-align: center;
-  margin-bottom: 25px;
+    font-size: 30px;
+    text-decoration: underline;
+    color: lightblue;
+    text-align: center;
+    margin-bottom: 25px;
 }
 
 .box {
-  margin-top: 15px;
-  margin-bottom: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
+.quantity {
+    margin-right: 10px;
+    width: 50px;
+}

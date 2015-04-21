@@ -19,37 +19,49 @@
         <c:forEach var="products" items="${products}">
             <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="box">
-                    <img src="${baseurl}/product/view/${products.id}" height="100%" width="90%" /> 
-                    <input type="text" class="quantity" name="amount" style=" width: 50px; margin-right: 10px;">
-                    <label class="price" name="productprice">${products.price}</label>
+                    <img src="${baseurl}/product/view/${products.id}" height="100%" width="90%" />
+                    <select value="" class="qty" name="qty">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                    <label id="price" price="${products.price}" name="productprice">&euro; ${products.price}</label>
+                    
                 </div>
             </div>
         </c:forEach>
         </div>
         <div class="col-md-12">
-            <label name="totalAmount" class="total"> ${amount}</label><br />
+            <label name="totalAmount" class="total"></label><br />
             <input type="submit" name="submit" value="Toevoegen aan winkelwagen" style="margin-bottom:15px;"> 
             <script>
-                $(document).ready(function(){
-
+                $(document).ready(function()
+                {
                     update_amounts();
-                    $('.quantity').change(function() {
+                    $('.box').change(function(){
                         update_amounts();
                     });
                 });
-
 
                 function update_amounts()
                 {
                     var sum = 0.0;
                     $('.box').each(function() {
-                        var qty = $(this).find('.quantity').val();
-                        var price = $(this).find('.price').val();
+                        var qty = $(this).find('option:selected').val();
+                        var price = $('#price').attr('price');
                         var amount = (qty*price);
                         sum+=amount;
                     });
                     //just update the total to sum  
-                    $('.total').text("Totaal bedrag:" + sum);
+                    $('.total').text("Totaal bedrag: " + '\u20AC' + sum.toFixed(2));
                 }
             </script>
         </div>
