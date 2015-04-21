@@ -37,7 +37,7 @@ public class StudentController extends AbstractController {
     //Lijst weergaven
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             try {
 
                 SchoolClass temp = schoolclassdao.getById(Integer.parseInt(request.getParameter("id")));
@@ -55,7 +55,7 @@ public class StudentController extends AbstractController {
     //Back button
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public String back(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             SchoolClass schoolclass = schoolclassdao.getById(Integer.parseInt(request.getParameter("id")));
             School school = schoolclass.getSchool();
             return "redirect:../schoolclass/list?id=" + school.getId();
@@ -68,7 +68,7 @@ public class StudentController extends AbstractController {
     //Student aanpassen
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             map.put("student", studentDao.getById(Integer.parseInt(request.getParameter("id"))));
 
             return "student/edit";
@@ -78,7 +78,7 @@ public class StudentController extends AbstractController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String post(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             Student temp = studentDao.getById(Integer.parseInt(request.getParameter("id")));
             if (temp != null) {
                 temp.setAddress(request.getParameter("address"));
@@ -100,7 +100,7 @@ public class StudentController extends AbstractController {
     //Toevoegen student
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(ModelMap map) {
-        if (authenticate(UserType.ADMIN,UserType.PHOTOGRAPHER)) {
+        if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             map.put("schoolclasses", schoolclassdao.getList());
             return "student/add";
         } else {

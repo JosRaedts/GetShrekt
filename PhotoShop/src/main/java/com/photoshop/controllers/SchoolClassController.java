@@ -36,7 +36,7 @@ public class SchoolClassController extends AbstractController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             try {
                 School temp = schooldao.getById(Integer.parseInt(request.getParameter("id")));
                 map.put("schoolclasses", temp.getSchoolClasses());
@@ -54,7 +54,7 @@ public class SchoolClassController extends AbstractController {
     //Student aanpassen
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             map.put("schoolclass", schoolclassDao.getById(Integer.parseInt(request.getParameter("id"))));
 
             return "schoolclass/edit";
@@ -64,7 +64,7 @@ public class SchoolClassController extends AbstractController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String post(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             SchoolClass temp = schoolclassDao.getById(Integer.parseInt(request.getParameter("id")));
             int schoolid = 0;
             if (temp != null) {
@@ -83,7 +83,7 @@ public class SchoolClassController extends AbstractController {
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addpage(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             map.put("schools", schooldao.getList());
             return "schoolclass/add";
         }
@@ -92,7 +92,7 @@ public class SchoolClassController extends AbstractController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String add(ModelMap map, HttpServletRequest request) {
-        if (authenticate(UserType.ADMIN)) {
+        if (authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             SchoolClass temp = new SchoolClass();
             try {
                 temp.setName(request.getParameter("name"));
