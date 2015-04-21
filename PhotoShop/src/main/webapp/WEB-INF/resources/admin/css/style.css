@@ -8,6 +8,13 @@ and open the template in the editor.
     Author     : Casper
 */
 
+@media print  
+{
+    div{
+        page-break-inside: avoid;
+    }
+}
+
 .navbar-brand {
     padding:0;
     margin-left: 10px;
