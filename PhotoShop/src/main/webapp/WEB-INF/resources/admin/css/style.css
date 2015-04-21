@@ -42,6 +42,8 @@ and open the template in the editor.
     font-size: 18pt;
     margin-top: 30px;
     margin-bottom: 50px;
+    margin-left: 20px;
+    width: 400px;
 }
 
 .BarcodeHoeken {
@@ -51,4 +53,9 @@ and open the template in the editor.
     margin-left: 1px;
     margin-right: 1px;
     margin-top: 1px;
+    width: 400px;
+}
+
+.FloatLeft {
+    float: left;
 }
