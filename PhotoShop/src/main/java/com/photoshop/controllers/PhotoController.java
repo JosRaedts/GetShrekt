@@ -43,6 +43,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.Date;
 import java.util.Iterator;
+import net.coobird.thumbnailator.filters.Watermark;
+import net.coobird.thumbnailator.geometry.Positions;
 
 /**
  *
@@ -213,6 +215,15 @@ public class PhotoController extends AbstractController {
 
             InputStream in = new FileInputStream(filename);
             BufferedImage img = ImageIO.read(in);
+            System.out.println("Watermark test1");
+            if(format.equals("low"))
+            {
+                BufferedImage watermark = ImageIO.read(new FileInputStream(env.getProperty("uploadDir")+"watermerk.png"));
+                watermark = imageManager.resize(watermark, img.getHeight(), img.getWidth());
+                Watermark filter = new Watermark(Positions.CENTER, watermark, 0.2f);
+                img = filter.apply(img);
+                System.out.println("Watermark try");
+            }
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
             ImageIO.write(img, "jpg", bos);
@@ -269,10 +280,14 @@ public class PhotoController extends AbstractController {
 
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public String detail(ModelMap map, HttpServletRequest request) {
-        double amount = 24.95;
-        map.put("testphoto", "../resources/img/photobackground.png");
-        map.put("products", productdao.getList());
-        map.put("amount", "&euro;" + amount);
-        return "photo/detail";
+        if (this.authenticate(UserType.ADMIN))
+        {
+            double amount = 24.95;
+            map.put("testphoto", "../resources/img/photobackground.png");
+            map.put("products", productdao.getPriceList(Integer.parseInt(request.getSession().getAttribute("UserID").toString())));
+            map.put("amount", "&euro;" + amount);
+            return "photo/detail";
+        }
+        return "redirect:../";
     }
 }
