@@ -146,6 +146,7 @@ public class PhotoController extends AbstractController {
                     photo.setWidth(bimg.getWidth());
                     photo.setHighResURL(newFilename);
                     photo.setLowResURL(lowres);
+                    photo.setThumbnailURL(thumbnail);
                     photo.setPhotographerID(photographer.getId());
                     photo.save();
 
