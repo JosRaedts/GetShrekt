@@ -54,7 +54,8 @@
                                                 <th><spring:message code="LowResURL" text="%LowResURL" /></th> 
                                                 <th><spring:message code="Height" text="%Height" /></th>
                                                 <th><spring:message code="Width" text="%Width" /></th>    
-                                                <th><spring:message code="Date" text="%Date" /></th> 
+                                                <th><spring:message code="Date" text="%Date" /></th>
+                                                <th><spring:message code="Active" text="%Active" /></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -64,7 +65,13 @@
                                                     <td><img SRC="${baseurl}/photo/view/thumb/${Photo.id}"></td>
                                                     <td>${Photo.height}</td>
                                                     <td>${Photo.width}</td>
-                                                    <td><fmt:formatDate value="${Photo.date}" type="both" pattern="dd-MM-yyyy" /></td>   
+                                                    <td><fmt:formatDate value="${Photo.date}" type="both" pattern="dd-MM-yyyy" /></td> 
+                                                    <c:if test="${Photo.active}">
+                                                        <td><i class="fa fa-check fa-2x" style="color: green;"></i>
+                                                    </c:if>
+                                                    <c:if test="${!Photo.active}">
+                                                        <td><i class="fa fa-times fa-2x" style="color: red;"></i>
+                                                    </c:if>
                                                 </tr>
                                             </c:forEach>            
                                         </tbody>

@@ -42,6 +42,26 @@ public class PhotoDao extends Database {
         return photos;
     }
     
+    public List<Photo> getUnlinkedList()
+    {
+        List<Photo> photos = new ArrayList();
+        try {
+            String querystring = "SELECT * FROM `photos` WHERE id NOT IN (SELECT photoID FROM student_photos) "
+                    + "AND id NOT IN (SELECT photoID FROM schoolclass_photos) "
+                    + "AND id NOT IN (SELECT photoID FROM school_photos) ";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            ResultSet rs = stat.executeQuery();
+            
+            while(rs.next())
+            {
+                photos.add(build(rs));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return photos;
+    }
+    
     public Photo getById(int id)
     {
         Photo photographer = null;

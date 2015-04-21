@@ -248,6 +248,15 @@ public class PhotoController extends AbstractController {
         return "redirect:../";
     }
     
+    @RequestMapping(value = "/unlinkedlist", method = RequestMethod.GET)
+    public String unlinkedList(ModelMap map, HttpServletRequest request) {
+        if (this.authenticate(UserType.ADMIN)) {
+            map.put("pictures", photodao.getUnlinkedList());
+            return "photo/list";
+        }
+        return "redirect:../";
+    }
+    
     @RequestMapping(value = "/mypictures", method = RequestMethod.GET)
     public String mypictures(ModelMap map, HttpServletRequest request)
     {

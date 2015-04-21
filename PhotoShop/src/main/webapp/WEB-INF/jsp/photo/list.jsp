@@ -6,6 +6,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:include page="/WEB-INF/jsp/admin/header.jsp" />
 <div id="page-wrapper">
     <div class="row">
@@ -64,6 +65,7 @@
                                                 <th>Date</th>
                                                 <th>Width</th>  
                                                 <th>Height</th>
+                                                <th>Datum</th>
                                                 <th>Active</th>
                                               
                                             </tr>
@@ -76,8 +78,13 @@
                                                 <td>${picture.date}</td>
                                                 <td>${picture.width}</td>
                                                 <td>${picture.height}</td>
-                                                <td>${picture.active}</td>
-                                                
+                                                <td><fmt:formatDate value="${picture.date}" type="both" pattern="dd-MM-yyyy" /></td> 
+                                                <c:if test="${picture.active}">
+                                                    <td><i class="fa fa-check fa-2x" style="color: green;"></i>
+                                                </c:if>
+                                                <c:if test="${!picture.active}">
+                                                    <td><i class="fa fa-times fa-2x" style="color: red;"></i>
+                                                </c:if>
                                             </tr>
                                         </c:forEach>
 
