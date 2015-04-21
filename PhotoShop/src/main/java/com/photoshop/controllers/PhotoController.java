@@ -11,6 +11,7 @@ import com.photoshop.models.photo.Photo;
 import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.photo.PhotoJson;
 import com.photoshop.models.photographer.Photographer;
+import com.photoshop.models.product.ProductDao;
 import com.photoshop.models.school.School;
 import com.photoshop.models.school.SchoolDao;
 import com.photoshop.models.schoolClass.SchoolClass;
@@ -53,6 +54,9 @@ public class PhotoController extends AbstractController {
 
     @Autowired
     private PhotoDao photodao;
+    
+    @Autowired
+    private ProductDao productdao;
 
     @Autowired
     private ServletContext servletContext;
@@ -228,5 +232,23 @@ public class PhotoController extends AbstractController {
             return "photo/list";
         }
         return "redirect:../";
+    }
+    
+    @RequestMapping(value = "/mypictures", method = RequestMethod.GET)
+    public String mypictures(ModelMap map, HttpServletRequest request)
+    {
+        int userID = (int)request.getSession().getAttribute("UserID");
+        map.put("Photo", photodao.getPhotosByStudent(userID));
+        map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
+        return "photo/mypictures";
+    }
+    
+    @RequestMapping(value = "/photodetail", method = RequestMethod.GET)
+    public String detail(ModelMap map, HttpServletRequest request) {
+        double amount = 24.95;
+        map.put("testphoto", "../resources/img/photobackground.png");
+        map.put("products", productdao.getList());
+        map.put("amount", "&euro;" + amount);
+        return "photo/photodetail";
     }
 }

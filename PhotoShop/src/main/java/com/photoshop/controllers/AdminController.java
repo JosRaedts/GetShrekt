@@ -96,11 +96,11 @@ public class AdminController {
         return "home";
     }
     
-    @RequestMapping(value = "/barcodes", method = RequestMethod.GET)
-    public String getbarcodes(ModelMap map, HttpServletRequest request) {
-        System.out.println("barcode function called..");
-        map.put("Scholen", this.schooldao.getList());
-        return "admin/barcodes";
-        
-    }
+//    @RequestMapping(value = "/barcodes", method = RequestMethod.GET)
+//    public String getbarcodes(ModelMap map, HttpServletRequest request) {
+//        System.out.println("barcode function called..");
+//        map.put("Scholen", this.schooldao.getList());
+//        return "admin/barcodes";
+//        
+//    }
 }

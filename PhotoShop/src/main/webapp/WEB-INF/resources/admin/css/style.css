@@ -27,3 +27,18 @@ and open the template in the editor.
 .photographerBtn {
     margin-top: 20px
 }
+
+@font-face {
+    font-family: barcodefont;
+    src: url(IDAutomationHC39M.ttf);
+/*    src: url(fre3of9x.ttf);
+    src: url(free3of9.ttf);*/
+    font-weight: normal;
+    font-style: normal;
+}
+
+.barcode{
+    font-family: barcodefont;
+    font-size: 18pt;
+    margin-top: 50px;
+}

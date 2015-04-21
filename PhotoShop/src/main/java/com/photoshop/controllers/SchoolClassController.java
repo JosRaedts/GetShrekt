@@ -12,10 +12,13 @@ import com.photoshop.models.schoolClass.SchoolClass;
 import com.photoshop.models.schoolClass.SchoolClassDao;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -111,4 +114,14 @@ public class SchoolClassController extends AbstractController {
 //public HttpEntity<byte[]> getPhoto(HttpServletRequest response, @PathVariable("ClassId") int id) throws IOException {
 //    
 //}
+    
+    @RequestMapping(value = "/barcodes/{ClassId:^[0-9]+$}", method = RequestMethod.GET)
+    public String getSchoolBarcodes(ModelMap map, HttpServletRequest response, @PathVariable("ClassId") int id) {
+        System.out.println("Schoolclass is being called");
+        map.put("ClassID", id);
+        map.put("ClassForBarcode", this.schoolclassDao.getById(id));
+        return "schoolclass/barcodes";
+    }
+    
+    
 }
