@@ -306,7 +306,7 @@ public class PhotoController extends AbstractController {
 
     @RequestMapping(value = "/detail/{PhotoId:^[0-9]+$}", method = RequestMethod.GET)
     public String detail(ModelMap map, HttpServletRequest request, @PathVariable("PhotoId") int id) {
-        if (this.authenticate(UserType.STUDENT))
+        if (this.authenticate(UserType.STUDENT) || this.authenticate(UserType.ADMIN) || this.authenticate(UserType.PHOTOGRAPHER))
         {
             Photo photo = photodao.getById(id);
             map.put("photo", photo);
