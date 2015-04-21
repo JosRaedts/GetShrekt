@@ -8,13 +8,11 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <jsp:include page="/WEB-INF/jsp/admin/header.jsp" />
 <div id="page-wrapper">
-    <!--
-        Hier de barcode van de klas zelf
-    -->
     <br>
+    <input class="FloatRight" type="button" onClick="window.print()" value="<spring:message code="printthis" text="%printthis" />"/>
     <spring:message code="ClassBarcode" text="%ClassBarcode" />:
-    <div class="barcode" style="margin-bottom: 40px; margin-top: 50px">
-        <p>*schoolclass-${ClassForBarcode.getSchool_id()}*</p>
+    <div style="margin-bottom: 40px; margin-top: 50px">
+        <p class="barcode">*schoolclass-${ClassForBarcode.getSchool_id()}*</p>
     </div>
     <br>
     <br>

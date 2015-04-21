@@ -66,3 +66,7 @@ and open the template in the editor.
 .FloatLeft {
     float: left;
 }
+
+.FloatRight {
+    float: right;
+}
