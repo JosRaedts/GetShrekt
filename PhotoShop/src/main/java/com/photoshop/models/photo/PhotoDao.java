@@ -198,4 +198,35 @@ public class PhotoDao extends Database {
         }
         return photos;
     }
+    
+     public List<Photo> getClassPhotosByStudentclass(int classid){
+        ArrayList<Photo> photos = new ArrayList<Photo>();
+        try {
+            String querystring = "SELECT * FROM Photos WHERE id = (SELECT photoID FROM schoolclass_photos WHERE schoolclassID = ?) ORDER BY date";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, classid);
+            ResultSet rs = stat.executeQuery();
+            while (rs.next()) {
+                photos.add(build(rs));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return photos;
+    }
+     
+    public List<Photo> getSchoolPhotos(){
+        ArrayList<Photo> photos = new ArrayList<Photo>();
+        try {
+            String querystring = "SELECT * FROM Photos WHERE id = (SELECT photoID FROM school_photos) ORDER BY date";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            ResultSet rs = stat.executeQuery();
+            while (rs.next()) {
+                photos.add(build(rs));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return photos;
+    }
 }

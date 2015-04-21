@@ -1,16 +1,18 @@
-<%-- 
-    Document   : home
-    Created on : Mar 17, 2015, 10:14:29 AM
-    Author     : Me
---%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<jsp:include page="/WEB-INF/jsp/admin/header.jsp" />
-<div id="page-wrapper">
-</div>
-<!-- /#wrapper -->
+<jsp:include page="/WEB-INF/jsp/header.jsp" />
+<div class="container">
+    <div class="Titelphotoview">
+        <h1><spring:message code="schoolklasspictures" text="%schoolklasspictures" /> ${studentnaam} </h1>       
+    </div>
 
-</body>
+    <c:forEach var="Photo" items="${Photo}">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="box">
+                <img border="1" src="${baseurl}/photo/view/low/${Photo.id}" height="auto" width="100%" />
+            </div>
+        </div>
+    </c:forEach>
+</div> <!-- /container -->
 
-</html>
+<jsp:include page="/WEB-INF/jsp/footer.jsp" />

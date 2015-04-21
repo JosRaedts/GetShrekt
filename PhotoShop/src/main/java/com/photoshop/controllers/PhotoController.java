@@ -257,6 +257,27 @@ public class PhotoController extends AbstractController {
         return "photo/mypictures";
     }
     
+
+    @RequestMapping(value = "/myschoolklasspictures", method = RequestMethod.GET)
+    public String myschoolklasspictures(ModelMap map, HttpServletRequest request)
+    {
+        int userID = (int)request.getSession().getAttribute("UserID");
+        
+        int schoolclassid = studentDao.getById(userID).getSchoolclass_id();
+        map.put("Photo", photodao.getClassPhotosByStudentclass(schoolclassid));
+        map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
+        return "photo/myschoolklasspictures";
+    }
+    
+    @RequestMapping(value = "/myschoolpictures", method = RequestMethod.GET)
+    public String myschoolpictures(ModelMap map, HttpServletRequest request)
+    {    
+        map.put("Photo", photodao.getSchoolPhotos());
+        map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
+        return "photo/myschoolpictures";
+    }
+    
+
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public String detail(ModelMap map, HttpServletRequest request) {
         double amount = 24.95;
