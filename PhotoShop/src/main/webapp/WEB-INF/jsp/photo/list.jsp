@@ -72,7 +72,7 @@
                                             <c:forEach var="picture" items="${pictures}">
                                             <input type="hidden" id="hiddenIdfield" name="id" value="${school.id}">
                                             <tr>
-                                                <td><img src="${baseurl}/photo/view/low/${picture.id}"/></td>
+                                                <td><img src="${baseurl}/photo/view/thumb/${picture.id}"/></td>
                                                 <td>${picture.date}</td>
                                                 <td>${picture.width}</td>
                                                 <td>${picture.height}</td>

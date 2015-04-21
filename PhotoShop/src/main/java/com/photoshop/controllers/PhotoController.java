@@ -113,7 +113,7 @@ public class PhotoController extends AbstractController {
                         if(bimg.getHeight() > 100)
                         {
                             int ratio = bimg.getHeight() / 100;
-                            blowres = imageManager.resize(bimg, 100, bimg.getWidth()/ratio);
+                            bthumbnail = imageManager.resize(bimg, 100, bimg.getWidth()/ratio);
                         }
                     }
                     else
@@ -127,7 +127,7 @@ public class PhotoController extends AbstractController {
                         if(bimg.getWidth() > 100)
                         {
                             int ratio = bimg.getWidth() / 100;
-                            blowres = imageManager.resize(bimg, bimg.getHeight()/ratio, 100);
+                            bthumbnail = imageManager.resize(bimg, bimg.getHeight()/ratio, 100);
                         }
                     }
 
@@ -149,8 +149,8 @@ public class PhotoController extends AbstractController {
                     photo.setHeight(bimg.getHeight());
                     photo.setWidth(bimg.getWidth());
                     photo.setHighResURL(newFilename);
-                    photo.setLowResURL(lowres);
-                    photo.setThumbnailURL(thumbnail);
+                    photo.setLowResURL("lowres-" + newFilename);
+                    photo.setThumbnailURL("thumb-" + newFilename);
                     photo.setPhotographerID(photographer.getId());
                     photo.save();
 
@@ -204,10 +204,10 @@ public class PhotoController extends AbstractController {
                     filename = env.getProperty("uploadDir") + photo.getHighResURL();
                     break;
                 case "low":
-                    filename = env.getProperty("uploadDir") + photo.getLowResURL();
+                    filename = env.getProperty("uploadDir") + "low/" + photo.getLowResURL();
                     break;
                 case "thumb":
-                    filename = env.getProperty("uploadDir") + photo.getThumbnailURL();
+                    filename = env.getProperty("uploadDir") + "thumb/" +photo.getThumbnailURL();
                     break;
             }
 
@@ -246,6 +246,7 @@ public class PhotoController extends AbstractController {
         return "photo/mypictures";
     }
     
+
     @RequestMapping(value = "/myschoolklasspictures", method = RequestMethod.GET)
     public String myschoolklasspictures(ModelMap map, HttpServletRequest request)
     {
@@ -265,12 +266,13 @@ public class PhotoController extends AbstractController {
         return "photo/myschoolpictures";
     }
     
-    @RequestMapping(value = "/photodetail", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public String detail(ModelMap map, HttpServletRequest request) {
         double amount = 24.95;
         map.put("testphoto", "../resources/img/photobackground.png");
         map.put("products", productdao.getList());
         map.put("amount", "&euro;" + amount);
-        return "photo/photodetail";
+        return "photo/detail";
     }
 }

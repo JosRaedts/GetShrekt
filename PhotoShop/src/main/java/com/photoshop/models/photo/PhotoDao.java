@@ -96,7 +96,7 @@ public class PhotoDao extends Database {
             }
             else
             {
-                querystring = "INSERT INTO photos(height, width, thumbnailURL = ?, lowresURL, highresURL, photographerID, active, date) VALUES(?, ?, ?, ?, ?, ?, ?)";
+                querystring = "INSERT INTO photos(height, width, thumbnailURL, lowresURL, highresURL, photographerID, active, date) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
                 stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             }
 
@@ -151,7 +151,7 @@ public class PhotoDao extends Database {
             photo.setId(rs.getInt("id"));
             photo.setHeight(rs.getInt("height"));
             photo.setWidth(rs.getInt("width"));
-            photo.setThumbnailURL("thumnailURL");
+            photo.setThumbnailURL(rs.getString("thumbnailURL"));
             photo.setLowResURL(rs.getString("lowresURL"));
             photo.setHighResURL(rs.getString("highresURL"));
             if(rs.getInt("active") == 1){

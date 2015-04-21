@@ -17,12 +17,22 @@
         <link rel="stylesheet" type="text/css" href="${baseurl}/resources/css/style.css" />
         <link rel="icon" href="${baseurl}/resources/img/favicon.ico" type="image/x-icon"/>
         <link rel="shortcut icon" href="${baseurl}/resources/img/favicon.ico" type="image/x-icon"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src="${baseurl}/resources/js/js.js"></script>
+        <script src="${baseurl}/resources/js/jquery-1.11.2.min.js"></script>
         <script src="${baseurl}/resources/js/bootstrap.min.js"></script>
+        <script src="${baseurl}/resources/js/masonry.pkgd.js"></script>
+        <script src="${baseurl}/resources/js/imagesloaded.pkgd.min.js"></script>
         <script src="${baseurl}/resources/admin/js/jquery.fileupload.js"></script>
         <script src="${baseurl}/resources/admin/js/jquery.fileupload-image.js"></script>
         <title>PhotoShop</title>
+        <script>
+        $( document ).ready(function() {
+            var $container = $('#boxes').masonry();
+                // layout Masonry again after all images have loaded
+                $container.imagesLoaded( function() {
+                $container.masonry();
+            });
+        });
+        </script>
     </head>
     <body>
        <nav class="navbar navbar-default navbar-fixed-top">

@@ -25,7 +25,7 @@ public class ImageManager {
     }
     
     
-    public BufferedImage resize(Image originalImage, int newWidth, int newHeight) {
+    public BufferedImage resize(Image originalImage, int newHeight , int newWidth) {
         BufferedImage resizeImage = null;
         if (originalImage != null) {
             resizeImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
