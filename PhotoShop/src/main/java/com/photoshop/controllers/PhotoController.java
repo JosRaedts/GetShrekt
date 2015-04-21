@@ -149,8 +149,8 @@ public class PhotoController extends AbstractController {
                     photo.setHeight(bimg.getHeight());
                     photo.setWidth(bimg.getWidth());
                     photo.setHighResURL(newFilename);
-                    photo.setLowResURL(lowres);
-                    photo.setThumbnailURL(thumbnail);
+                    photo.setLowResURL("lowres-" + newFilename);
+                    photo.setThumbnailURL("thumb-" + newFilename);
                     photo.setPhotographerID(photographer.getId());
                     photo.save();
 
@@ -204,10 +204,10 @@ public class PhotoController extends AbstractController {
                     filename = env.getProperty("uploadDir") + photo.getHighResURL();
                     break;
                 case "low":
-                    filename = env.getProperty("uploadDir") + photo.getLowResURL();
+                    filename = env.getProperty("uploadDir") + "low/" + photo.getLowResURL();
                     break;
                 case "thumb":
-                    filename = env.getProperty("uploadDir") + photo.getThumbnailURL();
+                    filename = env.getProperty("uploadDir") + "thumb/" +photo.getThumbnailURL();
                     break;
             }
 
