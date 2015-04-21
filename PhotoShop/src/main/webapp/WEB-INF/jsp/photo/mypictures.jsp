@@ -9,10 +9,12 @@
     <c:forEach var="Photo" items="${Photo}">
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="box">
-                <img border="1" src="${baseurl}/photo/view/low/${Photo.id}" height="auto" width="100%" />
+                <a href="${baseurl}/photo/detail/${Photo.id}"><img border="1" src="${baseurl}/photo/view/low/${Photo.id}" height="auto" width="100%" /></a>
             </div>
         </div>
     </c:forEach>
 </div> <!-- /container -->
 
 <jsp:include page="/WEB-INF/jsp/footer.jsp" />
+
+<li>

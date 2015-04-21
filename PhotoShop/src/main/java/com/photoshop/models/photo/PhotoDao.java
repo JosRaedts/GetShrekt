@@ -215,11 +215,12 @@ public class PhotoDao extends Database {
         return photos;
     }
      
-    public List<Photo> getSchoolPhotos(){
+    public List<Photo> getSchoolPhotos(int schoolid){
         ArrayList<Photo> photos = new ArrayList<Photo>();
         try {
-            String querystring = "SELECT * FROM photos p,school_photos scp WHERE p.id = scp.photoID ORDER BY date";
+            String querystring = "SELECT * FROM photos p,school_photos scp WHERE p.id = scp.photoID and scp.schoolID = ? ORDER BY date";
             PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, schoolid);
             ResultSet rs = stat.executeQuery();
             while (rs.next()) {
                 photos.add(build(rs));

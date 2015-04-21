@@ -272,7 +272,11 @@ public class PhotoController extends AbstractController {
     @RequestMapping(value = "/myschoolpictures", method = RequestMethod.GET)
     public String myschoolpictures(ModelMap map, HttpServletRequest request)
     {    
-        map.put("Photo", photodao.getSchoolPhotos());
+        int userID = (int)request.getSession().getAttribute("UserID");
+        Student student = this.studentDao.getById(userID);
+        SchoolClass schoolclass = student.getSchoolClass();
+        School school = schoolclass.getSchool();
+        map.put("Photo", photodao.getSchoolPhotos(school.getId()));
         map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
         return "photo/myschoolpictures";
     }
