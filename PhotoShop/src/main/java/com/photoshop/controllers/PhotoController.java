@@ -113,7 +113,7 @@ public class PhotoController extends AbstractController {
                         if(bimg.getHeight() > 100)
                         {
                             int ratio = bimg.getHeight() / 100;
-                            blowres = imageManager.resize(bimg, 100, bimg.getWidth()/ratio);
+                            bthumbnail = imageManager.resize(bimg, 100, bimg.getWidth()/ratio);
                         }
                     }
                     else
@@ -127,7 +127,7 @@ public class PhotoController extends AbstractController {
                         if(bimg.getWidth() > 100)
                         {
                             int ratio = bimg.getWidth() / 100;
-                            blowres = imageManager.resize(bimg, bimg.getHeight()/ratio, 100);
+                            bthumbnail = imageManager.resize(bimg, bimg.getHeight()/ratio, 100);
                         }
                     }
 
