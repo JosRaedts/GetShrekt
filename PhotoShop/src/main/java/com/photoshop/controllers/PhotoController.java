@@ -280,18 +280,16 @@ public class PhotoController extends AbstractController {
         map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
         return "photo/myschoolpictures";
     }
-    
 
-    @RequestMapping(value = "/detail", method = RequestMethod.GET)
-    public String detail(ModelMap map, HttpServletRequest request) {
-        if (this.authenticate(UserType.ADMIN))
+    @RequestMapping(value = "/detail/{PhotoId:^[0-9]+$}", method = RequestMethod.GET)
+    public String detail(ModelMap map, HttpServletRequest request, @PathVariable("PhotoId") int id) {
+        if (this.authenticate(UserType.STUDENT))
         {
-            double amount = 24.95;
-            map.put("testphoto", "../resources/img/photobackground.png");
-            map.put("products", productdao.getPriceList(Integer.parseInt(request.getSession().getAttribute("UserID").toString())));
-            map.put("amount", "&euro;" + amount);
+            Photo photo = photodao.getById(id);
+            map.put("photo", photo);
+            map.put("products", productdao.getPriceList(photo.getPhotographerID()));
             return "photo/detail";
         }
-        return "redirect:../";
+        return this.frontendLogin();
     }
 }

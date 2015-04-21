@@ -114,7 +114,7 @@ public class AbstractController {
     public String frontendLogin()
     {
         request.getSession().setAttribute("redirectURL", request.getRequestURI().toString().replace(request.getContextPath(), ""));
-        return "redirect:/login";
+        return "redirect:../student/login";
     }
 
     public String backendLogin()

@@ -13,7 +13,7 @@
             <h1>Photo detail pagina </h1>
         </div>
         <div class="col-md-6">
-            <img src="${testphoto}" width="500px" height="400px"/>
+            <img src="${photo}" />
         </div>
         <div class="col-md-6">
             <div id="boxes">
@@ -21,24 +21,20 @@
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <div class="box">
                         <input type="checkbox" name="products" value="products"><img src="${baseurl}/product/view/${products.id}" height="100%" width="90%" /> 
-                        <div class="col-md-6">
-                            <input type="text" name="amount" style="width: 100%;">
-                        </div>
-                        <div class="col-md-6">
-                            <label name="productprice">&euro; ${products.price}</label>
-                        </div>
+                        <input type="text" class="quantity" name="amount" style=" width: 50px; margin-right: 10px;">
+                        <label name="productprice">&euro; ${products.price}</label>
                     </div>
                 </div>
             </c:forEach>
             </div>
             <div class="col-md-12">
-                <label name="total Amount">Totaal bedrag: ${amount}</label><br />
+                <label name="total Amount" id="total">Totaal bedrag: ${amount}</label><br />
                 <input type="submit" name="submit" value="Toevoegen aan winkelwagen"> 
                 <script>
                     $(document).ready(function(){
 
                         update_amounts();
-                        $('.qty').change(function() {
+                        $('.quantity').change(function() {
                             update_amounts();
                         });
                     });
@@ -48,11 +44,10 @@
                     {
                         var sum = 0.0;
                         $('#myTable > tbody  > tr').each(function() {
-                            var qty = $(this).find('option:selected').val();
+                            var qty = $(this).find('.quantity').val();
                             var price = $(this).find('.price').val();
-                            var amount = (qty*price)
+                            var amount = (qty*price);
                             sum+=amount;
-                            $(this).find('.amount').text(''+amount);
                         });
                         //just update the total to sum  
                         $('.total').text(sum);
