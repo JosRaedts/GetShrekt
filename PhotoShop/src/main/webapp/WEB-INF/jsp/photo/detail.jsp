@@ -33,8 +33,7 @@
                         <option value="9">9</option>
                         <option value="10">10</option>
                     </select>
-                    <label id="price" price="${products.price}" name="productprice">&euro; ${products.price}</label>
-                    
+                    <label id="price" price="${products.price}">&euro; ${products.price}</label>
                 </div>
             </div>
         </c:forEach>
