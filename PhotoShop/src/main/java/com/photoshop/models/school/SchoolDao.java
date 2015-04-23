@@ -7,7 +7,6 @@ package com.photoshop.models.school;
 
 import com.photoshop.models.Database;
 import com.photoshop.models.photo.Photo;
-import com.photoshop.models.schoolClass.SchoolClass;
 import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
@@ -164,7 +163,7 @@ public class SchoolDao extends Database {
         }
     }
 
-    private School build(ResultSet rs) {
+    public School build(ResultSet rs) {
         School school = null;
         try {
             school = new School(this);

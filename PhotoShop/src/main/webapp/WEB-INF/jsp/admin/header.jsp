@@ -43,7 +43,9 @@
     <link href="${baseurl}/resources/admin/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href="${baseurl}/resources/admin/css/dataTables.responsive.css" rel="stylesheet">
     <link href="${baseurl}/resources/admin/css/dataTables.fontAwesome.css" rel="stylesheet">
-    
+
+    <link href="${baseurl}/resources/admin/css/jquery.multiselect2side.css" rel="stylesheet">
+
     <link href="${baseurl}/resources/admin/css/style.css" rel="stylesheet">
 
 
@@ -57,6 +59,7 @@
 
     <!-- jQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/1.2.1/jquery-migrate.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="${baseurl}/resources/admin/js/bootstrap.min.js"></script>
@@ -69,7 +72,7 @@
 
     <script src="${baseurl}/resources/admin/js/jquery.dataTables.min.js"></script>
     <script src="${baseurl}/resources/admin/js/dataTables.bootstrap.min.js"></script>
-
+    <script src="${baseurl}/resources/admin/js/jquery.multiselect2side.js"></script>
 </head>
 
 <body>

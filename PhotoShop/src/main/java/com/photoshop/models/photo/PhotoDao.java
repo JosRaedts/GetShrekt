@@ -2,6 +2,13 @@ package com.photoshop.models.photo;
 
 import com.mysql.jdbc.Statement;
 import com.photoshop.models.Database;
+import com.photoshop.models.school.School;
+import com.photoshop.models.school.SchoolDao;
+import com.photoshop.models.schoolClass.SchoolClass;
+import com.photoshop.models.schoolClass.SchoolClassDao;
+import com.photoshop.models.student.Student;
+import com.photoshop.models.student.StudentDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -250,5 +257,66 @@ public class PhotoDao extends Database {
             Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return photos;
+    }
+
+    @Autowired
+    private StudentDao studentDao;
+
+    public List<Student> getStudents(Photo photo)
+    {
+        ArrayList<Student> students = new ArrayList();
+        try {
+            String querystring = "SELECT students.* FROM students, student_photos sp WHERE photoID=? AND students.id=sp.studentID";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photo.getId());
+            ResultSet rs = stat.executeQuery();
+            while (rs.next()) {
+                System.out.println("Student found");
+                students.add(studentDao.build(rs));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return students;
+    }
+
+    @Autowired
+    private SchoolClassDao schoolClassDao;
+
+    public List<SchoolClass> getSchoolClasses(Photo photo)
+    {
+        ArrayList<SchoolClass> schoolClasses = new ArrayList<SchoolClass>();
+        try {
+            String querystring = "SELECT schoolclasses.* FROM schoolclasses, schoolclass_photos sp WHERE photoID=? AND schoolclasses.id=sp.schoolclassID";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photo.getId());
+            ResultSet rs = stat.executeQuery();
+            while (rs.next()) {
+                schoolClasses.add(schoolClassDao.build(rs));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return schoolClasses;
+    }
+
+    @Autowired
+    private SchoolDao schoolDao;
+
+    public List<School> getSchools(Photo photo)
+    {
+        ArrayList<School> schools = new ArrayList<School>();
+        try {
+            String querystring = "SELECT schools.* FROM schools, school_photos sp WHERE photoID=? AND schools.id=sp.schoolID";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photo.getId());
+            ResultSet rs = stat.executeQuery();
+            while (rs.next()) {
+                schools.add(schoolDao.build(rs));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return schools;
     }
 }

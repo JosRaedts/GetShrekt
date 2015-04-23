@@ -18,6 +18,8 @@ import com.photoshop.models.schoolClass.SchoolClass;
 import com.photoshop.models.schoolClass.SchoolClassDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
+import net.coobird.thumbnailator.filters.Watermark;
+import net.coobird.thumbnailator.geometry.Positions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
@@ -43,8 +45,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.Date;
 import java.util.Iterator;
-import net.coobird.thumbnailator.filters.Watermark;
-import net.coobird.thumbnailator.geometry.Positions;
 
 /**
  *
@@ -315,5 +315,18 @@ public class PhotoController extends AbstractController {
             return "photo/detail";
         }
         return this.frontendLogin();
+    }
+
+    @RequestMapping(value="/edit/{PhotoId:^[0-9]+$}", method = RequestMethod.GET)
+    public String edit(ModelMap map, HttpServletRequest request, @PathVariable("PhotoId") int id)
+    {
+        Photo photo = photodao.getById(id);
+        map.put("students", studentDao.getList());
+        map.put("schoolclasses", schoolDao.getList());
+        map.put("schools", schoolDao.getList());
+        map.put("my_students", photo.getStudents());
+        map.put("my_schoolclasses", photo.getSchoolClasses());
+        map.put("my_schools", photo.getSchools());
+        return "photo/edit";
     }
 }

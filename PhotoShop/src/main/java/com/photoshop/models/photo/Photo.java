@@ -5,7 +5,12 @@
  */
 package com.photoshop.models.photo;
 
+import com.photoshop.models.school.School;
+import com.photoshop.models.schoolClass.SchoolClass;
+import com.photoshop.models.student.Student;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -112,6 +117,12 @@ public class Photo {
     public void setDate(Date date){
         this.date = date;
     }
+
+    public List<Student> getStudents() { return this.dao.getStudents(this);}
+
+    public List<SchoolClass> getSchoolClasses() { return this.dao.getSchoolClasses(this);}
+
+    public List<School> getSchools() { return this.dao.getSchools(this);}
 }
 
 

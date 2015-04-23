@@ -6,7 +6,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header"><spring:message code="photographers" text="%photographers" /></a></h1>
+            <h1 class="page-header"><spring:message code="photographers" text="%photographers" /></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -55,7 +55,7 @@
                                                 <th><spring:message code="Height" text="%Height" /></th>
                                                 <th><spring:message code="Width" text="%Width" /></th>    
                                                 <th><spring:message code="Date" text="%Date" /></th>
-                                                <th><spring:message code="Active" text="%Active" /></th>
+                                                <th><spring:message code="active" text="%Active" /></th>
                                             </tr>
                                         </thead>
                                         <tbody>

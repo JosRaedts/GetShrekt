@@ -217,7 +217,7 @@ public class StudentDao extends Database  {
         return student;
     }
     
-    private Student build(ResultSet rs)
+    public Student build(ResultSet rs)
     {
         Student student = null;
         try {            
