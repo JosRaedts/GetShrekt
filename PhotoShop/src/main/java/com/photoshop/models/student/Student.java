@@ -151,4 +151,6 @@ public class Student implements IUser {
     public UserType getType() {
         return UserType.STUDENT;
     }
+
+    public boolean doIHaveAccess(Photo photo) { return this.dao.doIHaveAccess(this, photo);}
 }

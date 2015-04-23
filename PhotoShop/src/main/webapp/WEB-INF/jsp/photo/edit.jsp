@@ -24,24 +24,13 @@
                 <!-- /.panel -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-comments fa-fw"></i> General information
+                        <i class="fa fa-picture fa-fw"></i> Foto aanpassen
                         <div class="pull-right">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                                     Actions
                                     <span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="#">Action</a>
-                                    </li>
-                                    <li><a href="#">Another action</a>
-                                    </li>
-                                    <li><a href="#">Something else here</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -51,51 +40,136 @@
                             <div class="col-lg-12">
                                 <div class="dataTable_wrapper">
                                     <script type="text/javascript">
-                                        $().ready(function() {
-                                            $("#students").multiselect2side({
-                                                search: "Find: "
+                                        jQuery(document).ready(function($) {
+                                            $('#students').multiselect({
+                                                keepRenderingSort: true
                                             });
-                                            $("#schoolclasses").multiselect2side({
-                                                search: "Find: "
+                                            $('#schoolclasses').multiselect({
+                                                keepRenderingSort: true
                                             });
-                                            $("#schools").multiselect2side({
-                                                search: "Find: "
+                                            $('#schools').multiselect({
+                                                keepRenderingSort: true
                                             });
                                         });
                                     </script>
-                                    <select name="students" id="students" multiple>
-                                        <c:forEach var="student" items="${students}">
-                                            <c:set var="sel_student" value="false" />
-                                            <c:forEach var="my_student" items="${my_students}">
-                                                <c:if test="${student.id == my_student.id}">
-                                                    <c:set var="sel_student" value="true" />
-                                                </c:if>
-                                            </c:forEach>
-                                            <option value="${student.id}" <c:if test="${sel_student}">SELECTED="" </c:if>>${student.name}</option>
-                                        </c:forEach>
-                                    </select><br><br>
-                                    <select name="schoolclasses" id="schoolclasses" multiple>
-                                        <c:forEach var="schoolclass" items="${schoolclasses}">
-                                            <c:set var="sel_schoolclass" value="false" />
-                                            <c:forEach var="my_schoolclass" items="${my_schoolclasses}">
-                                                <c:if test="${schoolclass.id == my_schoolclass.id}">
-                                                    <c:set var="sel_schoolclass" value="true" />
-                                                </c:if>
-                                            </c:forEach>
-                                            <option value="${schoolclass.id}" <c:if test="${sel_schoolclass}">SELECTED="" </c:if>>${schoolclass.name}</option>
-                                        </c:forEach>
-                                    </select><br><br>
-                                    <select name="schools" id="schools" multiple>
-                                        <c:forEach var="school" items="${schools}">
-                                            <c:set var="sel_school" value="false" />
-                                            <c:forEach var="my_school" items="${my_schools}">
-                                                <c:if test="${school.id == my_school.id}">
-                                                    <c:set var="sel_school" value="true" />
-                                                </c:if>
-                                            </c:forEach>
-                                            <option value="${school.id}" <c:if test="${sel_school}">SELECTED="" </c:if>>${school.name}</option>
-                                        </c:forEach>
-                                    </select>
+                                    <div class="row" style="margin-bottom: 30px;">
+                                        <div class="col-sm-3">
+                                            <img src="${baseurl}/photo/view/low/${photo.id}" width="100%">
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <b><spring:message code="uploaddate" text="%uploaddate%"/></b><br>
+                                            <fmt:formatDate value="${photo.date}" type="both" pattern="dd-MM-yyyy" />
+                                        </div>
+                                    </div>
+                                    <h3><spring:message code="pictures" text="%photosof%" /></h3>
+                                    <hr>
+                                    <form method="POST" action="${baseurl}/photo/edit/${photo.id}">
+                                        <h4><spring:message code="students" text="%students%" /></h4>
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <select name="from" id="students" class="form-control" size="8" multiple="multiple">
+                                                    <c:forEach var="student" items="${students}">
+                                                        <c:set var="sel_student" value="false" />
+                                                        <c:forEach var="my_student" items="${my_students}">
+                                                            <c:if test="${student.id == my_student.id}">
+                                                                <c:set var="sel_student" value="true" />
+                                                            </c:if>
+                                                        </c:forEach>
+                                                        <c:if test="${!sel_student}">
+                                                            <option value="${student.id}" >${student.name}</option>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <button type="button" id="students_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+                                                <button type="button" id="students_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+                                                <button type="button" id="students_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                                                <button type="button" id="students_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+                                            </div>
+
+                                            <div class="col-sm-5">
+                                                <select name="students" id="students_to" class="form-control" size="8" multiple="multiple">
+                                                    <c:forEach var="student" items="${my_students}">
+                                                            <option value="${student.id}" SELECTED="">${student.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <hr>
+
+                                        <h4><spring:message code="schoolClasses" text="%schoolClasses%" /></h4>
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <select name="from" id="schoolclasses" class="form-control" size="8" multiple="multiple">
+                                                    <c:forEach var="schoolclass" items="${schoolclasses}">
+                                                        <c:set var="sel_schoolclass" value="false" />
+                                                        <c:forEach var="my_schoolclass" items="${my_schoolclasses}">
+                                                            <c:if test="${schoolclass.id == my_schoolclass.id}">
+                                                                <c:set var="sel_schoolclass" value="true" />
+                                                            </c:if>
+                                                        </c:forEach>
+                                                        <c:if test="${!sel_schoolclass}">
+                                                            <option value="${schoolclass.id}">${schoolclass.name}</option>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <button type="button" id="schoolclasses_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+                                                <button type="button" id="schoolclasses_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+                                                <button type="button" id="schoolclasses_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                                                <button type="button" id="schoolclasses_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+                                            </div>
+
+                                            <div class="col-sm-5">
+                                                <select name="schoolclasses" id="schoolclasses_to" class="form-control" size="8" multiple="multiple">
+                                                    <c:forEach var="my_schoolclass" items="${my_schoolclasses}">
+                                                        <option value="${my_schoolclass.id}" SELECTED="">${my_schoolclass.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <hr>
+
+                                        <h4><spring:message code="schools" text="%schools%" /></h4>
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <select name="from" id="schools" class="form-control" size="8" multiple="multiple">
+                                                    <c:forEach var="school" items="${schools}">
+                                                        <c:set var="sel_school" value="false" />
+                                                        <c:forEach var="my_school" items="${my_schools}">
+                                                            <c:if test="${school.id == my_school.id}">
+                                                                <c:set var="sel_school" value="true" />
+                                                            </c:if>
+                                                        </c:forEach>
+                                                        <c:if test="${!sel_school}">
+                                                            <option value="${school.id}">${school.name}</option>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <button type="button" id="schools_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+                                                <button type="button" id="schools_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+                                                <button type="button" id="schools_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                                                <button type="button" id="schools_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+                                            </div>
+
+                                            <div class="col-sm-5">
+                                                <select name="schools" id="schools_to" class="form-control" size="8" multiple="multiple">
+                                                    <c:forEach var="my_school" items="${my_schools}">
+                                                        <option value="${my_school.id}" SELECTED="">${my_school.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <button style="width: 100px" class="btn btn-lg btn-primary btn-block" type="submit"><spring:message code="save" text="%save" /></button>
+                                    </form>
                                 </div>
                                 <!-- /.table-responsive -->
                             </div>

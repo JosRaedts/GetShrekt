@@ -6,6 +6,7 @@
 package com.photoshop.controllers;
 
 import com.photoshop.misc.ImageManager;
+import com.photoshop.models.IUser;
 import com.photoshop.models.UserType;
 import com.photoshop.models.photo.Photo;
 import com.photoshop.models.photo.PhotoDao;
@@ -28,10 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -44,7 +42,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -200,6 +200,35 @@ public class PhotoController extends AbstractController {
     public HttpEntity<byte[]> getPhoto(HttpServletRequest response, @PathVariable("format") String format, @PathVariable("photoId") int id) throws IOException {
         Photo photo = photodao.getById(id);
         if (photo != null) {
+
+            IUser user = this.getUser();
+            if(user != null) {
+                switch (this.getUser().getType()) {
+                    case PHOTOGRAPHER:
+                        Photographer photographer = (Photographer) user;
+                        if (photo.getPhotographerID() != photographer.getId())
+                        {
+                            return null;
+                        }
+                        break;
+                    case ADMIN:
+                        break;
+                    case STUDENT:
+                        Student student = (Student) user;
+                        if(!student.doIHaveAccess(photo))
+                        {
+                            return null;
+                        }
+                        break;
+                    default:
+                        return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+
             String filename = "";
             switch (format) {
                 case "high":
@@ -320,13 +349,71 @@ public class PhotoController extends AbstractController {
     @RequestMapping(value="/edit/{PhotoId:^[0-9]+$}", method = RequestMethod.GET)
     public String edit(ModelMap map, HttpServletRequest request, @PathVariable("PhotoId") int id)
     {
-        Photo photo = photodao.getById(id);
-        map.put("students", studentDao.getList());
-        map.put("schoolclasses", schoolDao.getList());
-        map.put("schools", schoolDao.getList());
-        map.put("my_students", photo.getStudents());
-        map.put("my_schoolclasses", photo.getSchoolClasses());
-        map.put("my_schools", photo.getSchools());
-        return "photo/edit";
+        if(authenticate(UserType.PHOTOGRAPHER)) {
+            Photographer photographer = (Photographer) this.getUser();
+            Photo photo = photodao.getById(id);
+            if(photo != null) {
+                if(photo.getPhotographerID() == photographer.getId()) {
+                    map.put("students", studentDao.getList());
+                    map.put("schoolclasses", schoolClassDao.getList());
+                    map.put("schools", schoolDao.getList());
+                    map.put("my_students", photo.getStudents());
+                    map.put("my_schoolclasses", photo.getSchoolClasses());
+                    map.put("my_schools", photo.getSchools());
+                    map.put("photo", photo);
+                }
+            }
+            return "photo/edit";
+        }
+        else
+        {
+            return backendLogin();
+        }
+    }
+
+    @RequestMapping(value="/edit/{PhotoId:^[0-9]+$}", method = RequestMethod.POST)
+    public String save(ModelMap map, HttpServletRequest request, @PathVariable("PhotoId") int id, @RequestParam(value = "students", required = false) int[] student_ids, @RequestParam(value = "schoolclasses", required = false) int[] schoolclass_ids, @RequestParam(value = "schools", required = false) int[] school_ids)
+    {
+        if(authenticate(UserType.PHOTOGRAPHER)) {
+            Photographer photographer = (Photographer) this.getUser();
+            Photo photo = photodao.getById(id);
+            if(photo != null) {
+                if(photo.getPhotographerID() == photographer.getId()) {
+                    List<Student> students = new ArrayList();
+                    List<SchoolClass> schoolClasses = new ArrayList();
+                    List<School> schools = new ArrayList();
+                    if(student_ids != null) {
+                        for (int sid : student_ids) {
+                            Student student = studentDao.getById(sid);
+                            if (student != null) {
+                                students.add(student);
+                            }
+                        }
+                    }
+                    if(schoolclass_ids != null) {
+                        for (int scid : schoolclass_ids) {
+                            SchoolClass schoolClass = schoolClassDao.getById(scid);
+                            if (schoolClass != null) {
+                                schoolClasses.add(schoolClass);
+                            }
+                        }
+                    }
+                    if(school_ids != null) {
+                        for (int sid : school_ids) {
+                            School school = schoolDao.getById(sid);
+                            if (school != null) {
+                                schools.add(school);
+                            }
+                        }
+                    }
+                    photo.saveStudents(students);
+                    photo.saveSchoolClasses(schoolClasses);
+                    photo.saveSchools(schools);
+                }
+            }
+            return "redirect:../../admin";
+        } else {
+            return this.backendLogin();
+        }
     }
 }

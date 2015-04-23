@@ -123,6 +123,12 @@ public class Photo {
     public List<SchoolClass> getSchoolClasses() { return this.dao.getSchoolClasses(this);}
 
     public List<School> getSchools() { return this.dao.getSchools(this);}
+
+    public void saveStudents(List<Student> students) { this.dao.saveStudents(this, students);}
+
+    public void saveSchoolClasses(List<SchoolClass> schoolClasses) { this.dao.saveSchoolClasses(this, schoolClasses);}
+
+    public void saveSchools(List<School> schools) { this.dao.saveSchools(this, schools);}
 }
 
 

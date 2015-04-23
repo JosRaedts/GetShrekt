@@ -319,4 +319,79 @@ public class PhotoDao extends Database {
         }
         return schools;
     }
+
+    public void saveStudents(Photo photo, List<Student> students)
+    {
+        //DELETE ALL CONNECTIONS FIRST TO THIS PHOTO
+        try {
+            String querystring = "DELETE FROM student_photos WHERE photoID=?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photo.getId());
+            stat.execute();
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // SAVE NEW CONNECTIONS
+        try {
+            for(Student s : students) {
+                String querystring = "INSERT INTO student_photos(photoID, studentID) VALUES(?, ?)";
+                PreparedStatement stat = conn.prepareStatement(querystring);
+                stat.setInt(1, photo.getId());
+                stat.setInt(2, s.getId());
+                stat.execute();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void saveSchoolClasses(Photo photo, List<SchoolClass> schoolClasses)
+    {
+        //DELETE ALL CONNECTIONS FIRST TO THIS PHOTO
+        try {
+            String querystring = "DELETE FROM schoolclass_photos WHERE photoID=?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photo.getId());
+            stat.execute();
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // SAVE NEW CONNECTIONS
+        try {
+            for(SchoolClass sc : schoolClasses) {
+                String querystring = "INSERT INTO schoolclass_photos(photoID, schoolclassID) VALUES(?, ?)";
+                PreparedStatement stat = conn.prepareStatement(querystring);
+                stat.setInt(1, photo.getId());
+                stat.setInt(2, sc.getId());
+                stat.execute();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void saveSchools(Photo photo, List<School> schools)
+    {
+        //DELETE ALL CONNECTIONS FIRST TO THIS PHOTO
+        try {
+            String querystring = "DELETE FROM school_photos WHERE photoID=?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photo.getId());
+            stat.execute();
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // SAVE NEW CONNECTIONS
+        try {
+            for(School s : schools) {
+                String querystring = "INSERT INTO school_photos(photoID, schoolID) VALUES(?, ?)";
+                PreparedStatement stat = conn.prepareStatement(querystring);
+                stat.setInt(1, photo.getId());
+                stat.setInt(2, s.getId());
+                stat.execute();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

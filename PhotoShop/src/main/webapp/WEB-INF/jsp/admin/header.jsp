@@ -72,7 +72,7 @@
 
     <script src="${baseurl}/resources/admin/js/jquery.dataTables.min.js"></script>
     <script src="${baseurl}/resources/admin/js/dataTables.bootstrap.min.js"></script>
-    <script src="${baseurl}/resources/admin/js/jquery.multiselect2side.js"></script>
+    <script src="${baseurl}/resources/admin/js/multiselect.min.js"></script>
 </head>
 
 <body>

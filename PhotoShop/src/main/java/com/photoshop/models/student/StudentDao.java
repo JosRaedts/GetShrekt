@@ -235,4 +235,25 @@ public class StudentDao extends Database  {
         }
         return student;
     }
+
+    public boolean doIHaveAccess(Student student, Photo photo) {
+        try {
+            String querystring = "SELECT COUNT(*) as rows FROM photos WHERE id=? AND id IN (SELECT photoID FROM student_photos WHERE photoID=? AND studentID=? ) OR id IN (SELECT photoID FROM schoolclass_photos WHERE photoID=? AND schoolclassID IN (SELECT schoolclass_id FROM students WHERE id=?)) OR id IN (SELECT photoID FROM school_photos WHERE photoID=? AND schoolID IN (SELECT school_id FROM schoolclasses WHERE id IN (SELECT schoolclass_id FROM students WHERE id=?)))";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photo.getId());
+            stat.setInt(2, photo.getId());
+            stat.setInt(3, student.getId());
+            stat.setInt(4, photo.getId());
+            stat.setInt(5, student.getId());
+            stat.setInt(6, photo.getId());
+            stat.setInt(7, student.getId());
+            ResultSet rs = stat.executeQuery();
+
+            rs.next();
+            return rs.getInt("rows") > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 }
