@@ -176,7 +176,7 @@ public class SchoolClassDao extends Database  {
         }
     }
     
-    private SchoolClass build(ResultSet rs)
+    public SchoolClass build(ResultSet rs)
     {
         SchoolClass schoolclass = null;
         try {
