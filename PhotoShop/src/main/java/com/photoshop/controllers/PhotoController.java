@@ -289,9 +289,17 @@ public class PhotoController extends AbstractController {
     @RequestMapping(value = "/mypictures", method = RequestMethod.GET)
     public String mypictures(ModelMap map, HttpServletRequest request)
     {
+        ArrayList<Photo> photos = new ArrayList<Photo>();
         if (this.authenticate(UserType.PHOTOGRAPHER,UserType.STUDENT,UserType.ADMIN)) {
             int userID = (int)request.getSession().getAttribute("UserID");
-            map.put("Photo", photodao.getPhotosByStudent(userID));
+            for(Photo temp : photodao.getPhotosByStudent(userID))
+            {
+                if(temp.getActive() == true)
+                {
+                    photos.add(temp);
+                }
+            }
+            map.put("Photo", photos);
             map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
             return "photo/mypictures";
         } else {
@@ -304,11 +312,19 @@ public class PhotoController extends AbstractController {
     @RequestMapping(value = "/myschoolclasspictures", method = RequestMethod.GET)
     public String myschoolklasspictures(ModelMap map, HttpServletRequest request)
     {
+        ArrayList<Photo> photos = new ArrayList<Photo>();
         if (this.authenticate(UserType.PHOTOGRAPHER,UserType.STUDENT,UserType.ADMIN))
         {
         int userID = (int)request.getSession().getAttribute("UserID");
         int schoolclassid = studentDao.getById(userID).getSchoolclass_id();
-        map.put("Photo", photodao.getClassPhotosByStudentclass(schoolclassid));
+        for(Photo temp : photodao.getClassPhotosByStudentclass(schoolclassid))
+            {
+                if(temp.getActive() == true)
+                {
+                    photos.add(temp);
+                }
+            }
+        map.put("Photo", photos);
         map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
         return "photo/myschoolclasspictures";
         } else {
@@ -319,13 +335,21 @@ public class PhotoController extends AbstractController {
     @RequestMapping(value = "/myschoolpictures", method = RequestMethod.GET)
     public String myschoolpictures(ModelMap map, HttpServletRequest request)
     {    
+        ArrayList<Photo> photos = new ArrayList<Photo>();
         if (this.authenticate(UserType.PHOTOGRAPHER,UserType.STUDENT,UserType.ADMIN))
         {
         int userID = (int)request.getSession().getAttribute("UserID");
         Student student = this.studentDao.getById(userID);
         SchoolClass schoolclass = student.getSchoolClass();
         School school = schoolclass.getSchool();
-        map.put("Photo", photodao.getSchoolPhotos(school.getId()));
+        for(Photo temp :photodao.getSchoolPhotos(school.getId()))
+            {
+                if(temp.getActive() == true)
+                {
+                    photos.add(temp);
+                }
+            }
+        map.put("Photo", photos);
         map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
         return "photo/myschoolpictures";
         } else {
