@@ -175,14 +175,6 @@ public class PhotoController extends AbstractController {
                             schoolClass.addPhoto(photo);
                             break;
                     }
-
-                    PhotoJson photoJson = new PhotoJson(request.getRequestURI() + "/photo/view/low/" + photo.getId(),
-                            request.getRequestURI() + "/photo/view/low/" + photo.getId(),
-                            originalFilename,
-                            "image/jpeg",
-                            String.valueOf(mpf.getBytes()),
-                            "",
-                            "POST");
                     //JSON
                     //Files object
                     JSONObject object = new JSONObject();
