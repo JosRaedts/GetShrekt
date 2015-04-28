@@ -206,6 +206,9 @@
                                 <li>
                                     <a href="${baseurl}/photographer/photo"><i class="fa fa-list-ul fa-fw"></i> <spring:message code="overview" text="%overview" /></a>
                                 </li>
+                                <li>
+                                    <a href="${baseurl}/photo/unlinkedlist"><i class="fa fa-list-ul fa-fw"></i> <spring:message code="unlinkedlist" text="%unlinkedlist" /></a>
+                                </li>
                                 </c:if>
                                 <c:if test="${sessionScope.UserType == 'ADMIN' && sessionScope.UserID != null}">
                                 <li>
