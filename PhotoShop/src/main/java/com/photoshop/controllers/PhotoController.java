@@ -365,7 +365,7 @@ public class PhotoController extends AbstractController {
             Photo photo = photodao.getById(id);
             System.out.println("godverdommme: " + photo.getPhotographerID());
             map.put("photo", photo);
-            map.put("products", productdao.getPriceList(photo.getPhotographerID()));
+            map.put("products", productdao.getProductPriceList(photo.getPhotographerID()));
             return "photo/detail";
         }
         return this.frontendLogin();
