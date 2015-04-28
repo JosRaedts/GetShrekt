@@ -14,6 +14,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -90,8 +91,13 @@ public class FototaggerController implements Initializable {
             } else {
                 try {
                     move(tempfile.toPath(), newFile.toPath(), REPLACE_EXISTING);
-                    this.StatusTB.appendText("Foto is aangemaakt " + newFile.getName() + "\n");
-                } catch (IOException ex) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            StatusTB.appendText("Foto is aangemaakt " + newFile.getName() + "\n");
+                        }
+                    });
+                 } catch (IOException ex) {
                     this.StatusTB.appendText("Foto niet aangemaakt" + "\n");
                     ex.printStackTrace();
                 }
