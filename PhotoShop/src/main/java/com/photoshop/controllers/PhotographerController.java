@@ -230,4 +230,6 @@ public class PhotographerController extends AbstractController {
             return "redirect:/";
         }
     }
+    
+    
 }
