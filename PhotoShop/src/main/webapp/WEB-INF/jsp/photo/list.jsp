@@ -80,10 +80,10 @@
                                                 <td>${picture.height}</td>
                                                 <td><fmt:formatDate value="${picture.date}" type="both" pattern="dd-MM-yyyy" /></td> 
                                                 <c:if test="${picture.active}">
-                                                    <td><i class="fa fa-check fa-2x" style="color: green;"></i>
+                                                    <td><a href="${baseurl}/photo/active/${picture.id}"><i class="fa fa-check fa-2x" style="color: green;"></i></a>
                                                 </c:if>
                                                 <c:if test="${!picture.active}">
-                                                    <td><i class="fa fa-times fa-2x" style="color: red;"></i>
+                                                        <td><a href="${baseurl}/photo/active/${picture.id}"><i class="fa fa-times fa-2x" style="color: red;"></i></a>
                                                 </c:if>
                                             </tr>
                                         </c:forEach>

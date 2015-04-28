@@ -159,12 +159,12 @@ public class PhotoDao extends Database {
         }
     }
     
-    public void delete(Photo photo)
+    public void delete(int id)
     {
         try {
             String querystring = "UPDATE photos SET active=0 WHERE id=?";
             PreparedStatement stat = conn.prepareStatement(querystring);
-            stat.setInt(1, photo.getId());
+            stat.setInt(1, id);
             stat.execute();
         } catch (SQLException ex) {
             Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
