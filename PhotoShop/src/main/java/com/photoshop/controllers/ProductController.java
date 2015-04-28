@@ -225,7 +225,12 @@ public class ProductController extends AbstractController{
                         int userID = (int)request.getSession().getAttribute("UserID");
                         Product p = new Product();
                         p = productDao.getById(Integer.parseInt(id));
-                        p.setPrice(Double.parseDouble(request.getParameter(id)));
+                        double price = Double.parseDouble(request.getParameter(id));
+                        if(price <= 0.00)
+                        {
+                            price = 0.00;
+                        }
+                        p.setPrice(price);
                         p.save();
                         productDao.saveProductPrice(p, userID);
                     }

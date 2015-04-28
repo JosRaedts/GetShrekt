@@ -49,14 +49,15 @@ public class PhotoDao extends Database {
         return photos;
     }
     
-    public List<Photo> getUnlinkedList()
+    public List<Photo> getUnlinkedList(int id)
     {
         List<Photo> photos = new ArrayList();
         try {
             String querystring = "SELECT * FROM `photos` WHERE id NOT IN (SELECT photoID FROM student_photos) "
                     + "AND id NOT IN (SELECT photoID FROM schoolclass_photos) "
-                    + "AND id NOT IN (SELECT photoID FROM school_photos) ";
+                    + "AND id NOT IN (SELECT photoID FROM school_photos) AND photographerID = ? ";
             PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
             
             while(rs.next())
