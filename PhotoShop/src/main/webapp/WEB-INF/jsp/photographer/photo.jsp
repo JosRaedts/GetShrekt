@@ -67,9 +67,9 @@
                                                     <td>${Photo.width}</td>
                                                     <td><fmt:formatDate value="${Photo.date}" type="both" pattern="dd-MM-yyyy" /></td> 
                                                     <c:if test="${Photo.active}">
-                                                        <td><a href="${baseurl}/photo/active/${picture.id}"><i class="fa fa-check fa-2x" style="color: green;"></i></a>                                                    </c:if>
+                                                        <td><a href="${baseurl}/photo/active/${Photo.id}"><i class="fa fa-check fa-2x" style="color: green;"></i></a>                                                    </c:if>
                                                     <c:if test="${!Photo.active}">
-                                                            <td><a href="${baseurl}/photo/active/${picture.id}"><i class="fa fa-times fa-2x" style="color: red;"></i></a>
+                                                            <td><a href="${baseurl}/photo/active/${Photo.id}"><i class="fa fa-times fa-2x" style="color: red;"></i></a>
                                                     </c:if>
                                                 </tr>
                                             </c:forEach>            
