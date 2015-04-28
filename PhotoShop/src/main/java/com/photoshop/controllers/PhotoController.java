@@ -156,24 +156,31 @@ public class PhotoController extends AbstractController {
                     photo.setThumbnailURL("thumb-" + newFilename);
                     photo.setPhotographerID(photographer.getId());
                     photo.save();
+                    try
+                    {
+                        String[] file = originalFilename.split("\\.");
+                        String type = file[0].split("-")[0];
+                        int id = Integer.parseInt(file[0].split("-")[1]);
 
-                    String[] file = originalFilename.split("\\.");
-                    String type = file[0].split("-")[0];
-                    int id = Integer.parseInt(file[0].split("-")[1]);
+                        switch (type) {
+                            case "student":
+                                Student student = studentDao.getById(id);
+                                student.addPhoto(photo);
+                                break;
+                            case "school":
+                                School school = schoolDao.getById(id);
+                                school.addPhoto(photo);
+                                break;
+                            case "class":
+                                SchoolClass schoolClass = schoolClassDao.getById(id);
+                                schoolClass.addPhoto(photo);
+                                break;
+                        }
 
-                    switch (type) {
-                        case "student":
-                            Student student = studentDao.getById(id);
-                            student.addPhoto(photo);
-                            break;
-                        case "school":
-                            School school = schoolDao.getById(id);
-                            school.addPhoto(photo);
-                            break;
-                        case "schoolclass":
-                            SchoolClass schoolClass = schoolClassDao.getById(id);
-                            schoolClass.addPhoto(photo);
-                            break;
+                    }
+                    catch(Exception ex)
+                    {
+                        //System.out.println(e);
                     }
                     //JSON
                     //Files object
@@ -184,10 +191,10 @@ public class PhotoController extends AbstractController {
                     
                     //File object
                     JSONObject fileobject = new JSONObject();
-                    fileobject.put("url", request.getRequestURI() + "/photo/view/low/" + photo.getId());
-                    fileobject.put("thumbnail_url", request.getRequestURI() + "/photo/view/thumb/" + photo.getId());
+                    fileobject.put("url", request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath()) + "/photo/view/low/" + photo.getId());
+                    fileobject.put("thumbnail_url", request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath()) + "/photo/view/thumb/" + photo.getId());
                     fileobject.put("name", originalFilename);
-                    fileobject.put("size", mpf.getBytes());
+                    fileobject.put("size", mpf.getSize());
                     fileobject.put("delete_url", "");
                     fileobject.put("delete_type", "DELETE");
                     

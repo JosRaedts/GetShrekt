@@ -12,7 +12,7 @@
     <input class="FloatRight" type="button" onClick="window.print()" value="<spring:message code="printthis" text="%printthis" />"/>
     <spring:message code="ClassBarcode" text="%ClassBarcode" />:
     <div class="BarcodeHoeken" style="margin-bottom: 40px; margin-top: 50px">
-        <p class="barcode">*schoolclass-${ClassForBarcode.getSchool_id()}*</p>
+        <p class="barcode">*class-${ClassForBarcode.getSchool_id()}*</p>
     </div>
     <br>
     <br>
