@@ -16,5 +16,3 @@
 </div> <!-- /container -->
 
 <jsp:include page="/WEB-INF/jsp/footer.jsp" />
-
-<li>
