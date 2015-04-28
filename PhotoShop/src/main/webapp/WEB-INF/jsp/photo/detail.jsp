@@ -17,7 +17,7 @@
     <div class="col-md-6">
         <div id="boxes">
         <c:forEach var="products" items="${products}">
-            <c:if test="${product.price > 0}">
+            <c:if test="${products.price > 0}">
             <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="box">
                     <img src="${baseurl}/product/view/${products.id}" height="100%" width="90%" />
