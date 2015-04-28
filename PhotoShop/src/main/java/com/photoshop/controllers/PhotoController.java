@@ -295,18 +295,19 @@ public class PhotoController extends AbstractController {
     
     @RequestMapping(value = "/active/{PhotoId:^[0-9]+$}", method = RequestMethod.GET)
     public String active(ModelMap map, HttpServletRequest request,@PathVariable("PhotoId") int id) {
-        
-        if (id != 0)
-        {
-            photodao.active(id);
-        }
-        
-        if (this.authenticate(UserType.ADMIN)) {
-            return "redirect:/photo/list";
-        }
-        
-        if (this.authenticate(UserType.PHOTOGRAPHER)) {
-            return "redirect:/photographer/photo";
+        if (this.authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
+            if (id != 0)
+            {
+                photodao.active(id);
+            }
+
+            if (this.authenticate(UserType.ADMIN)) {
+                return "redirect:/photo/list";
+            }
+
+            if (this.authenticate(UserType.PHOTOGRAPHER)) {
+                return "redirect:/photographer/photo";
+            }
         }
         return "redirect:../";
     }
