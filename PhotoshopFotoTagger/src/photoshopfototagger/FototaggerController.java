@@ -61,7 +61,7 @@ public class FototaggerController implements Initializable {
             System.out.println(path.toString() + "\\" + this.latestFile.toString());
             System.out.println(path.toString() + "\\" + this.BarcodeTB.getText() + "." + extension);
 
-            File newFile = new File(path.toString() + "\\..\\Gemaakte Foto's\\" + this.BarcodeTB.getText() + "." + extension);
+            File newFile = new File(path.toString() + "\\..\\Gemaakte Foto's\\" + this.BarcodeTB.getText().toLowerCase() + "." + extension);
             try {
                 newFile.getParentFile().mkdirs();
                 //newFile.createNewFile();
@@ -73,7 +73,7 @@ public class FototaggerController implements Initializable {
             if (newFile.exists()) {
                 try {
                     System.out.println("File existed");
-                    File NewExistingFile = new File(path.toString() + "\\..\\Gemaakte Foto's\\" + this.BarcodeTB.getText() + "-" + this.AppendedNumber + "." + extension);
+                    File NewExistingFile = new File(path.toString() + "\\..\\Gemaakte Foto's\\" + this.BarcodeTB.getText().toLowerCase() + "-" + this.AppendedNumber + "." + extension);
                     try {
                         NewExistingFile.getParentFile();
                         //NewExistingFile.createNewFile();
