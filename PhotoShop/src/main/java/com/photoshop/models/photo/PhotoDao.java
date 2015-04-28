@@ -162,19 +162,19 @@ public class PhotoDao extends Database {
     public void active(int id) 
     {
         try {
-            String querystring = "SELECT id, active FROM photos WHERE id=?";
-            PreparedStatement stat = conn.prepareStatement(querystring);
-            stat.setInt(1, id);
-            ResultSet rs = stat.executeQuery();
+            String query = "SELECT id, active FROM photos WHERE id=?";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, id); 
+            ResultSet rs = statement.executeQuery();
             if(rs.getInt("active") == 1){
-                querystring = "UPDATE photos SET active=0 WHERE id=?";
-                stat = conn.prepareStatement(querystring);
+                String querystring = "UPDATE photos SET active=0 WHERE id=?";
+                PreparedStatement stat = conn.prepareStatement(querystring);
                 stat.setInt(1, id);
                 stat.execute();
             }
             else{
-                querystring = "UPDATE photos SET active=1 WHERE id=?";
-                stat = conn.prepareStatement(querystring);
+                String querystring = "UPDATE photos SET active=1 WHERE id=?";
+                PreparedStatement stat = conn.prepareStatement(querystring);
                 stat.setInt(1, id);
                 stat.execute();
             }
