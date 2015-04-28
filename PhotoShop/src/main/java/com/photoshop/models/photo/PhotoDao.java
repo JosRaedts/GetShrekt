@@ -159,13 +159,25 @@ public class PhotoDao extends Database {
         }
     }
     
-    public void delete(int id)
+    public void active(int id) 
     {
         try {
-            String querystring = "UPDATE photos SET active=0 WHERE id=?";
+            String querystring = "SELECT id, active FROM photos WHERE id=?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
-            stat.execute();
+            ResultSet rs = stat.executeQuery();
+            if(rs.getInt("active") == 1){
+                querystring = "UPDATE photos SET active=0 WHERE id=?";
+                stat = conn.prepareStatement(querystring);
+                stat.setInt(1, id);
+                stat.execute();
+            }
+            else{
+                querystring = "UPDATE photos SET active=1 WHERE id=?";
+                stat = conn.prepareStatement(querystring);
+                stat.setInt(1, id);
+                stat.execute();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
         }

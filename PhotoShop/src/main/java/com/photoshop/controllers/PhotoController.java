@@ -298,11 +298,11 @@ public class PhotoController extends AbstractController {
         
         if (id != 0)
         {
-        photodao.delete(id);
+            photodao.active(id);
         }
         
         if (this.authenticate(UserType.ADMIN)) {
-        return "redirect:/photo/list";
+            return "redirect:/photo/list";
         }
         
         if (this.authenticate(UserType.PHOTOGRAPHER)) {
