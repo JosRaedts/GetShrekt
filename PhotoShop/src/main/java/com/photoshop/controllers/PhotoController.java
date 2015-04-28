@@ -45,6 +45,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -88,8 +90,7 @@ public class PhotoController extends AbstractController {
     }
 
     @RequestMapping(value = "/upload/do_upload", method = RequestMethod.POST)
-    public @ResponseBody
-    JsonObject do_upload(MultipartHttpServletRequest request, HttpServletRequest response) {
+    public @ResponseBody String do_upload(MultipartHttpServletRequest request, HttpServletRequest response) {
         if (this.authenticate(UserType.PHOTOGRAPHER)) {
             Photographer photographer = (Photographer) this.getUser();
             Iterator<String> itr = request.getFileNames();
@@ -183,10 +184,25 @@ public class PhotoController extends AbstractController {
                             "",
                             "POST");
                     //JSON
-                    JsonObjectBuilder jsonArrayBuilder = Json.createObjectBuilder();
-                    jsonArrayBuilder.add("files", Json.createArrayBuilder()
-                            .add(Json.createArrayBuilder()));
-                    return jsonArrayBuilder.build();
+                    //Files object
+                    JSONObject object = new JSONObject();
+                    
+                    //Filelist array
+                    JSONArray array = new JSONArray();
+                    
+                    //File object
+                    JSONObject fileobject = new JSONObject();
+                    fileobject.put("url", request.getRequestURI() + "/photo/view/low/" + photo.getId());
+                    fileobject.put("thumbnail_url", request.getRequestURI() + "/photo/view/thumb/" + photo.getId());
+                    fileobject.put("name", originalFilename);
+                    fileobject.put("size", mpf.getBytes());
+                    fileobject.put("delete_url", "");
+                    fileobject.put("delete_type", "DELETE");
+                    
+                    array.put(fileobject);
+                    object.put("files", array);
+                    
+                    return object.toString();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -273,6 +289,25 @@ public class PhotoController extends AbstractController {
         if (this.authenticate(UserType.ADMIN)) {
             map.put("pictures", photodao.getList());
             return "photo/list";
+        }
+        return "redirect:../";
+    }
+    
+    @RequestMapping(value = "/active/{PhotoId:^[0-9]+$}", method = RequestMethod.GET)
+    public String active(ModelMap map, HttpServletRequest request,@PathVariable("PhotoId") int id) {
+        if (this.authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
+            if (id != 0)
+            {
+                photodao.active(id);
+            }
+
+            if (this.authenticate(UserType.ADMIN)) {
+                return "redirect:/photo/list";
+            }
+
+            if (this.authenticate(UserType.PHOTOGRAPHER)) {
+                return "redirect:/photographer/photo";
+            }
         }
         return "redirect:../";
     }

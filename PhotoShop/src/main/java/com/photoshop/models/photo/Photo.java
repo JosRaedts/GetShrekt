@@ -41,7 +41,7 @@ public class Photo {
     
     public void delete()
     {
-        this.dao.delete(this);
+        this.dao.active(id);
     }
 
     public void save() { this.dao.save(this); }
