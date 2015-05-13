@@ -7,7 +7,6 @@ package com.photoshop.models.orderregel;
 
 import com.mysql.jdbc.Statement;
 import com.photoshop.models.Database;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -100,7 +99,7 @@ public class OrderRegelDao extends Database {
             }
             else
             {
-                querystring = "INSERT INTO photos(order_id, product_id, photographer_id, photo_id, aantal) VALUES(?, ?, ?, ?, ?)";
+                querystring = "INSERT INTO order_regels(order_id, product_id, photographer_id, photo_id, aantal) VALUES(?, ?, ?, ?, ?)";
                 stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             }
 
