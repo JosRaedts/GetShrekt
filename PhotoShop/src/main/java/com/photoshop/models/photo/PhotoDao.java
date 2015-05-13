@@ -55,7 +55,7 @@ public class PhotoDao extends Database {
         try {
             String querystring = "SELECT * FROM `photos` WHERE id NOT IN (SELECT photoID FROM student_photos) "
                     + "AND id NOT IN (SELECT photoID FROM schoolclass_photos) "
-                    + "AND id NOT IN (SELECT photoID FROM school_photos) AND photographer_id = ? ";
+                    + "AND id NOT IN (SELECT photoID FROM school_photos) AND photographerID = ? ";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
