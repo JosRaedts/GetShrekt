@@ -166,7 +166,9 @@ public class PhotoDao extends Database {
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setInt(1, id); 
             ResultSet rs = statement.executeQuery();
-            if(rs.getInt("active") == 1){
+            while(rs.next())
+            {
+            if(rs.getInt("active") == 1){ //hier knalt die
                 String querystring = "UPDATE photos SET active=0 WHERE id=?";
                 PreparedStatement stat = conn.prepareStatement(querystring);
                 stat.setInt(1, id);
@@ -178,7 +180,9 @@ public class PhotoDao extends Database {
                 stat.setInt(1, id);
                 stat.execute();
             }
+            }
         } catch (SQLException ex) {
+            ex.printStackTrace();
             Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

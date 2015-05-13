@@ -122,6 +122,22 @@ public class ProductPrijs {
     
     @Test
     public void ProductSetpriceTestNegatief() {
+        photos.get(0).setPrice(6.0);
+        //Foto op mok:
+        photos.get(1).setPrice(7.0);
+        //Foto op canvas:
+        photos.get(2).setPrice(10.0);
+        //Foto op t-shirt:
+        photos.get(3).setPrice(2.0);
+        //Foto op muismat:
+        photos.get(4).setPrice(5.0);
+        //Foto op fotopapier groot:
+        photos.get(5).setPrice(8.0);
+        //Foto op iPhone 5 hoesje:
+        photos.get(6).setPrice(10.0);
+        //Foto op schoudertas:
+        photos.get(7).setPrice(25.0);
+        
         //Set price Foto op fotopapier klein:
         photos.get(0).setPrice(-6.0);
         //Foto op mok:
