@@ -54,6 +54,10 @@ public class OrderController extends AbstractController  {
     
            @RequestMapping(value = "/orderoverzicht", method = RequestMethod.GET)
     public String Monitoring(ModelMap map, HttpServletRequest request) {
-        return "admin/monitoring";
+        if (this.authenticate(UserType.STUDENT)) 
+        {
+            return "order/orderoverzicht";
+        }
+        return "redirect:../";
     }
 }
