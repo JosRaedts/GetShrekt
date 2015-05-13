@@ -6,6 +6,7 @@
 package com.photoshop.models.order;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  *
@@ -26,6 +27,14 @@ public class Order {
     public Order(OrderDao dao) {
         this.dao = dao;
     }
+    
+    public void save() {
+        this.dao.save(this);
+    }
+    
+    public List<Order> getOrders() {
+        return this.dao.getList();
+    }
 
     public int getId() {return id;}
 
@@ -41,7 +50,6 @@ public class Order {
 
     public void setDatum(Timestamp datum) {this.datum = datum;}
 
-    public void setStatus(OrderEnum Status) {this.Status = Status;}
-    
+    public void setStatus(OrderEnum Status) {this.Status = Status;}   
     
 }
