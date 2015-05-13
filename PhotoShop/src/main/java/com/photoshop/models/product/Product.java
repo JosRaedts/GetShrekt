@@ -91,7 +91,10 @@ public class Product {
     }
     
     public void setPrice(Double price){
+        if(price >= 0)
+        {
         this.price = price;
+        }
     }
     
     public Double getPrice(){
