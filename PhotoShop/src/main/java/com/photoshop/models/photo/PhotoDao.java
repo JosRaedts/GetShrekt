@@ -55,7 +55,7 @@ public class PhotoDao extends Database {
         try {
             String querystring = "SELECT * FROM `photos` WHERE id NOT IN (SELECT photoID FROM student_photos) "
                     + "AND id NOT IN (SELECT photoID FROM schoolclass_photos) "
-                    + "AND id NOT IN (SELECT photoID FROM school_photos) AND photographerID = ? ";
+                    + "AND id NOT IN (SELECT photoID FROM school_photos) AND photographer_id = ? ";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
@@ -119,12 +119,12 @@ public class PhotoDao extends Database {
             boolean exists = idExists(photo.getId());
             if(exists)
             {
-                querystring = "UPDATE photos SET height = ?, width = ?, thumbnailURL = ?, lowresURL = ?, highresURL = ?, photographerID = ?, active = ?, date = ? WHERE id = ?";
+                querystring = "UPDATE photos SET height = ?, width = ?, thumbnailURL = ?, lowresURL = ?, highresURL = ?, photographer_id = ?, active = ?, date = ? WHERE id = ?";
                 stat = conn.prepareStatement(querystring);
             }
             else
             {
-                querystring = "INSERT INTO photos(height, width, thumbnailURL, lowresURL, highresURL, photographerID, active, date) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+                querystring = "INSERT INTO photos(height, width, thumbnailURL, lowresURL, highresURL, photographer_id, active, date) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
                 stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             }
 
@@ -194,7 +194,7 @@ public class PhotoDao extends Database {
             photo.setThumbnailURL(rs.getString("thumbnailURL"));
             photo.setLowResURL(rs.getString("lowresURL"));
             photo.setHighResURL(rs.getString("highresURL"));
-            photo.setPhotographerID(rs.getInt("photographerID"));
+            photo.setPhotographerID(rs.getInt("photographer_id"));
             if(rs.getInt("active") == 1){   
                 photo.setActive(true);
             }
@@ -211,7 +211,7 @@ public class PhotoDao extends Database {
     public List<Photo> getPhotosByStudent(int id){
         ArrayList<Photo> photos = new ArrayList<Photo>();
         try {
-            String querystring = "SELECT p.id AS id, p.height AS height, p.width AS width, p.thumbnailURL AS thumbnailURL, p.lowresURL AS lowresURL, p.highresURL AS highresURL, p.photographerID AS photographerID, p.active AS active, p.date AS date, sp.photoID, sp.studentID FROM photos p, student_photos sp WHERE p.id = sp.photoID AND sp.studentID = ? ORDER BY date";
+            String querystring = "SELECT p.id AS id, p.height AS height, p.width AS width, p.thumbnailURL AS thumbnailURL, p.lowresURL AS lowresURL, p.highresURL AS highresURL, p.photographer_id AS photographer_id, p.active AS active, p.date AS date, sp.photoID, sp.studentID FROM photos p, student_photos sp WHERE p.id = sp.photoID AND sp.studentID = ? ORDER BY date";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
@@ -227,7 +227,7 @@ public class PhotoDao extends Database {
     public List<Photo> getPhotosByPhotographer(int id){
         ArrayList<Photo> photos = new ArrayList<Photo>();
         try {
-            String querystring = "SELECT id, height, width, thumbnailURL, lowresURL, highresURL, photographerID, active, date FROM photos WHERE photographerID = ? ORDER BY date";
+            String querystring = "SELECT id, height, width, thumbnailURL, lowresURL, highresURL, photographer_id, active, date FROM photos WHERE photographer_id = ? ORDER BY date";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
