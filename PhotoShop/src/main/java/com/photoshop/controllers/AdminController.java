@@ -100,8 +100,7 @@ public class AdminController {
 //    public String getbarcodes(ModelMap map, HttpServletRequest request) {
 //        System.out.println("barcode function called..");
 //        map.put("Scholen", this.schooldao.getList());
-//        return "admin/barcodes";
-//              
+//        return "admin/barcodes"; 
 //    }
     
        @RequestMapping(value = "/monitoring", method = RequestMethod.GET)
