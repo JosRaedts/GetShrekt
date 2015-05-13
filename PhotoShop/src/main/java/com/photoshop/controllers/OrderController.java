@@ -52,12 +52,17 @@ public class OrderController extends AbstractController  {
         return "redirect:../";
     }
     
-           @RequestMapping(value = "/orderoverzicht", method = RequestMethod.GET)
+    @RequestMapping(value = "/orderoverzicht", method = RequestMethod.GET)
     public String Monitoring(ModelMap map, HttpServletRequest request) {
         if (this.authenticate(UserType.STUDENT)) 
         {
             return "order/orderoverzicht";
         }
         return "redirect:../";
+    }
+    
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    public String detail(ModelMap map, HttpServletRequest request) {
+        return "order/detail";
     }
 }
