@@ -7,6 +7,7 @@ package com.photoshop.controllers;
 
 import com.photoshop.models.UserType;
 import com.photoshop.models.admin.AdminDao;
+import com.photoshop.models.order.OrderDao;
 import com.photoshop.models.photographer.PhotographerDao;
 import com.photoshop.models.student.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ public class OrderController extends AbstractController  {
     private AdminDao adminDao;
     @Autowired
     private RedirectAttributes redirectAttributes;
+    @Autowired
+    private OrderDao orderDao;
 
     public OrderController()
     {
@@ -53,6 +56,7 @@ public class OrderController extends AbstractController  {
     public String Monitoring(ModelMap map, HttpServletRequest request) {
         if (this.authenticate(UserType.ADMIN)) 
         {
+            map.put("orders", this.orderDao.getList());
             System.out.println("Yay :)");
             return "order/orderoverzicht";
         }

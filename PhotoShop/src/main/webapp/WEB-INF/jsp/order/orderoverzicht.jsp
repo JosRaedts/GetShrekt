@@ -9,6 +9,11 @@
 <jsp:include page="/WEB-INF/jsp/admin/header.jsp" />
 <div id="page-wrapper">
     test
+    <c:forEach var="order" items="${orders}">
+        <tr>
+            ${order.getStatus()}
+        </tr>
+    </c:forEach>
 </div>
 <!-- /#wrapper -->
 </html>
