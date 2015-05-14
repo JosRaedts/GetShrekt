@@ -7,9 +7,6 @@ package com.photoshop.models.order;
 
 import com.mysql.jdbc.Statement;
 import com.photoshop.models.Database;
-import com.photoshop.models.photo.Photo;
-import com.photoshop.models.photo.PhotoDao;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
