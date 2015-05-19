@@ -60,6 +60,7 @@ public class OrderController extends AbstractController  {
         if (this.authenticate(UserType.ADMIN)) 
         {
             map.put("orders", this.orderDao.getList());
+            map.put("studentdao", this.studentDao);
             System.out.println("Yay :)");
             return "order/orderoverzicht";
         }

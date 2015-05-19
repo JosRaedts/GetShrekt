@@ -41,6 +41,10 @@ public class Order {
     public int getStudent_id() {return student_id;}
 
     public Timestamp getDatum() {return datum;}
+    
+    public String getDatumAsString() {
+        return datum.getDay() + "-" + datum.getMonth() + "-" + (1900 + datum.getYear());
+    }
 
     public OrderEnum getStatus() {return status;}
 
