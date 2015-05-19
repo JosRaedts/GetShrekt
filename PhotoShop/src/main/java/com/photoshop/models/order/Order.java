@@ -16,7 +16,7 @@ public class Order {
     private int id;
     private int student_id;
     private Timestamp datum;
-    private OrderEnum Status;
+    private OrderEnum status;
     
     private final OrderDao dao;
     
@@ -42,7 +42,7 @@ public class Order {
 
     public Timestamp getDatum() {return datum;}
 
-    public OrderEnum getStatus() {return Status;}
+    public OrderEnum getStatus() {return status;}
 
     public void setId(int id) {this.id = id;}
 
@@ -50,6 +50,6 @@ public class Order {
 
     public void setDatum(Timestamp datum) {this.datum = datum;}
 
-    public void setStatus(OrderEnum Status) {this.Status = Status;}   
+    public void setStatus(OrderEnum status) {this.status = status;}   
     
 }

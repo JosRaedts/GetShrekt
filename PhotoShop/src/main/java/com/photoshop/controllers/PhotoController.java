@@ -397,7 +397,6 @@ public class PhotoController extends AbstractController {
         if (this.authenticate(UserType.STUDENT, UserType.ADMIN, UserType.PHOTOGRAPHER))
         {
             Photo photo = photodao.getById(id);
-            System.out.println("godverdommme: " + photo.getPhotographerID());
             map.put("photo", photo);
             map.put("products", productdao.getPriceList(photo.getPhotographerID()));
             return "photo/detail";
