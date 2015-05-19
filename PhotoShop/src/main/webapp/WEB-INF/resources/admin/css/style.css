@@ -97,3 +97,8 @@ and open the template in the editor.
 #download {
     padding-top: 40px;
 }
+
+.space {
+    margin-left: 10px;
+    margin-bottom: 20px
+}
