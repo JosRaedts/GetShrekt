@@ -7,6 +7,7 @@ package com.photoshop.models.order;
 
 import com.mysql.jdbc.Statement;
 import com.photoshop.models.Database;
+import com.photoshop.models.product.Product;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,6 +46,20 @@ public class OrderDao extends Database{
         }
         return orders;
     }
+    
+        ArrayList<Product> photos = new ArrayList<Product>();
+        try {
+            String querystring = "SELECT id, height, width, thumbnailURL, lowresURL, highresURL, photographer_id, active, date FROM photos WHERE photographer_id = ? ORDER BY date";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, id);
+            ResultSet rs = stat.executeQuery();
+            while (rs.next()) {
+                photos.add(build(rs));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return photos;
         
     public Order getById(int id)
     {
