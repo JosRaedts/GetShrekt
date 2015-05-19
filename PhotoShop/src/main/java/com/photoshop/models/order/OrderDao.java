@@ -47,6 +47,7 @@ public class OrderDao extends Database{
         return orders;
     }
     
+    /*public List<Product> getProductList(int id){
         ArrayList<Product> photos = new ArrayList<Product>();
         try {
             String querystring = "SELECT id, height, width, thumbnailURL, lowresURL, highresURL, photographer_id, active, date FROM photos WHERE photographer_id = ? ORDER BY date";
@@ -60,6 +61,7 @@ public class OrderDao extends Database{
             Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return photos;
+    }*/
         
     public Order getById(int id)
     {
