@@ -2,7 +2,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <jsp:include page="/WEB-INF/jsp/header.jsp" />
 <div class="container">
-        <label for="inputName" class="sr-only">Name:</label>
+    <a href="${baseurl}">PDfTest</a>
 </div> <!-- /container -->
 
 <jsp:include page="/WEB-INF/jsp/footer.jsp" />
