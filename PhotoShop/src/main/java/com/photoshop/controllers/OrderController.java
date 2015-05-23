@@ -91,7 +91,6 @@ public class OrderController extends AbstractController  {
         if (this.authenticate(UserType.ADMIN)) 
         {
             map.put("orders", this.orderDao.getList());
-            map.put("studentdao", this.studentDao);
             System.out.println("Yay :)");
             return "order/orderoverzicht";
         }
@@ -102,7 +101,7 @@ public class OrderController extends AbstractController  {
     @RequestMapping(value = "/detail/{OrderId:^[0-9]+$}", method = RequestMethod.GET)
     public String detail(ModelMap map, HttpServletRequest request, @PathVariable("OrderId") int id) {
         Order order = orderDao.getById(id);
-        Student student = studentDao.getById(order.getStudent_id());
+        Student student = order.getStudent();
         map.put("order", order);
         map.put("student", student);
         map.put("productlist", orderDao.getList());

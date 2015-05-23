@@ -8,6 +8,7 @@ package com.photoshop.models.order;
 import com.mysql.jdbc.Statement;
 import com.photoshop.models.Database;
 import com.photoshop.models.product.Product;
+import com.photoshop.models.student.StudentDao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,6 +30,9 @@ public class OrderDao extends Database{
     {
         super();
     }
+    
+    @Autowired
+    StudentDao dao;
     
     public List<Order> getList()
     {
@@ -121,7 +126,7 @@ public class OrderDao extends Database{
                 stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             }
 
-            stat.setInt(1, order.getStudent_id());
+            stat.setInt(1, order.getStudent().getId());
             stat.setTimestamp(2, order.getDatum());
             stat.setInt(3, Integer.parseInt(order.getStatus().toString()));
             
@@ -144,7 +149,7 @@ public class OrderDao extends Database{
         try {            
             order = new Order(this);
             order.setId(rs.getInt("id"));
-            order.setStudent_id(rs.getInt("student_id"));
+            order.setStudent(this.dao.getById(rs.getInt("student_id")));
             order.setDatum(rs.getTimestamp(3));
             
             switch (rs.getInt("status")) {

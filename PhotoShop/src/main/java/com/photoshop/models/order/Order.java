@@ -5,7 +5,9 @@
  */
 package com.photoshop.models.order;
 
+import com.photoshop.models.student.Student;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -14,7 +16,7 @@ import java.util.List;
  */
 public class Order {
     private int id;
-    private int student_id;
+    private Student student;
     private Timestamp datum;
     private OrderEnum status;
     
@@ -38,19 +40,20 @@ public class Order {
 
     public int getId() {return id;}
 
-    public int getStudent_id() {return student_id;}
+    public Student getStudent() {return student;}
 
     public Timestamp getDatum() {return datum;}
     
     public String getDatumAsString() {
-        return datum.getDay() + "-" + datum.getMonth() + "-" + (1900 + datum.getYear());
+        String newstring = new SimpleDateFormat("dd-MM-yyyy").format(this.datum);
+        return newstring;
     }
 
     public OrderEnum getStatus() {return status;}
 
     public void setId(int id) {this.id = id;}
 
-    public void setStudent_id(int student_id) {this.student_id = student_id;}
+    public void setStudent(Student student) {this.student = student;}
 
     public void setDatum(Timestamp datum) {this.datum = datum;}
 
