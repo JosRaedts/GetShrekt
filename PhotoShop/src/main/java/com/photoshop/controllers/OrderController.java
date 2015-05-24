@@ -37,6 +37,7 @@ import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.photoshop.models.product.ProductDao;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -65,6 +66,8 @@ public class OrderController extends AbstractController  {
     private RedirectAttributes redirectAttributes;
     @Autowired
     private OrderDao orderDao;
+    @Autowired
+    private ProductDao productDao;
 
     private static Font catFont;
     private static Font redFont;
@@ -103,10 +106,10 @@ public class OrderController extends AbstractController  {
         if (this.authenticate(UserType.ADMIN)) 
         {
             Order order = orderDao.getById(id);
-            //Student student = studentDao.getById(order.getStudent_id());
+            Student student = order.getStudent();
             map.put("order", order);
-            //map.put("student", student);
-            //map.put("productlist", orderDao.getProductList(id));
+            map.put("student", student);
+            map.put("productlist", productDao.getProductListPerOrder(id));
             return "order/detail";
         }
         return "redirect:../../";

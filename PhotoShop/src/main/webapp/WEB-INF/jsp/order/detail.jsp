@@ -10,9 +10,9 @@
             <c:forEach var="productlist" items="${productlist}">
                 <div class="box">
                     <tr>
-                        <!-- <img src="${baseurl}/product/view/${productlist.id}"/> -->
+                        <td><img src="${baseurl}/product/view/${productlist.id}" height="200px" width="200px"/></td>
                         <td>${productlist.id}</td>
-                        <td>${student.name}</td>
+                        <td>${productlist.name}</td>
                     </tr>
                 </div>
             </c:forEach>
@@ -20,7 +20,8 @@
     </div>
     <div class="col-md-6">
         <!-- klantgegevens -->
-        <table>
+        <div class="box">
+            <table>
             <tr>
                 <td>${student.name}</td>
             </tr>
@@ -36,6 +37,7 @@
             <tr>
                 <th>${student.schoolclass_id}</th>
             </tr>
-        </table>
+            </table>
+        </div>    
     </div>
 </div> <!-- /container -->
