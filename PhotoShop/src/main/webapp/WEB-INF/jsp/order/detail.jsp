@@ -6,15 +6,36 @@
 <div id="page-wrapper">
     <div class="col-md-6">
         <!-- producten -->
-        <c:forEach var="productlist" items="${productlist}">
-            <div class="box">
-                <!-- <img src="${baseurl}/product/view/${productlist.id}"/> -->
-                <label>${productlist.id} ${student.name}</label>
-            </div>
-        </c:forEach>
+        <table>
+            <c:forEach var="productlist" items="${productlist}">
+                <div class="box">
+                    <tr>
+                        <!-- <img src="${baseurl}/product/view/${productlist.id}"/> -->
+                        <td>${productlist.id}</td>
+                        <td>${student.name}</td>
+                    </tr>
+                </div>
+            </c:forEach>
+        </table>
     </div>
     <div class="col-md-6">
         <!-- klantgegevens -->
-        
+        <table>
+            <tr>
+                <td>${student.name}</td>
+            </tr>
+            <tr>
+                <th>${student.studentnr}</th>
+            </tr>
+            <tr>
+                <th>${student.address}</th>
+            </tr>
+            <tr>
+                <th>${student.zipcode} ${student.city}</th>
+            </tr>
+            <tr>
+                <th>${student.schoolclass_id}</th>
+            </tr>
+        </table>
     </div>
 </div> <!-- /container -->

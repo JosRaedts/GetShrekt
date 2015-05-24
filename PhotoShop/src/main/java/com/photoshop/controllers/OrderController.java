@@ -70,11 +70,15 @@ public class OrderController extends AbstractController  {
     
     @RequestMapping(value = "/detail/{OrderId:^[0-9]+$}", method = RequestMethod.GET)
     public String detail(ModelMap map, HttpServletRequest request, @PathVariable("OrderId") int id) {
-        Order order = orderDao.getById(id);
-        Student student = studentDao.getById(order.getStudent_id());
-        map.put("order", order);
-        map.put("student", student);
-        map.put("productlist", orderDao.getList());
-        return "order/detail";
+        if (this.authenticate(UserType.ADMIN)) 
+        {
+            Order order = orderDao.getById(id);
+            Student student = studentDao.getById(order.getStudent_id());
+            map.put("order", order);
+            map.put("student", student);
+            //map.put("productlist", orderDao.getProductList(id));
+            return "order/detail";
+        }
+        return "redirect:../../";
     }
 }
