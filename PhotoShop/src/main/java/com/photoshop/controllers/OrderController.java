@@ -101,7 +101,7 @@ public class OrderController extends AbstractController  {
         return "redirect:../";
     }
     
-    @RequestMapping(value = "/detail{OrderId:^[0-9]+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/detail/{OrderId:^[0-9]+$}", method = RequestMethod.GET)
     public String detail(ModelMap map, HttpServletRequest request, @PathVariable("OrderId") int id) {
         if (this.authenticate(UserType.ADMIN)) 
         {
