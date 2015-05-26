@@ -5,6 +5,7 @@
  */
 package com.photoshop.models.order;
 
+import com.photoshop.models.address.Address;
 import com.photoshop.models.student.Student;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -19,6 +20,8 @@ public class Order {
     private Student student;
     private Timestamp datum;
     private OrderEnum status;
+    private Address shippingaddress;
+    private Address invoiceaddress;
     
     private final OrderDao dao;
     
@@ -58,5 +61,20 @@ public class Order {
     public void setDatum(Timestamp datum) {this.datum = datum;}
 
     public void setStatus(OrderEnum status) {this.status = status;}   
-    
+
+    public void setShippingaddress(Address shippingaddress) {
+        this.shippingaddress = shippingaddress;
+    }
+
+    public void setInvoiceaddress(Address invoiceaddress) {
+        this.invoiceaddress = invoiceaddress;
+    }
+
+    public Address getShippingaddress() {
+        return shippingaddress;
+    }
+
+    public Address getInvoiceaddress() {
+        return invoiceaddress;
+    }
 }
