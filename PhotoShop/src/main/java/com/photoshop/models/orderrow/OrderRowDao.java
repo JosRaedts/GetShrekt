@@ -173,7 +173,7 @@ public class OrderRowDao extends Database {
             rs.next();
             i = rs.getInt("rows");
         } catch (Exception ex) {
-            Logger.getLogger(OrderRegelDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderRowDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return i;
     }

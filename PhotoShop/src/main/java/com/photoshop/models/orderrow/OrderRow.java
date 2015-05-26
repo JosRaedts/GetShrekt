@@ -44,18 +44,8 @@ public class OrderRow {
     public int getPhotographer_id() { return photographer_id;}
     public int getPhoto_id() { return photo_id;}
     public int getAantal() { return aantal;}
-    public Product getProduct() 
-        {
-            if(this.product_id == 0)
-            {
-                System.out.println("gekke jongen"); 
-                return null;
-            } 
-            else
-            {  
-                return productdao.getById(this.product_id);
-            }
-        }    
+    public Product getProduct() { return productdao.getById(this.product_id); }
+    
     public void setId(int id) { this.id = id;}
     public void setOrder_id(int order_id) { this.order_id = order_id;}
     public void setProduct_id(int product_id) { this.product_id = product_id;}
