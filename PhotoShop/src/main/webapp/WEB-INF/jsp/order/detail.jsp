@@ -2,42 +2,75 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <jsp:include page="/WEB-INF/jsp/admin/header.jsp" />
-
 <div id="page-wrapper">
-    <div class="col-md-6">
-        <!-- producten -->
-        <table>
-            <c:forEach var="productlist" items="${productlist}">
-                <div class="box">
-                    <tr>
-                        <td><img src="${baseurl}/product/view/${productlist.id}" height="200px" width="200px"/></td>
-                        <td>${productlist.id}</td>
-                        <td>${productlist.name}</td>
-                    </tr>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Order detail pagina</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+
+            <!-- /.panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-comments fa-fw"></i> Order
                 </div>
-            </c:forEach>
-        </table>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="dataTable_wrapper">
+                                <table>
+                                    <c:forEach var="productlist" items="${productlist}">
+                                            <tr>
+                                                <td><img src="${baseurl}/product/view/${productlist.id}" height="150px" width="150px"/></td>
+                                                <td>${productlist.id}</td>
+                                                <td>${productlist.name}</td>
+                                            </tr>
+                                    </c:forEach>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.col-lg-4 (nested) -->
+                        <div class="col-lg-8">
+                            <div id="morris-bar-chart">
+                                <table>
+                                    <tr>
+                                        <td>${student.name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>${student.studentnr}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>${student.address}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>${student.zipcode} ${student.city}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>${student.schoolclass_id}</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-8 (nested) -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-8 -->
     </div>
-    <div class="col-md-6">
-        <!-- klantgegevens -->
-        <div class="box">
-            <table>
-            <tr>
-                <td>${student.name}</td>
-            </tr>
-            <tr>
-                <th>${student.studentnr}</th>
-            </tr>
-            <tr>
-                <th>${student.address}</th>
-            </tr>
-            <tr>
-                <th>${student.zipcode} ${student.city}</th>
-            </tr>
-            <tr>
-                <th>${student.schoolclass_id}</th>
-            </tr>
-            </table>
-        </div>    
+    <!-- /.row -->
     </div>
-</div> <!-- /container -->
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
