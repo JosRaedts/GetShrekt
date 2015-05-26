@@ -34,7 +34,7 @@ public class CartproductDao extends Database {
     {
         List<Cartproduct> products = new ArrayList();
         try {
-            String querystring = "SELECT * FROM cartproducts";
+            String querystring = "SELECT * FROM products";
             PreparedStatement stat = conn.prepareStatement(querystring);
             ResultSet rs = stat.executeQuery();
             
