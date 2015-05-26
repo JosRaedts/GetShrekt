@@ -66,7 +66,7 @@ public class OrderController extends AbstractController {
     private OrderDao orderDao;
     @Autowired
     private OrderRowDao orderregelDao;
-
+    
     @Autowired
     private Environment env;
     
@@ -104,9 +104,7 @@ public class OrderController extends AbstractController {
             Student student = order.getStudent();
             map.put("order", order);
             map.put("student", student);
-            System.out.println("ja hier komt ie!");
             map.put("productlist", orderregelDao.getOrderRegelsByOrderNr(id));
-            System.out.println("hier niet of toch?");
             return "order/detail";
         }
         return "redirect:../../";
