@@ -11,6 +11,7 @@ import com.photoshop.models.admin.AdminDao;
 import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.photographer.Photographer;
 import com.photoshop.models.photographer.PhotographerDao;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -84,6 +85,13 @@ public class DefaultController extends AbstractController {
         {    
             int photocount = this.photoDao.getPhotosByPhotographer(Integer.parseInt(request.getSession().getAttribute("UserID").toString())).size();
             map.put("Photocount", photocount);
+            ArrayList<String> list = new ArrayList();
+            for (Photographer p : this.photographerDao.getList()) {
+                list.add(p.getName());
+            }
+            map.put("photographers", list);
+            map.put("photographerDao", this.photographerDao);
+            map.put("size", list.size());
             System.out.println(photocount);
             return "admin/home";
         }
