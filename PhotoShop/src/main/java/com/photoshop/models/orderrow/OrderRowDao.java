@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.photoshop.models.orderregel;
+package com.photoshop.models.orderrow;
 
 import com.mysql.jdbc.Statement;
 import com.photoshop.models.Database;
@@ -21,16 +21,16 @@ import org.springframework.stereotype.Component;
  * @author Willem
  */
 @Component
-public class OrderRegelDao extends Database {
+public class OrderRowDao extends Database {
 
-    public OrderRegelDao()
+    public OrderRowDao()
     {
         super();
     }
     
-    public List<OrderRegel> getList()
+    public List<OrderRow> getList()
     {
-        List<OrderRegel> photos = new ArrayList();
+        List<OrderRow> orderregel = new ArrayList();
         try {
             String querystring = "SELECT * FROM order_regels";
             PreparedStatement stat = conn.prepareStatement(querystring);
@@ -38,18 +38,18 @@ public class OrderRegelDao extends Database {
             
             while(rs.next())
             {
-                photos.add(build(rs));
+                orderregel.add(build(rs));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(OrderRegelDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderRowDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return photos;
+        return orderregel;
     }
     
     
-    public OrderRegel getById(int id)
+    public OrderRow getById(int id)
     {
-        OrderRegel or = null;
+        OrderRow or = null;
         try {
             String querystring = "SELECT * FROM order_regels WHERE id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
@@ -61,7 +61,7 @@ public class OrderRegelDao extends Database {
                 or = build(rs);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(OrderRegelDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderRowDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return or;
     }
@@ -82,13 +82,13 @@ public class OrderRegelDao extends Database {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(OrderRegelDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderRowDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return exists;
     }
     
-    public boolean save(OrderRegel or)
+    public boolean save(OrderRow or)
     {
         try {
             PreparedStatement stat;
@@ -124,42 +124,42 @@ public class OrderRegelDao extends Database {
             }
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(OrderRegelDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderRowDao.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
         
-    private OrderRegel build(ResultSet rs)
+    private OrderRow build(ResultSet rs)
     {
-        OrderRegel or = null;
+        OrderRow or = null;
         try {            
-            or = new OrderRegel(this);
+            or = new OrderRow(this);
             or.setId(rs.getInt("id"));
-            or.setOrder_id(rs.getInt("height"));
-            or.setPhoto_id(rs.getInt("width"));
-            or.setPhotographer_id(rs.getInt("thumbnailURL"));
-            or.setProduct_id(rs.getInt("lowresURL"));
-            or.setAantal(rs.getInt("highresURL"));
+            or.setOrder_id(rs.getInt("order_id"));
+            or.setPhoto_id(rs.getInt("photo_id"));
+            or.setPhotographer_id(rs.getInt("photographer_id"));
+            or.setProduct_id(rs.getInt("product_id"));
+            or.setAantal(rs.getInt("aantal"));
             
         } catch (SQLException ex) {
-            Logger.getLogger(OrderRegelDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderRowDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return or;
     }
 
-    public List<OrderRegel> getOrderRegelsByOrderNr(int id){
-        ArrayList<OrderRegel> regels = new ArrayList<OrderRegel>();
+    public List<OrderRow> getOrderRegelsByOrderNr(int id){
+        ArrayList<OrderRow> orderregels = new ArrayList<OrderRow>();
         try {
             String querystring = "SELECT * FROM order_regels where order_id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
             while (rs.next()) {
-                regels.add(build(rs));
+                orderregels.add(build(rs));
             }
         } catch (Exception ex) {
-            Logger.getLogger(OrderRegelDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrderRowDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return regels;
+        return orderregels;
     }
 }

@@ -37,6 +37,7 @@ import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.photoshop.models.orderrow.OrderRowDao;
 import com.photoshop.models.product.ProductDao;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
@@ -67,7 +68,7 @@ public class OrderController extends AbstractController  {
     @Autowired
     private OrderDao orderDao;
     @Autowired
-    private ProductDao productDao;
+    private OrderRowDao orderregelDao;
 
     private static Font catFont;
     private static Font redFont;
@@ -109,7 +110,9 @@ public class OrderController extends AbstractController  {
             Student student = order.getStudent();
             map.put("order", order);
             map.put("student", student);
-            map.put("productlist", productDao.getProductListPerOrder(id));
+            System.out.println("ja hier komt ie!");
+            map.put("productlist", orderregelDao.getOrderRegelsByOrderNr(id));
+            System.out.println("hier niet of toch?");
             return "order/detail";
         }
         return "redirect:../../";

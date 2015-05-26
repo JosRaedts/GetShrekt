@@ -26,11 +26,11 @@
                         <div class="col-lg-12">
                             <div class="dataTable_wrapper">
                                 <table>
-                                    <c:forEach var="productlist" items="${productlist}">
+                                    <c:forEach var="orderrow" items="${productlist}">
                                             <tr>
-                                                <td><img src="${baseurl}/product/view/${productlist.id}" height="150px" width="150px"/></td>
-                                                <td>${productlist.id}</td>
-                                                <td>${productlist.name}</td>
+                                                <td><img src="${baseurl}/product/view/${orderrow.getProduct().getId()}" height="150px" width="150px"/></td>
+                                                <td>${orderrow.getProduct().getId()}</td>
+                                                <td>${orderrow.getProduct().getName()}</td>
                                             </tr>
                                     </c:forEach>
                                 </table>

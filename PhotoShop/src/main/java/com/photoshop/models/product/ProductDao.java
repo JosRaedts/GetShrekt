@@ -51,13 +51,13 @@ public class ProductDao extends Database{
         return photos;
     }
     
-    public List<Product> getProductListPerOrder(int id){
+    /*public List<Product> getProductListPerOrder(int id){
         ArrayList<Product> products = new ArrayList<Product>();
         try {
             String querystring = "SELECT p.id AS id, p.height AS height, p.width AS width, p.imageURL AS imageURL, p.name AS name, p.active AS active, op.order_id AS order_id, op.product_id AS product_id, op.aantal AS aantal FROM products p, orders_products op WHERE op.product_id = p.id AND order_id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
-            ResultSet rs = stat.executeQuery();
+            ResultSet rs = stat.executeQuery();  
             while (rs.next()) {
                 products.add(build(rs));
             }
@@ -65,7 +65,7 @@ public class ProductDao extends Database{
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return products;
-    }
+    }*/
     
     public List<Product> getPriceList(int photographerid)
     {

@@ -9,17 +9,21 @@ import com.photoshop.models.student.Student;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Willem
  */
+@Component
 public class Order {
     private int id;
     private Student student;
     private Timestamp datum;
     private OrderEnum status;
     
+    @Autowired
     private final OrderDao dao;
     
     public Order() {
