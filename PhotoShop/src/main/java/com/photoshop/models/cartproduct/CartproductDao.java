@@ -34,7 +34,7 @@ public class CartproductDao extends Database {
     {
         List<Cartproduct> products = new ArrayList();
         try {
-            String querystring = "SELECT * FROM products";
+            String querystring = "SELECT * FROM cartproducts";
             PreparedStatement stat = conn.prepareStatement(querystring);
             ResultSet rs = stat.executeQuery();
             
@@ -52,7 +52,7 @@ public class CartproductDao extends Database {
     {
         Cartproduct product = null;
         try {
-            String querystring = "SELECT * FROM products WHERE id = ?";
+            String querystring = "SELECT * FROM cartproducts WHERE id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
@@ -71,7 +71,7 @@ public class CartproductDao extends Database {
     {
         boolean exists = false;
         try {
-            String querystring = "SELECT * FROM products WHERE id = ?";
+            String querystring = "SELECT * FROM cartproducts WHERE id = ?";
             PreparedStatement stat;
             stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
@@ -89,36 +89,28 @@ public class CartproductDao extends Database {
         return exists;
     }
     
-    public boolean save(Product product)
+    public boolean save(Cartproduct product)
     {
         try {
             String querystring = null;
             boolean exists = idExists(product.getId());
             if(exists)
             {
-                querystring = "UPDATE cartproducts SET name = ?, height = ?, width = ?, imageURL = ?, active = ? WHERE id = ?";                                
+                querystring = "UPDATE cartproducts SET price = ?, amount = ? WHERE id = ?";                                
             }
             else
             {
-                querystring = "INSERT INTO cartproducts(name, height, width, imageURL, active) VALUES(?, ?, ?, ?, ?)";
+                querystring = "INSERT INTO cartproducts(price, amount) VALUES(?, ?)";
             }
             
             PreparedStatement stat = conn.prepareStatement(querystring);
             
-            stat.setString(1, product.getName());
-            stat.setInt(2, product.getHeight());
-            stat.setInt(3, product.getWidth());
-            stat.setString(4, product.getImageURL());
-            if(product.getActive())
-            {
-                stat.setInt(5, 1);
-            }
-            else{
-                stat.setInt(5, 0);
-            }
+            stat.setDouble(1, product.getPrice());
+            stat.setInt(2, product.getAmount());
+            
             if(exists)
             {
-                stat.setInt(6, product.getId());
+                stat.setInt(3, product.getId());
             }
             stat.execute();
             return true;
@@ -134,7 +126,7 @@ public class CartproductDao extends Database {
         try {            
             product = new Cartproduct(this);
             product.setId(rs.getInt("id"));
-            product.setContent(rs.getString("name"));
+            //product.setContent(rs.getString("name"));
             product.setPrice(rs.getDouble("price"));
             product.setAmount(rs.getInt("amount"));
             
@@ -144,6 +136,31 @@ public class CartproductDao extends Database {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return product;
+    }
+    
+    public boolean delete(Cartproduct product)
+    {
+        try {
+            String querystring = null;
+            boolean exists = idExists(product.getId());
+            if(exists)
+            {
+                querystring = "DELETE FROM cartproducts WHERE id = ?";                                
+            }
+            else
+            {
+                return false;
+            }
+            
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, product.getId());
+            stat.execute();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        
     }
     
 }
