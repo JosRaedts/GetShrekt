@@ -34,7 +34,7 @@
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer">
                                         <c:forEach var="order" items="${orders}">
                                             <tr>
-                                                <td><a href="${baseurl}/order/detail?id=${order.getId()}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>
+                                                <td><a href="${baseurl}/order/detail/${order.getId()}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>
                                                 <td>${order.getId()}</td>
                                                 <td>${order.getStudent().getName()}</td>
                                                 <td>${order.getDatumAsString()}</td>
