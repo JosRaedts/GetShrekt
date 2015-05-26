@@ -162,4 +162,19 @@ public class OrderRowDao extends Database {
         }
         return orderregels;
     }
+    
+    public int getNumberOfSalesForPhotographer(int photograhper_id) {
+        int i = 0;
+        try {
+            String querystring = "SELECT COUNT(id) as rows FROM order_regels where photographer_id = ?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photograhper_id);
+            ResultSet rs = stat.executeQuery();
+            rs.next();
+            i = rs.getInt("rows");
+        } catch (Exception ex) {
+            Logger.getLogger(OrderRegelDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return i;
+    }
 }

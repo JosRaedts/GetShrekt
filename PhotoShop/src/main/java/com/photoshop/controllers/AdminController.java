@@ -8,6 +8,7 @@ package com.photoshop.controllers;
 import com.photoshop.models.UserType;
 import com.photoshop.models.admin.Admin;
 import com.photoshop.models.admin.AdminDao;
+import com.photoshop.models.photographer.PhotographerDao;
 import com.photoshop.models.school.SchoolDao;
 import com.photoshop.models.schoolClass.SchoolClassDao;
 import com.photoshop.models.student.Student;
@@ -30,6 +31,13 @@ public class AdminController {
     private AdminDao adminDao;
     @Autowired
     private SchoolDao schooldao;
+    @Autowired
+    private PhotographerDao photoDao;
+    
+//    @RequestMapping(value = "/", method = RequestMethod.GET)
+//    public String getSalesInfo(ModelMap map, HttpServletRequest request) {
+//        return "admin/";
+//    }
     
        @RequestMapping(value = "/accountgegevens", method = RequestMethod.GET)
     public String VraagAccountInfoOp(ModelMap map, HttpServletRequest request) {
