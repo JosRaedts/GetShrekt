@@ -31,11 +31,6 @@ public class OrderRow {
     private ProductDao productdao;
     
     public OrderRow() {
-        this.dao = new OrderRowDao();
-    }
-    
-    public OrderRow(OrderRowDao dao) {
-        this.dao = dao;
     }
 
     public int getId() { return id;}
@@ -44,7 +39,7 @@ public class OrderRow {
     public int getPhotographer_id() { return photographer_id;}
     public int getPhoto_id() { return photo_id;}
     public int getAantal() { return aantal;}
-    public Product getProduct() { return productdao.getById(this.product_id); }
+    public Product getProduct() { if(productdao == null){ productdao = new ProductDao(); } return productdao.getById(this.product_id); }
     
     public void setId(int id) { this.id = id;}
     public void setOrder_id(int order_id) { this.order_id = order_id;}

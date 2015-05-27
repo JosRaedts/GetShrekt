@@ -130,7 +130,7 @@ public class OrderDao extends Database{
     {
         Order order = null;
         try {            
-            order = new Order(this);
+            order = new Order();
             order.setId(rs.getInt("id"));
             order.setStudent(this.dao.getById(rs.getInt("student_id")));
             order.setDatum(rs.getTimestamp(3));

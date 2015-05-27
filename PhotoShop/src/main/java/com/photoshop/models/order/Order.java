@@ -27,14 +27,9 @@ public class Order {
     private Address invoiceaddress;
     
     @Autowired
-    private final OrderDao dao;
+    private OrderDao dao;
     
     public Order() {
-        this.dao = new OrderDao();
-    }
-    
-    public Order(OrderDao dao) {
-        this.dao = dao;
     }
     
     public void save() {

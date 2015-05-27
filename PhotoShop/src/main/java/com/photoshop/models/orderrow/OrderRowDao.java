@@ -132,8 +132,8 @@ public class OrderRowDao extends Database {
     private OrderRow build(ResultSet rs)
     {
         OrderRow or = null;
-        try {            
-            or = new OrderRow(this);
+        try {
+            or = new OrderRow();
             or.setId(rs.getInt("id"));
             or.setOrder_id(rs.getInt("order_id"));
             or.setPhoto_id(rs.getInt("photo_id"));

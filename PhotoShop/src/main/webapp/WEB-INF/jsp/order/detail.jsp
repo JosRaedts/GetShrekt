@@ -13,24 +13,29 @@
     <div class="row">
     <!-- /.row -->
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
 
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-comments fa-fw"></i> Order
+                    <i class="fa fa-comments fa-fw"></i> Products
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <div class="row">
+                    <div class="row" >
                         <div class="col-lg-12">
                             <div class="dataTable_wrapper">
-                                <table>
+                                <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
+                                    <tr>
+                                        <td> Product example </td>
+                                        <td> Product name </td>
+                                        <td> Amount </td>
+                                    </tr>
                                     <c:forEach var="orderrow" items="${productlist}">
                                             <tr>
                                                 <td><img src="${baseurl}/product/view/${orderrow.getProduct().getId()}" height="150px" width="150px"/></td>
-                                                <td>${orderrow.getProduct().getId()}</td>
                                                 <td>${orderrow.getProduct().getName()}</td>
+                                                <td>${orderrow.getAantal()}
                                             </tr>
                                     </c:forEach>
                                 </table>
@@ -38,27 +43,6 @@
                             <!-- /.table-responsive -->
                         </div>
                         <!-- /.col-lg-4 (nested) -->
-                        <div class="col-lg-8">
-                            <div id="morris-bar-chart">
-                                <table>
-                                    <tr>
-                                        <td>${student.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>${student.studentnr}</th>
-                                    </tr>
-                                    <tr>
-                                        <th>${student.address}</th>
-                                    </tr>
-                                    <tr>
-                                        <th>${student.zipcode} ${student.city}</th>
-                                    </tr>
-                                    <tr>
-                                        <th>${student.schoolclass_id}</th>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
                         <!-- /.col-lg-8 (nested) -->
                     </div>
                     <!-- /.row -->
@@ -68,6 +52,57 @@
             <!-- /.panel -->
         </div>
         <!-- /.col-lg-8 -->
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-comments fa-fw"></i> Studentgegevens
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="dataTable_wrapper">
+                        <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
+                            <tr>
+                                <td> Factuuradres </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Naam <br />
+                                    Adres <br />
+                                    Postcode <br />
+                                    Woonplaats <br />
+                                    Studentnummer
+                                </td>
+                                <td>Dhr. ${student.name} <br />
+                                    ${student.address} <br />
+                                    ${student.zipcode} <br />
+                                    ${student.city} <br />
+                                    ${student.studentnr} <br />
+                                </td>
+                            </tr>
+                        </table> <br />
+                        <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
+                            <tr>
+                                <td> Bezorgadres </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Naam <br />
+                                    Adres <br />
+                                    Postcode <br />
+                                    Woonplaats
+                                </td>
+                                <td>
+                                    ${student.name} <br />
+                                    ${student.address} <br />
+                                    ${student.zipcode} <br />
+                                    ${student.city}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.row -->
     </div>

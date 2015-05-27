@@ -191,7 +191,7 @@ public class PhotoDao extends Database {
     {
         Photo photo = null;
         try {            
-            photo = new Photo(this);
+            photo = new Photo();
             photo.setId(rs.getInt("id"));
             photo.setHeight(rs.getInt("height"));
             photo.setWidth(rs.getInt("width"));

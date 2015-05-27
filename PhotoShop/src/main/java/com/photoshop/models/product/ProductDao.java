@@ -217,7 +217,7 @@ public class ProductDao extends Database{
     {
         Product product = null;
         try {            
-            product = new Product(this);
+            product = new Product();
             product.setId(rs.getInt("id"));
             product.setName(rs.getString("name"));
             product.setHeight(rs.getInt("height"));
