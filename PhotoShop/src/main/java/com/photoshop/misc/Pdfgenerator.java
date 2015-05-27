@@ -7,11 +7,13 @@ package com.photoshop.misc;
 
 import com.itextpdf.text.Anchor;
 import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.List;
 import com.itextpdf.text.ListItem;
@@ -23,6 +25,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.photoshop.controllers.OrderController;
 import com.photoshop.models.order.Order;
+import com.photoshop.models.orderrow.OrderRow;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -110,95 +113,52 @@ public class Pdfgenerator {
         // Start a new page
         //document.newPage();
     }
-
-//    private void addContent(Document document) throws DocumentException {
-//        Anchor anchor = new Anchor("First Chapter", catFont);
-//        anchor.setName("First Chapter");
-//
-//        // Second parameter is the number of the chapter
-//        Chapter catPart = new Chapter(new Paragraph(anchor), 1);
-//
-//        Paragraph subPara = new Paragraph("Subcategory 1", subFont);
-//        Section subCatPart = catPart.addSection(subPara);
-//        subCatPart.add(new Paragraph("Hello"));
-//
-//        subPara = new Paragraph("Subcategory 2", subFont);
-//        subCatPart = catPart.addSection(subPara);
-//        subCatPart.add(new Paragraph("Paragraph 1"));
-//        subCatPart.add(new Paragraph("Paragraph 2"));
-//        subCatPart.add(new Paragraph("Paragraph 3"));
-//
-//        // add a list
-//        createList(subCatPart);
-//        Paragraph paragraph = new Paragraph();
-//        addEmptyLine(paragraph, 5);
-//        subCatPart.add(paragraph);
-//
-//        // add a table
-//        createTable(subCatPart);
-//
-//        // now add all this to the document
-//        document.add(catPart);
-//
-//        // Next section
-//        anchor = new Anchor("Second Chapter", catFont);
-//        anchor.setName("Second Chapter");
-//
-//        // Second parameter is the number of the chapter
-//        catPart = new Chapter(new Paragraph(anchor), 1);
-//
-//        subPara = new Paragraph("Subcategory", subFont);
-//        subCatPart = catPart.addSection(subPara);
-//        subCatPart.add(new Paragraph("This is a very important message"));
-//
-//        // now add all this to the document
-//        document.add(catPart);
-//
-//    }
-//
+    
     private void createTable(Paragraph preface)
-            throws BadElementException {
+            throws BadElementException, DocumentException {
+                // font
+        Font font = new Font(FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
+        // create header cell
         PdfPTable table = new PdfPTable(4);
         table.setTotalWidth(600);
-        // t.setBorderColor(BaseColor.GRAY);
-        // t.setPadding(4);
-        // t.setSpacing(4);
-        // t.setBorderWidth(1);
-        PdfPCell c1 = new PdfPCell(new Phrase("Hoeveelheid"));
+        PdfPCell c1 = new PdfPCell(new Phrase("Hoeveelheid",font));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase("Beschrijving"));
+        c1 = new PdfPCell(new Phrase("Beschrijving",font));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Prijs per eenheid"));
+        c1 = new PdfPCell(new Phrase("Prijs per eenheid",font));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase("Totaal"));
+        c1 = new PdfPCell(new Phrase("Totaal",font));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
+        
+        // set the width of the table to 100% of page
+        table.setWidthPercentage(100);
+ 
+        // set relative columns width
+        table.setWidths(new float[]{0.6f, 1.4f, 0.8f,0.8f});
         table.setHeaderRows(1);
-
-        table.addCell("1.0");
-        table.addCell("1.1");
-        table.addCell("1.2");
-        table.addCell("2.1");
-        table.addCell("2.2");
-        table.addCell("2.3");
-
+        double totaalprijs = 0;
+        
+        for(OrderRow row : order.getOrders())
+        {
+            table.addCell(row.getAantal() + "");
+            table.addCell(row.getProduct().getName());
+            table.addCell(row.getProduct().getPrice() + "");
+            double totaalprijsproduct = row.getProduct().getPrice() * row.getAantal();
+            table.addCell(totaalprijsproduct + "");
+            totaalprijs = totaalprijs + totaalprijsproduct;    
+        }
+     
+        
         preface.add(table);
         //subCatPart.add(table);
 
-    }
-
-    private void createList(Section subCatPart) {
-        List list = new List(true, false, 10);
-        list.add(new ListItem("First point"));
-        list.add(new ListItem("Second point"));
-        list.add(new ListItem("Third point"));
-        subCatPart.add(list);
     }
 
     private void addEmptyLine(Paragraph paragraph, int number) {
