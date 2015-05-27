@@ -62,7 +62,7 @@ public class Pdfgenerator {
             document.open();
             addMetaData(document);
             addTitlePage(document);
-            addContent(document);
+            //addContent(document);
             document.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,61 +103,63 @@ public class Pdfgenerator {
         preface.add(new Paragraph(order.getInvoiceaddress().getTelefoonnummer(), subFont));
         addEmptyLine(preface, 1);
         preface.add(new Paragraph("Geachte heer" + " " + order.getInvoiceaddress().getKlantnaam(), subtitel));
+        addEmptyLine(preface, 1);
+        createTable(preface);
         document.add(preface);
 
         // Start a new page
         //document.newPage();
     }
 
-    private void addContent(Document document) throws DocumentException {
-        Anchor anchor = new Anchor("First Chapter", catFont);
-        anchor.setName("First Chapter");
-
-        // Second parameter is the number of the chapter
-        Chapter catPart = new Chapter(new Paragraph(anchor), 1);
-
-        Paragraph subPara = new Paragraph("Subcategory 1", subFont);
-        Section subCatPart = catPart.addSection(subPara);
-        subCatPart.add(new Paragraph("Hello"));
-
-        subPara = new Paragraph("Subcategory 2", subFont);
-        subCatPart = catPart.addSection(subPara);
-        subCatPart.add(new Paragraph("Paragraph 1"));
-        subCatPart.add(new Paragraph("Paragraph 2"));
-        subCatPart.add(new Paragraph("Paragraph 3"));
-
-        // add a list
-        createList(subCatPart);
-        Paragraph paragraph = new Paragraph();
-        addEmptyLine(paragraph, 5);
-        subCatPart.add(paragraph);
-
-        // add a table
-        createTable(subCatPart);
-
-        // now add all this to the document
-        document.add(catPart);
-
-        // Next section
-        anchor = new Anchor("Second Chapter", catFont);
-        anchor.setName("Second Chapter");
-
-        // Second parameter is the number of the chapter
-        catPart = new Chapter(new Paragraph(anchor), 1);
-
-        subPara = new Paragraph("Subcategory", subFont);
-        subCatPart = catPart.addSection(subPara);
-        subCatPart.add(new Paragraph("This is a very important message"));
-
-        // now add all this to the document
-        document.add(catPart);
-
-    }
-
-    private void createTable(Section subCatPart)
+//    private void addContent(Document document) throws DocumentException {
+//        Anchor anchor = new Anchor("First Chapter", catFont);
+//        anchor.setName("First Chapter");
+//
+//        // Second parameter is the number of the chapter
+//        Chapter catPart = new Chapter(new Paragraph(anchor), 1);
+//
+//        Paragraph subPara = new Paragraph("Subcategory 1", subFont);
+//        Section subCatPart = catPart.addSection(subPara);
+//        subCatPart.add(new Paragraph("Hello"));
+//
+//        subPara = new Paragraph("Subcategory 2", subFont);
+//        subCatPart = catPart.addSection(subPara);
+//        subCatPart.add(new Paragraph("Paragraph 1"));
+//        subCatPart.add(new Paragraph("Paragraph 2"));
+//        subCatPart.add(new Paragraph("Paragraph 3"));
+//
+//        // add a list
+//        createList(subCatPart);
+//        Paragraph paragraph = new Paragraph();
+//        addEmptyLine(paragraph, 5);
+//        subCatPart.add(paragraph);
+//
+//        // add a table
+//        createTable(subCatPart);
+//
+//        // now add all this to the document
+//        document.add(catPart);
+//
+//        // Next section
+//        anchor = new Anchor("Second Chapter", catFont);
+//        anchor.setName("Second Chapter");
+//
+//        // Second parameter is the number of the chapter
+//        catPart = new Chapter(new Paragraph(anchor), 1);
+//
+//        subPara = new Paragraph("Subcategory", subFont);
+//        subCatPart = catPart.addSection(subPara);
+//        subCatPart.add(new Paragraph("This is a very important message"));
+//
+//        // now add all this to the document
+//        document.add(catPart);
+//
+//    }
+//
+    private void createTable(Paragraph preface)
             throws BadElementException {
-        PdfPTable table = new PdfPTable(3);
-
+        PdfPTable table = new PdfPTable(4);
+        table.setTotalWidth(600);
         // t.setBorderColor(BaseColor.GRAY);
         // t.setPadding(4);
         // t.setSpacing(4);
@@ -165,12 +167,16 @@ public class Pdfgenerator {
         PdfPCell c1 = new PdfPCell(new Phrase("Hoeveelheid"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
-
+        
         c1 = new PdfPCell(new Phrase("Beschrijving"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
 
         c1 = new PdfPCell(new Phrase("Prijs per eenheid"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase("Totaal"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
         table.setHeaderRows(1);
@@ -182,7 +188,8 @@ public class Pdfgenerator {
         table.addCell("2.2");
         table.addCell("2.3");
 
-        subCatPart.add(table);
+        preface.add(table);
+        //subCatPart.add(table);
 
     }
 
