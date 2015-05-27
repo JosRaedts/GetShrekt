@@ -82,5 +82,22 @@ public class ShoppingCartController extends AbstractController {
 
         return "redirect:../";
     }
+    
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String addProduct(ModelMap map, HttpServletRequest request) {
+        try {
+            System.out.println(request.getParameter("photo_id").toString());
+            System.out.println(request.getParameter("photo_data").toString());
+            System.out.println(request.getParameterValues("products").toString());
+            ///Cartproduct temp = cartproductDao.getById(Integer.parseInt(request.getParameter("id")));
+            
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return "redirect:list";
+        }
+
+        return "redirect:../";
+    }
 
 }
