@@ -7,6 +7,8 @@ package com.photoshop.models.orderrow;
 
 import com.mysql.jdbc.Statement;
 import com.photoshop.models.Database;
+import com.photoshop.models.product.Product;
+import com.photoshop.models.product.ProductDao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,6 +26,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderRowDao extends Database {
 
+    @Autowired
+    private ProductDao productDao;
+    
     public OrderRowDao()
     {
         super();
@@ -166,15 +172,40 @@ public class OrderRowDao extends Database {
     public int getNumberOfSalesForPhotographer(int photograhper_id) {
         int i = 0;
         try {
-            String querystring = "SELECT COUNT(id) as rows FROM order_regels where photographer_id = ?";
+            String querystring = "SELECT aantal as aantal FROM order_regels where photographer_id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, photograhper_id);
             ResultSet rs = stat.executeQuery();
-            rs.next();
-            i = rs.getInt("rows");
+            while(rs.next()) {
+                i = i + rs.getInt("aantal");
+            }
         } catch (Exception ex) {
             Logger.getLogger(OrderRowDao.class.getName()).log(Level.SEVERE, null, ex);
+            return -1;
         }
         return i;
+    }
+    
+     public List<int[]> getTopProducts()
+    {
+        List<int[]> products = new ArrayList();
+        try {
+            String querystring = "SELECT product_id as id, SUM( aantal ) AS aantal\n" +
+                                    "FROM order_regels\n" +
+                                    "GROUP BY product_id\n" +
+                                    "ORDER BY SUM( aantal ) DESC \n" +
+                                    "LIMIT 5";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            ResultSet rs = stat.executeQuery();
+            while(rs.next()) {
+                int[] array = new int[2];
+                array[0] = rs.getInt("id");
+                array[1] = rs.getInt("aantal");
+                products.add(array);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderRowDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return products;
     }
 }

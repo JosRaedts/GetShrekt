@@ -13,18 +13,18 @@
         google.load("visualization", "1", {packages: ["corechart"]});
         google.setOnLoadCallback(drawChart);
         function drawChart() {
-            
+
             var values = new Array();
-            
-            <c:forEach var="photographer" items="${photographers}">
-                values.push("${photographer}");           
-            </c:forEach> 
-                    
+
+        <c:forEach var="photographer" items="${photographers}">
+            values.push("${photographer}");
+        </c:forEach>
+
             var data = google.visualization.arrayToDataTable([
                 ['Task', 'Aantal fotos'],
-                <c:forEach begin="0" end="${size}" var="i" varStatus="loop">
-                    [values[${i}], '11'],        
-                </c:forEach> 
+        <c:forEach begin="0" end="${size}" var="i" varStatus="loop">
+                [values[${i}], '11'],
+        </c:forEach>
             ]);
 
             var options = {
@@ -48,20 +48,20 @@
     <div class="row">
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-primary">
-                <div class="panel-heading">
+                <div class="panel-heading" style="height: 120px">
                     <div class="row">
                         <div class="col-xs-3">
                             <i class="fa fa-shopping-cart fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">26</div>
-                            <div>New orders!</div>
+                            <div class="huge">${size}</div>
+                            <div><spring:message code="TotalOrders" text="%TotalOrders" /></div>
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a href="${baseurl}/order/orderoverzicht/">
                     <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
+                        <span class="pull-left"><spring:message code="ViewDetails" text="%ViewDetails" /></span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
@@ -70,7 +70,7 @@
         </div>
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-green">
-                <div class="panel-heading">
+                <div class="panel-heading" style="height: 120px">
                     <div class="row">
                         <div class="col-xs-3">
                             <i class="fa fa-picture-o fa-5x"></i>
@@ -81,13 +81,24 @@
                         </div>
                     </div>
                 </div>
-                <a href="${baseurl}/photographer/photo">
-                    <div class="panel-footer">
-                        <span class="pull-left"><spring:message code="photograafpictures" text="%photograafpictures" /></span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
+                <c:if test="${sessionScope.UserType == 'PHOTOGRAPHER' && sessionScope.UserID != null}">
+                    <a href="${baseurl}/photographer/photo">
+                        <div class="panel-footer">
+                            <span class="pull-left"><spring:message code="photograafpictures" text="%photograafpictures" /></span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </c:if>     
+                <c:if test="${sessionScope.UserType == 'ADMIN' && sessionScope.UserID != null}">
+                    <a href="${baseurl}/photo/list">
+                        <div class="panel-footer">
+                            <span class="pull-left"><spring:message code="photograafpictures" text="%photograafpictures" /></span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </c:if>             
             </div>
         </div>
 
@@ -96,85 +107,95 @@
             <div class="col-lg-8">
 
                 <!-- /.panel -->
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-comments fa-fw"></i> General information
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    Actions
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="#">Action</a>
-                                    </li>
-                                    <li><a href="#">Another action</a>
-                                    </li>
-                                    <li><a href="#">Something else here</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a>
-                                    </li>
-                                </ul>
+                <c:if test="${sessionScope.UserType == 'ADMIN' && sessionScope.UserID != null}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-comments fa-fw"></i> <spring:message code="Sales" text="%Sales" />
+                            <div class="pull-right">
+                                <!-- empty -->
                             </div>
                         </div>
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="dataTable_wrapper">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="dataTable_wrapper">
+                                    </div>
+                                    <!-- /.table-responsive -->
+                                    <!--<div id="piechart" class="col-lg-6" style="height: 500px;"></div>-->
+                                    <table class="table table-striped table-bordered table-hover dataTable no-footer" id="sales">
+                                        <c:forEach var="info" items="${information}">
+                                            <tr>
+                                                <td>${info[0]}</td>
+                                                <td>${info[1]}</td>
+                                            </tr>
+                                        </c:forEach>    
+                                    </table>
+
                                 </div>
-                                <!-- /.table-responsive -->
-                                <div id="piechart" class="col-lg-6" style="height: 500px;"></div>
-                                <c:forEach var="photographer" items="${photographers}">
-                                    ${photographer}
-                                    <br>
-                                </c:forEach>    
+                                <!-- /.col-lg-4 (nested) -->
+                                <div class="col-lg-8">
+                                    <div id="morris-bar-chart"></div>
+                                </div>
+                                <!-- /.col-lg-8 (nested) -->
                             </div>
-                            <!-- /.col-lg-4 (nested) -->
-                            <div class="col-lg-8">
-                                <div id="morris-bar-chart"></div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="dataTable_wrapper">
+                                    </div>
+                                    <!-- /.table-responsive -->
+                                    <!--<div id="piechart" class="col-lg-6" style="height: 500px;"></div>-->
+                                </div>
+                                <!-- /.col-lg-4 (nested) -->
+                                <div class="col-lg-8">
+                                    <div id="morris-bar-chart"></div>
+                                </div>
+                                <!-- /.col-lg-8 (nested) -->
                             </div>
-                            <!-- /.col-lg-8 (nested) -->
+                            <!-- /.row -->
                         </div>
-                        <!-- /.row -->
+                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel-body -->
-                </div>
-                <!-- /.panel -->
+                    <!-- /.panel -->
+                </c:if>
             </div>
             <!-- /.col-lg-8 -->
             <div class="col-lg-4">
                 <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-bell fa-fw"></i> Notifications Panel
-                    </div>
-                    <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <div class="list-group">
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-comment fa-fw"></i> New Order #355
-                                <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                                </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-twitter fa-fw"></i> Payment done for order #354
-                                <span class="pull-right text-muted small"><em>12 minutes ago</em>
-                                </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-envelope fa-fw"></i> New order #354
-                                <span class="pull-right text-muted small"><em>27 minutes ago</em>
-                                </span>
-                            </a>
+                        <div class="panel-heading">
+                            <i class="fa fa-comments fa-fw"></i> <spring:message code="Sales" text="%Sales" />
+                            <div class="pull-right">
+                                <!-- empty -->
+                            </div>
                         </div>
-                        <!-- /.list-group -->
-                        <a href="#" class="btn btn-default btn-block">View All Alerts</a>
+                        <table class="table table-striped table-bordered table-hover dataTable no-footer" id="sales">
+                            <tr>
+                                Best selling products:
+                            </tr>
+                            <tr>
+                                <td><img width="100px" height="100px" src="${baseurl}/product/view/${product1.getId()}"/></td> 
+                                <td>${aantal1}x</td>
+                            </tr>
+                            <tr>
+                                <td><img width="100px" height="100px" src="${baseurl}/product/view/${product2.getId()}"/></td> 
+                                <td>${aantal2}x</td>
+                            </tr> 
+                            <tr>
+                                <td><img width="100px" height="100px" src="${baseurl}/product/view/${product3.getId()}"/></td> 
+                                <td>${aantal3}x</td>
+                            </tr> 
+                            <tr>
+                                <td><img width="100px" height="100px" src="${baseurl}/product/view/${product4.getId()}"/></td> 
+                                <td>${aantal4}x</td>
+                            </tr> 
+                            <tr>
+                                <td><img width="100px" height="100px" src="${baseurl}/product/view/${product5.getId()}"/></td> 
+                                <td>${aantal5}x</td>
+                            </tr> 
+                        </table>
                     </div>
-                    <!-- /.panel-body -->
                 </div>
-
             </div>
             <!-- /.col-lg-4 -->
         </div>

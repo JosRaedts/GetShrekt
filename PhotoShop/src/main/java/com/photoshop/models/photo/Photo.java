@@ -5,12 +5,15 @@
  */
 package com.photoshop.models.photo;
 
+import com.photoshop.models.photographer.Photographer;
+import com.photoshop.models.photographer.PhotographerDao;
 import com.photoshop.models.school.School;
 import com.photoshop.models.schoolClass.SchoolClass;
 import com.photoshop.models.student.Student;
 
 import java.util.Date;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -28,6 +31,9 @@ public class Photo {
     private Date date;
     private int photographerid;
     private final PhotoDao dao;
+    
+    @Autowired
+    private PhotographerDao photographerDao;
     
     public Photo()
     {
@@ -129,6 +135,13 @@ public class Photo {
     public void saveSchoolClasses(List<SchoolClass> schoolClasses) { this.dao.saveSchoolClasses(this, schoolClasses);}
 
     public void saveSchools(List<School> schools) { this.dao.saveSchools(this, schools);}
+    
+    public Photographer getPhotographer() {
+        if (this.photographerDao == null) {
+            this.photographerDao = new PhotographerDao();
+        }
+        return this.photographerDao.getById(this.photographerid);
+    }
 }
 
 

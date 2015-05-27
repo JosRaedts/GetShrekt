@@ -411,4 +411,22 @@ public class PhotoDao extends Database {
             Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public int getTotalCount()
+    {
+        int i = 0;
+        try {
+            String querystring = "SELECT count(id) as count FROM photos";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            ResultSet rs = stat.executeQuery();
+            
+            while(rs.next())
+            {
+                i = i + rs.getInt("count");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return i;
+    }
 }
