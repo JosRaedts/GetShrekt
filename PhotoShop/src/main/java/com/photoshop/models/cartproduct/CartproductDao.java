@@ -113,7 +113,7 @@ public class CartproductDao extends Database {
         try {
             product = new Cartproduct(this);
             product.setId(rs.getInt("id"));
-            //product.setContent(rs.getString("name"));
+            product.setContent(rs.getString("content"));
             product.setPrice(rs.getDouble("price"));
             product.setAmount(rs.getInt("amount"));
 
@@ -147,15 +147,15 @@ public class CartproductDao extends Database {
     public boolean addToCart(Cartproduct product) {
         try {
             String querystring = null;
-            querystring = "INSERT INTO cartproducts(price, amount, student_id, photo_id) VALUES(?, ?, ?, ?)";
+            querystring = "INSERT INTO cartproducts(content, price, amount, student_id, photo_id) VALUES(?, ?, ?, ?, ?)";
 
             PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setString(1, product.getContent());
+            stat.setDouble(2, product.getPrice());
+            stat.setInt(3, product.getAmount());
+            stat.setInt(4, product.getStudentID());
 
-            stat.setDouble(1, product.getPrice());
-            stat.setInt(2, product.getAmount());
-            stat.setInt(3, product.getStudentID());
-
-            stat.setInt(4, product.getPhotoID());
+            stat.setInt(5, product.getPhotoID());
 
             stat.execute();
             return true;
@@ -184,4 +184,23 @@ public class CartproductDao extends Database {
 
         return price;
     }
+
+    public String getName(int productid) {
+        String name = "";
+        try {
+            String querystring = "SELECT name as name FROM products WHERE id = ?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, productid);
+            ResultSet rs = stat.executeQuery();
+
+            while (rs.next()) {
+                name = rs.getString("name");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return name;
+    }
+
 }

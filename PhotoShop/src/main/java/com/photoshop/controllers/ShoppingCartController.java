@@ -86,15 +86,35 @@ public class ShoppingCartController extends AbstractController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addProduct(ModelMap map, HttpServletRequest request) {
+
+            //System.out.println(request.getParameter("photo_id"));
+        //System.out.println(request.getParameter("photo_data"));
+        //System.out.println(request.getAttribute("products[]").toString());
+        //System.out.println(request.getParameter("product_id"));
+        //System.out.println(request.getParameter("product_qty"));
+        int userID = 0;
+        Student student;
         try {
-            System.out.println(request.getParameter("photo_id").toString());
-            System.out.println(request.getParameter("photo_data").toString());
-            //System.out.println(request.getAttribute("products[]").toString());
-            System.out.println(request.getParameterMap().toString());
+
+            student = (Student) this.getUser();
+            userID = student.getId();
+
+            int photoid = Integer.parseInt(request.getParameter("photo_id"));
+            int productid = Integer.parseInt(request.getParameter("product_id"));
+            double price = cartproductDao.getPrice(photoid, productid);
+            int amount = Integer.parseInt(request.getParameter("product_qty"));
+            String name = cartproductDao.getName(productid);
+
+            Cartproduct temp = new Cartproduct();
+            temp.setPrice(price);
+            temp.setAmount(amount);
+            temp.setPhotoID(photoid);
+            temp.setStudentID(userID);
+            temp.setContent(name);
+            cartproductDao.addToCart(temp);
             //System.out.println("test");
             //System.out.println(products);
             ///Cartproduct temp = cartproductDao.getById(Integer.parseInt(request.getParameter("id")));
-            
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return "redirect:list";
