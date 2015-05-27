@@ -163,15 +163,9 @@
             <div class="col-lg-4">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <div class="panel-heading">
-                            <i class="fa fa-comments fa-fw"></i> <spring:message code="Sales" text="%Sales" />
-                            <div class="pull-right">
-                                <!-- empty -->
-                            </div>
-                        </div>
                         <table class="table table-striped table-bordered table-hover dataTable no-footer" id="sales">
                             <tr>
-                                Best selling products:
+                                <spring:message code="BestSales" text="%BestSales" />
                             </tr>
                             <tr>
                                 <td><img width="100px" height="100px" src="${baseurl}/product/view/${product1.getId()}"/></td> 
