@@ -9,11 +9,6 @@ import com.photoshop.models.cartproduct.Cartproduct;
 import com.photoshop.models.cartproduct.CartproductDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
-<<<<<<< HEAD
-import java.util.Map;
-=======
-import java.util.ArrayList;
->>>>>>> origin/master
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -90,7 +85,7 @@ public class ShoppingCartController extends AbstractController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addProduct(ModelMap map, HttpServletRequest request, @RequestParam(value="products", required=false) Map<String, Map<String, String>> products) {
+    public String addProduct(ModelMap map, HttpServletRequest request) {
         try {
             System.out.println(request.getParameter("photo_id").toString());
             System.out.println(request.getParameter("photo_data").toString());
