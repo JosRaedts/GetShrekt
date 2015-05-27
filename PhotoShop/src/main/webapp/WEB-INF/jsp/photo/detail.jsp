@@ -200,20 +200,23 @@
                         var qty = $(this).find('option:selected').val();
                         var price = $('#price'+id).attr('price');
                         if(qty > 0) {
-                            var product = {id:id, qty:qty};
+                            var product = [];
+                            product["id"] = id;
+                            product["qty"] = qty;
                             products.push(product);
-                            alert("jeej");
-                        }
-                    });
-                        $.post("${baseurl}/shoppingcart/add",
+                            $.post("${baseurl}/shoppingcart/add",
                         {
                           photo_id: "${photo.id}",
                           photo_data: "data",
-                          products: products
+                          product_id: id,
+                          product_qty: qty
                         },
                         function(data,status){
-                            alert("Data: " + data + "\nStatus: " + status);
+                            
                         });
+                        }
+                    });
+                        //console.log(products);
                     });
                 });
 

@@ -9,12 +9,14 @@ import com.photoshop.models.cartproduct.Cartproduct;
 import com.photoshop.models.cartproduct.CartproductDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -84,11 +86,14 @@ public class ShoppingCartController extends AbstractController {
     }
     
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addProduct(ModelMap map, HttpServletRequest request) {
+    public String addProduct(ModelMap map, HttpServletRequest request, @RequestParam(value="products", required=false) Map<String, Map<String, String>> products) {
         try {
             System.out.println(request.getParameter("photo_id").toString());
             System.out.println(request.getParameter("photo_data").toString());
-            System.out.println(request.getParameterValues("products").toString());
+            //System.out.println(request.getAttribute("products[]").toString());
+            System.out.println(request.getParameterMap().toString());
+            System.out.println("test");
+            System.out.println(products);
             ///Cartproduct temp = cartproductDao.getById(Integer.parseInt(request.getParameter("id")));
             
 
