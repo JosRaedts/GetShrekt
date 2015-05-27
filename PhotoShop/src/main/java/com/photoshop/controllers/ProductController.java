@@ -70,32 +70,12 @@ public class ProductController extends AbstractController{
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String uploadFileHandler(@RequestParam("name") String name,
-            @RequestParam("file") MultipartFile file, ModelMap map, HttpServletRequest request) {
+            @RequestParam("file") MultipartFile file, @RequestParam("filemask") MultipartFile filemask, ModelMap map, HttpServletRequest request) {
         if (authenticate(UserType.ADMIN)) {
-            if (!file.isEmpty()) {
-                try {
-                    byte[] bytes = file.getBytes();
-
-                    // Creating the directory to store file
-                    String rootPath = env.getProperty("uploadDir");
-                    File dir = new File(rootPath + "products");
-                    if (!dir.exists())
-                        dir.mkdirs();
-
-                    // Create the file on server
-                    File serverFile = new File(dir.getAbsolutePath()
-                            + File.separator + file.getOriginalFilename());
-                    BufferedOutputStream stream = new BufferedOutputStream(
-                            new FileOutputStream(serverFile));
-                    stream.write(bytes);
-                    stream.close();
-
-                    //System.out.println("Server File Location="+ serverFile.getAbsolutePath());
-
-                    //System.out.println("You successfully uploaded file=" + file.getOriginalFilename());
-                } catch (Exception e) {
-                    System.out.println( "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage());
-                }
+            
+            uploadFile(file, file.getOriginalFilename());
+            uploadFile(filemask, "mask_"+file.getOriginalFilename());
+          
                 Product temp = new Product();
                 try {
                     int bi = Integer.valueOf(request.getParameter("active"));
@@ -112,13 +92,39 @@ public class ProductController extends AbstractController{
                 }
 
                 return "redirect:../product/list";
-            } else {
-                System.out.println("You failed to upload " + file.getOriginalFilename()
-                        + " because the file was empty.");
-                return "redirect:/product/add";
             }
-        }
+        
         return "redirect:../";
+    }
+    
+    public void uploadFile(MultipartFile file, String filename){
+        
+    if (!file.isEmpty()) {
+        try {
+            byte[] bytes = file.getBytes();
+
+            // Creating the directory to store file
+            String rootPath = env.getProperty("uploadDir");
+            File dir = new File(rootPath + "products");
+            if (!dir.exists()){
+                dir.mkdirs();
+            }
+
+            // Create the file on server
+            File serverFile = new File(dir.getAbsolutePath()
+                + File.separator + filename);
+            BufferedOutputStream stream = new BufferedOutputStream(
+                new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+                    
+            //System.out.println("Server File Location="+ serverFile.getAbsolutePath());
+
+            //System.out.println("You successfully uploaded file=" + file.getOriginalFilename());
+            } catch (Exception e) {
+                System.out.println( "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage());
+            }
+        }   
     }
     
     @RequestMapping(value = "/edit", method = RequestMethod.GET)

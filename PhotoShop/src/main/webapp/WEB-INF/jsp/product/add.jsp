@@ -57,6 +57,10 @@
                                                         <td><input type="file" name="file"></td>
                                                     </tr>
                                                     <tr>
+                                                        <td width="200px"><spring:message code="previewmask" text="%previewmask" />:</td>
+                                                        <td><input type="file" name="filemask"></td>
+                                                    </tr>
+                                                    <tr>
                                                         <td width="200px"><spring:message code="productName" text="%productName" />:</td>
                                                         <td><input type="text" name="name" class="form-control formphotograaf"></td>
                                                     </tr>
