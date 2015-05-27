@@ -123,7 +123,7 @@ public class OrderController extends AbstractController {
     @RequestMapping(value = "/pdf", method = RequestMethod.GET)
     public String pdf(ModelMap map, HttpServletRequest request) throws IOException {
         if (this.authenticate(UserType.STUDENT)) {
-            this.order = new Order();
+            this.order = this.orderDao.getById(1);
             this.order.setInvoiceaddress( new Address("Willem de kok","Oorion 32","5527CR","Hapert","0612345678"));
             pdf = new Pdfgenerator(order,env);
             return "order/startpage";

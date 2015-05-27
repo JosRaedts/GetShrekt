@@ -145,7 +145,7 @@ public class Pdfgenerator {
         table.setHeaderRows(1);
         double totaalprijs = 0;
         
-        for(OrderRow row : order.getOrders())
+        for(OrderRow row : order.getOrderRows())
         {
             table.addCell(row.getAantal() + "");
             table.addCell(row.getProduct().getName());
