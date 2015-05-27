@@ -51,21 +51,22 @@ public class ProductDao extends Database{
         return photos;
     }
     
-    /*public List<Product> getProductListPerOrder(int id){
-        ArrayList<Product> products = new ArrayList<Product>();
+    public double getProductPrice(int product_id, int photographer_id){
+        double price = 0;
         try {
-            String querystring = "SELECT p.id AS id, p.height AS height, p.width AS width, p.imageURL AS imageURL, p.name AS name, p.active AS active, op.order_id AS order_id, op.product_id AS product_id, op.aantal AS aantal FROM products p, orders_products op WHERE op.product_id = p.id AND order_id = ?";
+            String querystring = "SELECT price FROM productprice_photographer WHERE product_id = ? AND photographer_id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
-            stat.setInt(1, id);
+            stat.setInt(1, product_id);
+            stat.setInt(2, photographer_id);
             ResultSet rs = stat.executeQuery();  
             while (rs.next()) {
-                products.add(build(rs));
+                price = rs.getDouble("price");
             }
         } catch (Exception ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return products;
-    }*/
+        return price;
+    }
     
     public List<Product> getPriceList(int photographerid)
     {
@@ -217,7 +218,7 @@ public class ProductDao extends Database{
     {
         Product product = null;
         try {            
-            product = new Product(this);
+            product = new Product();
             product.setId(rs.getInt("id"));
             product.setName(rs.getString("name"));
             product.setHeight(rs.getInt("height"));

@@ -191,7 +191,7 @@ public class PhotoDao extends Database {
     {
         Photo photo = null;
         try {            
-            photo = new Photo(this);
+            photo = new Photo();
             photo.setId(rs.getInt("id"));
             photo.setHeight(rs.getInt("height"));
             photo.setWidth(rs.getInt("width"));
@@ -410,5 +410,23 @@ public class PhotoDao extends Database {
         } catch (Exception ex) {
             Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public int getTotalCount()
+    {
+        int i = 0;
+        try {
+            String querystring = "SELECT count(id) as count FROM photos";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            ResultSet rs = stat.executeQuery();
+            
+            while(rs.next())
+            {
+                i = i + rs.getInt("count");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return i;
     }
 }

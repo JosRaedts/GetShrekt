@@ -40,8 +40,10 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.photoshop.models.orderrow.OrderRowDao;
 import com.photoshop.misc.Pdfgenerator;
 import com.photoshop.models.address.Address;
+import com.photoshop.models.orderrow.OrderRow;
 import com.photoshop.models.product.ProductDao;
 import java.io.IOException;
+import java.util.ArrayList;
 import org.springframework.core.env.Environment;
 
 /**
@@ -65,7 +67,9 @@ public class OrderController extends AbstractController {
     @Autowired
     private OrderDao orderDao;
     @Autowired
-    private OrderRowDao orderregelDao;
+    private OrderRowDao orderrowDao;
+    @Autowired
+    private ProductDao productDao;
     
     @Autowired
     private Environment env;
@@ -100,11 +104,17 @@ public class OrderController extends AbstractController {
     @RequestMapping(value = "/detail/{OrderId:^[0-9]+$}", method = RequestMethod.GET)
     public String detail(ModelMap map, HttpServletRequest request, @PathVariable("OrderId") int id) {
         if (this.authenticate(UserType.ADMIN)) {
+            ArrayList<Double> prices = new ArrayList<>();
             Order order = orderDao.getById(id);
             Student student = order.getStudent();
+            ArrayList<OrderRow> orderrows = (ArrayList)order.getOrderRows();
+            for(int i = 0; i<orderrows.size(); i++){
+                prices.add(productDao.getProductPrice(orderrows.get(i).getProduct_id(), orderrows.get(i).getPhotographer_id()));
+            }
             map.put("order", order);
             map.put("student", student);
-            map.put("productlist", orderregelDao.getOrderRegelsByOrderNr(id));
+            map.put("productlist", orderrowDao.getOrderRowByOrderNr(id));
+            map.put("pricelist", prices);
             return "order/detail";
         }
         return "redirect:../../";
@@ -113,7 +123,7 @@ public class OrderController extends AbstractController {
     @RequestMapping(value = "/pdf", method = RequestMethod.GET)
     public String pdf(ModelMap map, HttpServletRequest request) throws IOException {
         if (this.authenticate(UserType.STUDENT)) {
-            this.order = new Order();
+            this.order = this.orderDao.getById(1);
             this.order.setInvoiceaddress( new Address("Willem de kok","Oorion 32","5527CR","Hapert","0612345678"));
             pdf = new Pdfgenerator(order,env);
             return "order/startpage";

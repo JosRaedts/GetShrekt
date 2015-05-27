@@ -9,7 +9,11 @@ import com.photoshop.models.cartproduct.Cartproduct;
 import com.photoshop.models.cartproduct.CartproductDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
+<<<<<<< HEAD
 import java.util.Map;
+=======
+import java.util.ArrayList;
+>>>>>>> origin/master
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -84,7 +88,7 @@ public class ShoppingCartController extends AbstractController {
 
         return "redirect:../";
     }
-    
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addProduct(ModelMap map, HttpServletRequest request, @RequestParam(value="products", required=false) Map<String, Map<String, String>> products) {
         try {
@@ -92,11 +96,10 @@ public class ShoppingCartController extends AbstractController {
             System.out.println(request.getParameter("photo_data").toString());
             //System.out.println(request.getAttribute("products[]").toString());
             System.out.println(request.getParameterMap().toString());
-            System.out.println("test");
-            System.out.println(products);
+            //System.out.println("test");
+            //System.out.println(products);
             ///Cartproduct temp = cartproductDao.getById(Integer.parseInt(request.getParameter("id")));
             
-
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return "redirect:list";

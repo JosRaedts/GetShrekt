@@ -143,4 +143,45 @@ public class CartproductDao extends Database {
         }
 
     }
+
+    public boolean addToCart(Cartproduct product) {
+        try {
+            String querystring = null;
+            querystring = "INSERT INTO cartproducts(price, amount, student_id, photo_id) VALUES(?, ?, ?, ?)";
+
+            PreparedStatement stat = conn.prepareStatement(querystring);
+
+            stat.setDouble(1, product.getPrice());
+            stat.setInt(2, product.getAmount());
+            stat.setInt(3, product.getStudentID());
+
+            stat.setInt(4, product.getPhotoID());
+
+            stat.execute();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    public double getPrice(int photoid, int productid) {
+        double price = 0;
+
+        try {
+            String querystring = "SELECT price as price FROM productprice_photographer WHERE photographer_id = (SELECT photographer_id FROM photos WHERE id = ?) AND product_id = ?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photoid);
+            stat.setInt(2, productid);
+            ResultSet rs = stat.executeQuery();
+
+            while (rs.next()) {
+                price = rs.getDouble("price");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return price;
+    }
 }

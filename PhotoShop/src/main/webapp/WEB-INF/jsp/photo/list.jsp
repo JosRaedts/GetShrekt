@@ -62,6 +62,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Picture</th>
+                                                <th>Photographer name</th>
                                                 <th>Date</th>
                                                 <th>Width</th>  
                                                 <th>Height</th>
@@ -75,6 +76,7 @@
                                             <input type="hidden" id="hiddenIdfield" name="id" value="${school.id}">
                                             <tr>
                                                 <td><img src="${baseurl}/photo/view/thumb/${picture.id}"/></td>
+                                                <td>${picture.getPhotographer().getName()}</td>
                                                 <td>${picture.date}</td>
                                                 <td>${picture.width}</td>
                                                 <td>${picture.height}</td>

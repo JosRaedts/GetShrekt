@@ -88,7 +88,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="admin"><img src="${baseurl}/resources/img/Photoshop_white.png"/></a>
+                <a class="navbar-brand" href="${baseurl}/admin"><img src="${baseurl}/resources/img/Photoshop_white.png"/></a>
             </div>
             <!-- /.navbar-header -->
 

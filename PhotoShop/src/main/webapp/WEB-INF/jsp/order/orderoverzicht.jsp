@@ -10,7 +10,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Orders <-- spring message maken</h1>
+            <h1 class="page-header"><spring:message code="OrderSummary" text="%OrderSummary" /></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>

@@ -5,8 +5,6 @@
  */
 package com.photoshop.models.cartproduct;
 
-import com.photoshop.models.product.Product;
-
 /**
  *
  * @author pc
@@ -18,7 +16,9 @@ public class Cartproduct {
     private double price;
     private String content;
     private int amount;
-    private Product product;
+    private int studentid;
+    private int photoid;
+    
     
     private final CartproductDao dao;
     
@@ -64,13 +64,24 @@ public class Cartproduct {
         this.content = content;
     }
     
-    public Product getProduct()
+    public int getPhotoID()
     {
-        return product;
+        return photoid;
     }
     
-    public void setProduct(Product product){
-        this.product = product;
+    public void setPhotoID(int photoid)
+    {
+        this.photoid = photoid;
+    }
+    
+    public int getStudentID()
+    {
+        return studentid;
+    }
+    
+    public void setStudentID(int studentid)
+    {
+        this.studentid = studentid;
     }
     
 }
