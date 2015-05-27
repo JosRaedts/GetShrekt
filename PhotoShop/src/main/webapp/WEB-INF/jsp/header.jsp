@@ -23,11 +23,12 @@
         <script src="${baseurl}/resources/js/bootstrap.min.js"></script>
         <script src="${baseurl}/resources/js/masonry.pkgd.js"></script>
         <script src="${baseurl}/resources/js/imagesloaded.pkgd.min.js"></script>
+        <script src="${baseurl}/resources/js/jquery.imageMask.min.js"></script>
         <script src="${baseurl}/resources/admin/js/jquery.fileupload.js"></script>
         <script src="${baseurl}/resources/admin/js/jquery.fileupload-image.js"></script>
         <title>PhotoShop</title>
         <script>
-            $(document).ready(function () {
+            $( window ).load(function() { 
                 var $container = $('#boxes').masonry();
                 // layout Masonry again after all images have loaded
                 $container.imagesLoaded(function () {

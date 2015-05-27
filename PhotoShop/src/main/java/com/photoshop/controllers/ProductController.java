@@ -204,6 +204,33 @@ public class ProductController extends AbstractController{
         }
     }
     
+    @RequestMapping(value = "/mask/{photoId:^[0-9]+$}", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpEntity<byte[]> getMaskPhoto(HttpServletRequest response, @PathVariable("photoId") int id) throws IOException {
+        Product product = productDao.getById(id);
+        if(product != null) {
+            String filename = "";
+            filename = env.getProperty("uploadDir") +"products/"+ "mask_" +product.getImageURL();
+
+            InputStream in = new FileInputStream(filename);
+            BufferedImage img = ImageIO.read(in);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            ImageIO.write(img, "png", bos);
+            byte[] image = bos.toByteArray();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_PNG); //or what ever type it is
+            headers.setContentLength(image.length);
+
+            return new HttpEntity<byte[]>(image, headers);
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
     @RequestMapping(value = "/set", method = RequestMethod.GET)
     public String setPrice(ModelMap map, HttpServletRequest request) {
         if (authenticate(UserType.PHOTOGRAPHER)) {

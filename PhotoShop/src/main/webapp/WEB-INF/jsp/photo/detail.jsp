@@ -145,7 +145,8 @@
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="box">
                     <input type="hidden" name="productid" value="${product.id}">
-                    <img src="${baseurl}/product/view/${product.id}" height="100%" width="90%" />
+                    <img id="photo${product.id}" src="${baseurl}/photo/view/low/${photo.id}" width="100%" />
+                    <img class="imgproduct" src="${baseurl}/product/view/${product.id}" width="100%"/>
                     <select value="" class="qty" name="qty">
                         <option value="0">0</option>
                         <option value="1">1</option>
@@ -171,6 +172,10 @@
             <script>
                 $(document).ready(function()
                 {
+                    $('.box').each(function() {
+                        var id = $(this).find('input:hidden').val();
+                        $( "#photo"+id ).imageMask( "${baseurl}/product/mask/"+id );
+                    });
                     update_amounts();
                     $('.box').change(function(){
                         update_amounts();
