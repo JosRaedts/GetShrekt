@@ -31,12 +31,15 @@
                                         <td> Product name </td>
                                         <td> Amount </td>
                                     </tr>
+                                    <c:forEach var="price" items="${$pricelist}">
                                     <c:forEach var="orderrow" items="${productlist}">
                                             <tr>
                                                 <td><img src="${baseurl}/product/view/${orderrow.getProduct().getId()}" height="150px" width="150px"/></td>
                                                 <td>${orderrow.getProduct().getName()}</td>
-                                                <td>${orderrow.getAantal()}
+                                                <td>${orderrow.getAantal()}</td>
+                                                <td>${price}</td>
                                             </tr>
+                                    </c:forEach>
                                     </c:forEach>
                                 </table>
                             </div>
@@ -72,7 +75,8 @@
                                     Woonplaats <br />
                                     Studentnummer
                                 </td>
-                                <td>Dhr. ${student.name} <br />
+                                <td>
+                                    ${student.name} <br />
                                     ${student.address} <br />
                                     ${student.zipcode} <br />
                                     ${student.city} <br />

@@ -153,7 +153,7 @@ public class OrderRowDao extends Database {
         return or;
     }
 
-    public List<OrderRow> getOrderRegelsByOrderNr(int id){
+    public List<OrderRow> getOrderRowByOrderNr(int id){
         ArrayList<OrderRow> orderregels = new ArrayList<OrderRow>();
         try {
             String querystring = "SELECT * FROM order_regels where order_id = ?";
