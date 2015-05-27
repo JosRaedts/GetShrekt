@@ -17,6 +17,8 @@
         <link rel="stylesheet" type="text/css" href="${baseurl}/resources/css/style.css" />
         <link rel="icon" href="${baseurl}/resources/img/favicon.ico" type="image/x-icon"/>
         <link rel="shortcut icon" href="${baseurl}/resources/img/favicon.ico" type="image/x-icon"/>
+        <link rel="stylesheet" type="text/css" href="${baseurl}/resources/css/cropper.css" />
+        <link rel="stylesheet" type="text/css" href="${baseurl}/resources/css/crop.css" />
         <script src="${baseurl}/resources/js/jquery-1.11.2.min.js"></script>
         <script src="${baseurl}/resources/js/bootstrap.min.js"></script>
         <script src="${baseurl}/resources/js/masonry.pkgd.js"></script>

@@ -474,4 +474,11 @@ public class PhotoController extends AbstractController {
             return this.backendLogin();
         }
     }
+    
+    @RequestMapping(value="/test", method = RequestMethod.POST)
+    public String test(ModelMap map, HttpServletRequest request)
+    {   
+        System.out.println("jeej"+request.getParameterMap().toString());
+        return "photo/test";
+    }
 }
