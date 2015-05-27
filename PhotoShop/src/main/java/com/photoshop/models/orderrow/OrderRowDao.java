@@ -116,6 +116,7 @@ public class OrderRowDao extends Database {
             stat.setInt(3, or.getPhotographer_id());
             stat.setInt(4, or.getPhoto_id());
             stat.setInt(5, or.getAantal());
+            stat.setDouble(6, or.getProductprice());
 
             if(exists)
             {
@@ -146,6 +147,7 @@ public class OrderRowDao extends Database {
             or.setPhotographer_id(rs.getInt("photographer_id"));
             or.setProduct_id(rs.getInt("product_id"));
             or.setAantal(rs.getInt("aantal"));
+            or.setProductprice(rs.getDouble("productprice"));
             
         } catch (SQLException ex) {
             Logger.getLogger(OrderRowDao.class.getName()).log(Level.SEVERE, null, ex);

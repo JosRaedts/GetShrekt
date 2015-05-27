@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:include page="/WEB-INF/jsp/admin/header.jsp" />
 <div id="page-wrapper">
     <div class="row">
@@ -30,18 +30,23 @@
                                         <td> Product example </td>
                                         <td> Product name </td>
                                         <td> Amount </td>
+                                        <td> Product price </td>
+                                        <td class="totalprice"> Total price </td>
                                     </tr>
-                                    <c:forEach var="price" items="${$pricelist}">
+                                    <c:set var="total" value="0" scope="page"/>
                                     <c:forEach var="orderrow" items="${productlist}">
                                             <tr>
                                                 <td><img src="${baseurl}/product/view/${orderrow.getProduct().getId()}" height="150px" width="150px"/></td>
                                                 <td>${orderrow.getProduct().getName()}</td>
                                                 <td>${orderrow.getAantal()}</td>
-                                                <td>${price}</td>
+                                                <td>&#128; <fmt:formatNumber value="${orderrow.getProductprice()}" minFractionDigits="2" maxFractionDigits="2"/></td>
+                                                <td>&#128; <fmt:formatNumber value="${orderrow.aantal * orderrow.productprice}" minFractionDigits="2" maxFractionDigits="2"/></td>
                                             </tr>
-                                    </c:forEach>
+                                            <c:set var="total" value="${total + (orderrow.aantal * orderrow.productprice)}" scope="page"/>
                                     </c:forEach>
                                 </table>
+                                    <hr>
+                                    <p align='right' style='margin-right: 10px; font-weight: bold; font-size:18px;' >Total price: &#128; <fmt:formatNumber value="${total}" minFractionDigits="2" maxFractionDigits="2"/></p>
                             </div>
                             <!-- /.table-responsive -->
                         </div>

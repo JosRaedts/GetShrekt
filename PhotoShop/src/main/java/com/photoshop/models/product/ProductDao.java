@@ -51,23 +51,6 @@ public class ProductDao extends Database{
         return photos;
     }
     
-    public double getProductPrice(int product_id, int photographer_id){
-        double price = 0;
-        try {
-            String querystring = "SELECT price FROM productprice_photographer WHERE product_id = ? AND photographer_id = ?";
-            PreparedStatement stat = conn.prepareStatement(querystring);
-            stat.setInt(1, product_id);
-            stat.setInt(2, photographer_id);
-            ResultSet rs = stat.executeQuery();  
-            while (rs.next()) {
-                price = rs.getDouble("price");
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return price;
-    }
-    
     public List<Product> getPriceList(int photographerid)
     {
         List<Product> products = getList();

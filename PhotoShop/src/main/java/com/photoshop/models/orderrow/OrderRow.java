@@ -22,7 +22,8 @@ public class OrderRow {
     private int product_id;
     private int photographer_id;
     private int photo_id;
-    private int aantal;   
+    private int aantal;
+    private double productprice;
     
     @Autowired
     private OrderRowDao dao;
@@ -40,6 +41,7 @@ public class OrderRow {
     public int getPhoto_id() { return photo_id;}
     public int getAantal() { return aantal;}
     public Product getProduct() { if(productdao == null){ productdao = new ProductDao(); } return productdao.getById(this.product_id); }
+    public double getProductprice() { return productprice; }
     
     public void setId(int id) { this.id = id;}
     public void setOrder_id(int order_id) { this.order_id = order_id;}
@@ -47,7 +49,7 @@ public class OrderRow {
     public void setPhotographer_id(int photographer_id) { this.photographer_id = photographer_id;}
     public void setPhoto_id(int photo_id) { this.photo_id = photo_id;}
     public void setAantal(int aantal) { this.aantal = aantal;}
-    
+    public void setProductprice(double price) {this.productprice = price;}
     
     
 }
