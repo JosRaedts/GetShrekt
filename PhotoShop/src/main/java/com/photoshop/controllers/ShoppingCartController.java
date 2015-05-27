@@ -9,6 +9,7 @@ import com.photoshop.models.cartproduct.Cartproduct;
 import com.photoshop.models.cartproduct.CartproductDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -82,16 +83,19 @@ public class ShoppingCartController extends AbstractController {
 
         return "redirect:../";
     }
-    
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addProduct(ModelMap map, HttpServletRequest request) {
         try {
             System.out.println(request.getParameter("photo_id").toString());
             System.out.println(request.getParameter("photo_data").toString());
-            System.out.println(request.getParameterValues("products").toString());
-            ///Cartproduct temp = cartproductDao.getById(Integer.parseInt(request.getParameter("id")));
-            
 
+            String[] testarray = request.getParameterValues("products");
+            for(String s : testarray)
+            {
+                System.out.println("HOI:   " + s);
+            }
+            
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return "redirect:list";

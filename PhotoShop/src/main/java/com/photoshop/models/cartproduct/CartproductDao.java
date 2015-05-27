@@ -143,4 +143,12 @@ public class CartproductDao extends Database {
         }
 
     }
+    
+    public boolean addToCart()
+    {
+        
+        
+        
+        return false;
+    }
 }
