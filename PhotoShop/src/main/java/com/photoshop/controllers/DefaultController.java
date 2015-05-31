@@ -144,6 +144,13 @@ public class DefaultController extends AbstractController {
         return "login";
     }
     
+    @RequestMapping(value = "/admin/loginerror", method = RequestMethod.GET)
+    public String LoginError(ModelMap map,HttpServletRequest request, @ModelAttribute("redirectURI") String redirecto ) {
+        map.put("Accountmade", request.getSession().getAttribute("Accountmade"));
+        request.getSession().removeAttribute("Accountmade");
+        return "loginerror";
+    }
+    
     @RequestMapping(value="/admin/checkLogin", method = RequestMethod.POST)
     public String checkLogin(@RequestParam("name") String name, @RequestParam("password") String password, ModelMap map, HttpServletRequest request) {
         String redirectURL = "redirect:../../admin";
@@ -160,18 +167,21 @@ public class DefaultController extends AbstractController {
             request.getSession().setAttribute("UserName", admin.getUsername());
             request.getSession().setAttribute("UserType", UserType.ADMIN);
             request.getSession().setAttribute("redirectURL", null);
+            request.getSession().setAttribute("status", 1);
             return redirectURL;
         } else if (photographer != null) {
             request.getSession().setAttribute("UserID", photographer.getId());
             request.getSession().setAttribute("UserName", photographer.getUsername());
             request.getSession().setAttribute("UserType", UserType.PHOTOGRAPHER);
             request.getSession().setAttribute("redirectURL", null);
+            request.getSession().setAttribute("status", 1);
             return redirectURL;
         } else{
             request.getSession().setAttribute("UserID", null);
             request.getSession().setAttribute("UserName", "");
             request.getSession().setAttribute("UserType", "");
-            return "redirect:../../admin/login";
+            request.getSession().setAttribute("status", 0);
+            return "redirect:../../admin/loginerror";
         }
     }
    

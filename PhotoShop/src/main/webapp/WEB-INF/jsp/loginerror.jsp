@@ -4,6 +4,7 @@
 <div class="container">
     <form class="form-signin" method="post" action="${baseurl}/admin/checkLogin/">
         <h2 class="form-signin-heading"><spring:message code="loginTextPhotographer" text="%loginTextPhotograher" /></h2>
+        <p class="form-signin-heading text-danger"><spring:message code="loginstatus" text="%loginstatus" /></p>
         <label for="inputName" class="sr-only">Name:</label>
         <input type="text" name="name" id="inputName" class="form-control" placeholder="<spring:message code="name" text="%name" />" required autofocus>
         <label for="inputPassword" class="sr-only">Password:</label>
