@@ -37,6 +37,7 @@ import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.photoshop.misc.Indexkaartgenerator;
 import com.photoshop.models.orderrow.OrderRowDao;
 import com.photoshop.misc.Pdfgenerator;
 import com.photoshop.models.address.Address;
@@ -77,6 +78,7 @@ public class OrderController extends AbstractController {
 
     private Order order;
     private Pdfgenerator pdf;
+    private Indexkaartgenerator index;
 
     //http://www.vogella.com/tutorials/JavaPDF/article.html infromatie pdf creator
     public OrderController() {
@@ -120,6 +122,7 @@ public class OrderController extends AbstractController {
             this.order = this.orderDao.getById(1);
             this.order.setInvoiceaddress( new Address("Willem de kok","Oorion 32","5527CR","Hapert","0612345678"));
             pdf = new Pdfgenerator(order,env);
+            index = new Indexkaartgenerator(order,env);
             return "order/startpage";
         }
         return "redirect:../";

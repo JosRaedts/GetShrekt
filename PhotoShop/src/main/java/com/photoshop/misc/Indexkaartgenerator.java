@@ -5,23 +5,16 @@
  */
 package com.photoshop.misc;
 
-import com.itextpdf.text.Anchor;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.List;
-import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.Section;
-import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -34,14 +27,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
 /**
  *
  * @author bart
  */
-public class Pdfgenerator {
+public class Indexkaartgenerator {
     private Environment env;
     private static Font catFont;
     private static Font subFont;
@@ -50,11 +42,11 @@ public class Pdfgenerator {
     private double totaalprijs = 0;
     private Order order;
     
-    public Pdfgenerator(Order order,Environment env)
+    public Indexkaartgenerator(Order order,Environment env)
     {
         this.env = env;
         this.order = order;
-        String FILE = "c:/order1.pdf"; //order generate moet nog gemaakt worden
+        String FILE = "c:/indexkaart1.pdf"; //order generate moet nog gemaakt worden
         catFont = new Font(Font.FontFamily.HELVETICA, 18,
                 Font.BOLD);
         subtitel = new Font(Font.FontFamily.HELVETICA, 14,
@@ -66,9 +58,8 @@ public class Pdfgenerator {
 
         try {
             Document document = new Document();
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(FILE));
+            PdfWriter.getInstance(document, new FileOutputStream(FILE));
             document.open();
-            document.newPage();
             addMetaData(document);
             addTitlePage(document);
             //addContent(document);
@@ -79,13 +70,14 @@ public class Pdfgenerator {
     }
 
     private void addMetaData(Document document) {
-        document.addTitle("Order1"); //Moet order nummer uit database worden
+        document.addTitle("Indexkaart1"); //Moet order nummer uit database worden
         document.addAuthor("fotograaf1"); // naam fotograaf
-        document.addCreator("Photowinkel"); // aangeboden door
+        document.addCreator("Photowinkel");
     }
 
     private void addTitlePage(Document document)
             throws DocumentException {
+        document.newPage();
         Paragraph preface = new Paragraph();
         addEmptyLine(preface, 1);
 
@@ -129,28 +121,13 @@ public class Pdfgenerator {
         addEmptyLine(preface, 1);
         //Aanmaken van de betaal tabel
         createTable(preface);
-        //Overzicht bwt bedrag
-        addEmptyLine(preface, 1);
-        Paragraph btw = new Paragraph("Btw bedrag: " + "€ " + String.format( "%.2f",(this.totaalprijs / 100) * 19),subFont);
-        btw.setAlignment(Element.ALIGN_RIGHT);
-        preface.add(btw);
-        //Overzicht Totaalbedrag
-        Paragraph Totaalbedrag = new Paragraph("Totaal bedrag: " + "€ " + String.format( "%.2f",this.totaalprijs),subtitel);
-        Totaalbedrag.setAlignment(Element.ALIGN_RIGHT);
-        preface.add(Totaalbedrag);
-        addEmptyLine(preface, 1);
         
-        //Toevoegen footerzin
-        Paragraph footer = new Paragraph("Wij verzoeken vriendelijk het verschuldigde bedrag binnen 14 dagen over te maken onder vermelding van het factuurnummer.",subFont);
-        footer.setAlignment(Element.ALIGN_CENTER);
-        preface.add(footer);
-        document.add(preface);
     }
   
     private void creatCell(String cellnaam,PdfPTable table,boolean header)
     {
         if (header == true) {
-            Font font = new Font(FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
+            Font font = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
             PdfPCell c1 = new PdfPCell(new Phrase(cellnaam, font));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             c1.setBackgroundColor(new BaseColor(0, 121, 182));
@@ -167,28 +144,21 @@ public class Pdfgenerator {
     private void createTable(Paragraph preface)
             throws BadElementException, DocumentException {
         // create header cell
-        PdfPTable table = new PdfPTable(5);
+        PdfPTable table = new PdfPTable(3);
         
         // set the width of the table to 100% of page
         table.setWidthPercentage(100);
-        table.setWidths(new float[]{0.6f,0.4f, 1.4f, 0.8f,0.8f});
+        table.setWidths(new float[]{0.6f,0.4f, 3f});
         table.setHeaderRows(1);
         creatCell("Aantal",table,true);
         creatCell("PhotoID",table,true);
         creatCell("Beschrijving",table,true);
-        creatCell("Prijs per eenheid",table,true);
-        creatCell("Totaal",table,true);
 
         for(OrderRow row : order.getOrderRows())
         {
             creatCell(row.getAantal() + "", table, false);
             creatCell(row.getPhoto_id() + "", table, false);
             creatCell(row.getProduct().getName(), table, false);
-            creatCell("€ " + row.getProductprice(), table, false);
-            
-            double totaalprijsproduct = row.getProductprice() * row.getAantal();
-            creatCell("€ " + String.format( "%.2f",totaalprijsproduct), table, false);
-            totaalprijs = totaalprijs + totaalprijsproduct;
         }
         preface.add(table);
     }
@@ -198,4 +168,6 @@ public class Pdfgenerator {
             paragraph.add(new Paragraph(" "));
         }
     }
+    
+    
 }
