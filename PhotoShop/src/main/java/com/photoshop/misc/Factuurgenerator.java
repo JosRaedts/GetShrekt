@@ -41,7 +41,7 @@ import org.springframework.core.env.Environment;
  *
  * @author bart
  */
-public class Pdfgenerator {
+public class Factuurgenerator {
     private Environment env;
     private static Font catFont;
     private static Font subFont;
@@ -50,11 +50,11 @@ public class Pdfgenerator {
     private double totaalprijs = 0;
     private Order order;
     
-    public Pdfgenerator(Order order,Environment env)
+    public Factuurgenerator(Order order,Environment env)
     {
         this.env = env;
         this.order = order;
-        String FILE = "c:/order1.pdf"; //order generate moet nog gemaakt worden
+        String FILE = env.getProperty("logo") + "Factuur " + order.getId() +".pdf"; //order generate moet nog gemaakt worden
         catFont = new Font(Font.FontFamily.HELVETICA, 18,
                 Font.BOLD);
         subtitel = new Font(Font.FontFamily.HELVETICA, 14,

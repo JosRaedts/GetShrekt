@@ -100,18 +100,20 @@ public class OrderDao extends Database{
             boolean exists = idExists(order.getId());
             if(exists)
             {
-                querystring = "UPDATE orders SET student_id = ?, datum = ?, status = ?";
+                querystring = "UPDATE orders SET student_id = ?, datum = ?, status = ?,factuurUrl = ?,indexkaartUrl = ?";
                 stat = conn.prepareStatement(querystring);
             }
             else
             {
-                querystring = "INSERT INTO orders(student_id, datum, status) VALUES(?, ?, ?)";
+                querystring = "INSERT INTO orders(student_id, datum, status,factuurUrl,indexkaartUrl) VALUES(?, ?, ?, ?, ?)";
                 stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             }
 
             stat.setInt(1, order.getStudent().getId());
             stat.setTimestamp(2, order.getDatum());
             stat.setInt(3, Integer.parseInt(order.getStatus().toString()));
+            stat.setString(4, order.getFactuur());
+            stat.setString(5, order.getIndexkaart());
             
             stat.execute();
             if(!exists)
@@ -134,6 +136,8 @@ public class OrderDao extends Database{
             order.setId(rs.getInt("id"));
             order.setStudent(this.dao.getById(rs.getInt("student_id")));
             order.setDatum(rs.getTimestamp(3));
+            order.setFactuur(rs.getString("factuurUrl"));
+            order.setIndexkaart(rs.getString("indexkaartUrl"));
             
             switch (rs.getInt("status")) {
             case 1:  order.setStatus(OrderEnum.NIET_BETAALD);
@@ -148,6 +152,7 @@ public class OrderDao extends Database{
                      break;
             default: order.setStatus(OrderEnum.NIET_BETAALD);
                      break;
+
         }
 
         } catch (SQLException ex) {

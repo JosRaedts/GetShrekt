@@ -21,58 +21,78 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Order {
+
     private int id;
     private Student student;
     private Timestamp datum;
     private OrderEnum status;
     private Address shippingaddress;
     private Address invoiceaddress;
+    private String factuur;
+    private String indexkaart;
+
     private List<OrderRow> orderrows;
-    
+
     @Autowired
     private OrderDao dao;
-    
+
     @Autowired
     private OrderRowDao orderrowDao;
-    
+
     public Order() {
     }
-    
+
     public void save() {
         this.dao.save(this);
     }
-    
+
     public List<Order> getOrders() {
         return this.dao.getList();
     }
 
-    public int getId() {return id;}
+    public int getId() {
+        return id;
+    }
 
-    public Student getStudent() {return student;}
+    public Student getStudent() {
+        return student;
+    }
 
-    public Timestamp getDatum() {return datum;}
-    
+    public Timestamp getDatum() {
+        return datum;
+    }
+
     public String getDatumAsString() {
         String newstring = new SimpleDateFormat("dd-MM-yyyy").format(this.datum);
         return newstring;
     }
-    
-    public List<OrderRow> getOrderRows(){
-        if(orderrowDao == null){
+
+    public List<OrderRow> getOrderRows() {
+        if (orderrowDao == null) {
             orderrowDao = new OrderRowDao();
         }
         return orderrowDao.getOrderRowByOrderNr(id);
     }
 
-    public OrderEnum getStatus() {return status;}
+    public OrderEnum getStatus() {
+        return status;
+    }
 
-    public void setId(int id) {this.id = id;}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public void setStudent(Student student) {this.student = student;}
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 
-    public void setDatum(Timestamp datum) {this.datum = datum;}
+    public void setDatum(Timestamp datum) {
+        this.datum = datum;
+    }
 
-    public void setStatus(OrderEnum status) {this.status = status;}   
+    public void setStatus(OrderEnum status) {
+        this.status = status;
+    }
 
     public void setShippingaddress(Address shippingaddress) {
         this.shippingaddress = shippingaddress;
@@ -89,4 +109,21 @@ public class Order {
     public Address getInvoiceaddress() {
         return invoiceaddress;
     }
+
+    public String getFactuur() {
+        return factuur;
+    }
+
+    public String getIndexkaart() {
+        return indexkaart;
+    }
+
+    public void setFactuur(String factuur) {
+        this.factuur = factuur;
+    }
+
+    public void setIndexkaart(String indexkaart) {
+        this.indexkaart = indexkaart;
+    }
+
 }
