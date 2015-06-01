@@ -23,23 +23,20 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CartproductDao extends Database {
-    
-    
-    public CartproductDao()
-    {
+
+    public CartproductDao() {
         super();
     }
-    
-    public List<Cartproduct> getList()
-    {
+
+    public List<Cartproduct> getList(int id) {
         List<Cartproduct> products = new ArrayList();
         try {
-            String querystring = "SELECT * FROM cartproducts";
+            String querystring = "SELECT * FROM cartproducts WHERE student_id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
-            
-            while(rs.next())
-            {
+
+            while (rs.next()) {
                 products.add(build(rs));
             }
         } catch (SQLException ex) {
@@ -47,18 +44,16 @@ public class CartproductDao extends Database {
         }
         return products;
     }
-    
-    public Cartproduct getById(int id)
-    {
+
+    public Cartproduct getById(int id) {
         Cartproduct product = null;
         try {
             String querystring = "SELECT * FROM cartproducts WHERE id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
-            
-            while(rs.next())
-            {
+
+            while (rs.next()) {
                 product = build(rs);
             }
         } catch (SQLException ex) {
@@ -66,9 +61,8 @@ public class CartproductDao extends Database {
         }
         return product;
     }
-    
-    public boolean idExists(int id)
-    {
+
+    public boolean idExists(int id) {
         boolean exists = false;
         try {
             String querystring = "SELECT * FROM cartproducts WHERE id = ?";
@@ -76,40 +70,34 @@ public class CartproductDao extends Database {
             stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
-            
-            while(rs.next())
-            {
-               exists = true;
+
+            while (rs.next()) {
+                exists = true;
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return exists;
     }
-    
-    public boolean save(Cartproduct product)
-    {
+
+    public boolean save(Cartproduct product) {
         try {
             String querystring = null;
             boolean exists = idExists(product.getId());
-            if(exists)
-            {
-                querystring = "UPDATE cartproducts SET price = ?, amount = ? WHERE id = ?";                                
-            }
-            else
-            {
+            if (exists) {
+                querystring = "UPDATE cartproducts SET price = ?, amount = ? WHERE id = ?";
+            } else {
                 querystring = "INSERT INTO cartproducts(price, amount) VALUES(?, ?)";
             }
-            
+
             PreparedStatement stat = conn.prepareStatement(querystring);
-            
+
             stat.setDouble(1, product.getPrice());
             stat.setInt(2, product.getAmount());
-            
-            if(exists)
-            {
+
+            if (exists) {
                 stat.setInt(3, product.getId());
             }
             stat.execute();
@@ -119,39 +107,32 @@ public class CartproductDao extends Database {
             return false;
         }
     }
-    
-    private Cartproduct build(ResultSet rs)
-    {
+
+    private Cartproduct build(ResultSet rs) {
         Cartproduct product = null;
-        try {            
+        try {
             product = new Cartproduct(this);
             product.setId(rs.getInt("id"));
-            //product.setContent(rs.getString("name"));
+            product.setContent(rs.getString("content"));
             product.setPrice(rs.getDouble("price"));
             product.setAmount(rs.getInt("amount"));
-            
-            
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return product;
     }
-    
-    public boolean delete(Cartproduct product)
-    {
+
+    public boolean delete(Cartproduct product) {
         try {
             String querystring = null;
             boolean exists = idExists(product.getId());
-            if(exists)
-            {
-                querystring = "DELETE FROM cartproducts WHERE id = ?";                                
-            }
-            else
-            {
+            if (exists) {
+                querystring = "DELETE FROM cartproducts WHERE id = ?";
+            } else {
                 return false;
             }
-            
+
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, product.getId());
             stat.execute();
@@ -160,7 +141,66 @@ public class CartproductDao extends Database {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-        
+
     }
-    
+
+    public boolean addToCart(Cartproduct product) {
+        try {
+            String querystring = null;
+            querystring = "INSERT INTO cartproducts(content, price, amount, student_id, photo_id) VALUES(?, ?, ?, ?, ?)";
+
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setString(1, product.getContent());
+            stat.setDouble(2, product.getPrice());
+            stat.setInt(3, product.getAmount());
+            stat.setInt(4, product.getStudentID());
+
+            stat.setInt(5, product.getPhotoID());
+
+            stat.execute();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    public double getPrice(int photoid, int productid) {
+        double price = 0;
+
+        try {
+            String querystring = "SELECT price as price FROM productprice_photographer WHERE photographer_id = (SELECT photographer_id FROM photos WHERE id = ?) AND product_id = ?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, photoid);
+            stat.setInt(2, productid);
+            ResultSet rs = stat.executeQuery();
+
+            while (rs.next()) {
+                price = rs.getDouble("price");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return price;
+    }
+
+    public String getName(int productid) {
+        String name = "";
+        try {
+            String querystring = "SELECT name as name FROM products WHERE id = ?";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, productid);
+            ResultSet rs = stat.executeQuery();
+
+            while (rs.next()) {
+                name = rs.getString("name");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return name;
+    }
+
 }

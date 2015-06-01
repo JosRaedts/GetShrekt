@@ -15,7 +15,9 @@
             </tr>
         </thead>
         <tbody>
+            <c:set var="total" value="0" scope="page"/>
             <c:forEach var="cartproduct" items="${cartproducts}">
+
                 <tr>
 
                     <td>plaatje ofzo hier</td>
@@ -34,9 +36,18 @@
 
                     <td>&#128; <fmt:formatNumber value="${cartproduct.amount * cartproduct.price}" maxFractionDigits="2"/></td> 
                     <td><a href="${baseurl}/shoppingcart/delete?id=${cartproduct.id}"><i class="fa fa-trash-o" title="Delete"></i></a>
-                        </td>
+                    </td>
                 </tr>
+                <c:set var="total" value="${total + (cartproduct.amount * cartproduct.price)}" scope="page"/>
             </c:forEach>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>                
+                <td>&#128; ${total}</td>
+                <td></td>
+            </tr>
 
         </tbody>
     </table>

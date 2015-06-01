@@ -136,6 +136,11 @@ public class StudentController extends AbstractController {
         map.put("test", "testen van github account");
         return "student/login";
     }
+    
+    @RequestMapping(value = "/loginerror", method = RequestMethod.GET)
+    public String loginError(ModelMap map) {
+        return "/student/loginerrorst";
+    }
 
     //Post van login
     @RequestMapping(value = "/login/checkLogin", method = RequestMethod.POST)
@@ -158,7 +163,7 @@ public class StudentController extends AbstractController {
             request.getSession().setAttribute("UserID", null);
             request.getSession().setAttribute("UserName", "");
             request.getSession().setAttribute("UserType", "");
-            return "redirect:"; //teruggeleid naar de index pagina of inlogpagina
+            return "redirect:../loginerror"; //teruggeleid naar de index pagina of inlogpagina
         }
     }
 

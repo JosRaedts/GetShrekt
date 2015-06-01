@@ -10,7 +10,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Orders <-- spring message maken</h1>
+            <h1 class="page-header"><spring:message code="OrderSummary" text="%OrderSummary" /></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -32,6 +32,13 @@
                                 <!-- /.table-responsive -->
                                 <div id="list">
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer">
+                                        <tr>
+                                                <td><strong><spring:message code="OrderView" text="%OrderView" /></strong></td>
+                                                <td><strong><spring:message code="OrderID" text="%OrderID" /></strong></td>
+                                                <td><strong><spring:message code="OrderStudentName" text="%OrderStudentName" /></strong></td>
+                                                <td><strong><spring:message code="OrderDate" text="%OrderDate" /></strong></td>
+                                                <td><strong><spring:message code="OrderOrderStatus" text="%OrderOrderStatus" /></strong></td>
+                                        </tr>
                                         <c:forEach var="order" items="${orders}">
                                             <tr>
                                                 <td><a href="${baseurl}/order/detail/${order.getId()}"><i class="fa fa-pencil" title="<spring:message code="edit" text="%edit" />"></i></a></td>

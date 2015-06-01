@@ -6,11 +6,14 @@
 package com.photoshop.models.product;
 
 import com.photoshop.models.photographer.Photographer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Jos
  */
+@Component
 public class Product {
     
     private int id;
@@ -20,16 +23,11 @@ public class Product {
     private String imageURL;
     private boolean active;
     private Double price;
-    private final ProductDao dao;
     
-    public Product()
-    {
-        this.dao = new ProductDao();
-    }
+    @Autowired
+    private ProductDao dao;
     
-    public Product(ProductDao dao)
-    {
-        this.dao = dao;
+    public Product(){
     }
     
     public void save()

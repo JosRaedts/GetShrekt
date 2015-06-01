@@ -12,6 +12,7 @@ import com.photoshop.models.photo.Photo;
 import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.photo.PhotoJson;
 import com.photoshop.models.photographer.Photographer;
+import com.photoshop.models.photographer.PhotographerDao;
 import com.photoshop.models.product.ProductDao;
 import com.photoshop.models.school.School;
 import com.photoshop.models.school.SchoolDao;
@@ -473,5 +474,12 @@ public class PhotoController extends AbstractController {
         } else {
             return this.backendLogin();
         }
+    }
+    
+    @RequestMapping(value="/test", method = RequestMethod.POST)
+    public String test(ModelMap map, HttpServletRequest request)
+    {   
+        System.out.println("jeej"+request.getParameterMap().toString());
+        return "photo/test";
     }
 }

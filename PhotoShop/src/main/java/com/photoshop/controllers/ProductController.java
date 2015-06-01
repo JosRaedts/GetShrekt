@@ -70,32 +70,12 @@ public class ProductController extends AbstractController{
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String uploadFileHandler(@RequestParam("name") String name,
-            @RequestParam("file") MultipartFile file, ModelMap map, HttpServletRequest request) {
+            @RequestParam("file") MultipartFile file, @RequestParam("filemask") MultipartFile filemask, ModelMap map, HttpServletRequest request) {
         if (authenticate(UserType.ADMIN)) {
-            if (!file.isEmpty()) {
-                try {
-                    byte[] bytes = file.getBytes();
-
-                    // Creating the directory to store file
-                    String rootPath = env.getProperty("uploadDir");
-                    File dir = new File(rootPath + "products");
-                    if (!dir.exists())
-                        dir.mkdirs();
-
-                    // Create the file on server
-                    File serverFile = new File(dir.getAbsolutePath()
-                            + File.separator + file.getOriginalFilename());
-                    BufferedOutputStream stream = new BufferedOutputStream(
-                            new FileOutputStream(serverFile));
-                    stream.write(bytes);
-                    stream.close();
-
-                    //System.out.println("Server File Location="+ serverFile.getAbsolutePath());
-
-                    //System.out.println("You successfully uploaded file=" + file.getOriginalFilename());
-                } catch (Exception e) {
-                    System.out.println( "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage());
-                }
+            
+            uploadFile(file, file.getOriginalFilename());
+            uploadFile(filemask, "mask_"+file.getOriginalFilename());
+          
                 Product temp = new Product();
                 try {
                     int bi = Integer.valueOf(request.getParameter("active"));
@@ -112,13 +92,39 @@ public class ProductController extends AbstractController{
                 }
 
                 return "redirect:../product/list";
-            } else {
-                System.out.println("You failed to upload " + file.getOriginalFilename()
-                        + " because the file was empty.");
-                return "redirect:/product/add";
             }
-        }
+        
         return "redirect:../";
+    }
+    
+    public void uploadFile(MultipartFile file, String filename){
+        
+    if (!file.isEmpty()) {
+        try {
+            byte[] bytes = file.getBytes();
+
+            // Creating the directory to store file
+            String rootPath = env.getProperty("uploadDir");
+            File dir = new File(rootPath + "products");
+            if (!dir.exists()){
+                dir.mkdirs();
+            }
+
+            // Create the file on server
+            File serverFile = new File(dir.getAbsolutePath()
+                + File.separator + filename);
+            BufferedOutputStream stream = new BufferedOutputStream(
+                new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+                    
+            //System.out.println("Server File Location="+ serverFile.getAbsolutePath());
+
+            //System.out.println("You successfully uploaded file=" + file.getOriginalFilename());
+            } catch (Exception e) {
+                System.out.println( "You failed to upload " + file.getOriginalFilename() + " => " + e.getMessage());
+            }
+        }   
     }
     
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
@@ -184,6 +190,33 @@ public class ProductController extends AbstractController{
         if(product != null) {
             String filename = "";
             filename = env.getProperty("uploadDir") +"products/"+ product.getImageURL();
+
+            InputStream in = new FileInputStream(filename);
+            BufferedImage img = ImageIO.read(in);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            ImageIO.write(img, "png", bos);
+            byte[] image = bos.toByteArray();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_PNG); //or what ever type it is
+            headers.setContentLength(image.length);
+
+            return new HttpEntity<byte[]>(image, headers);
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    @RequestMapping(value = "/mask/{photoId:^[0-9]+$}", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpEntity<byte[]> getMaskPhoto(HttpServletRequest response, @PathVariable("photoId") int id) throws IOException {
+        Product product = productDao.getById(id);
+        if(product != null) {
+            String filename = "";
+            filename = env.getProperty("uploadDir") +"products/"+ "mask_" +product.getImageURL();
 
             InputStream in = new FileInputStream(filename);
             BufferedImage img = ImageIO.read(in);

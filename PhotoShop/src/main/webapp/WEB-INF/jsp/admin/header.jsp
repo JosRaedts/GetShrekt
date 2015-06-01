@@ -88,7 +88,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="admin"><img src="${baseurl}/resources/img/Photoshop_white.png"/></a>
+                <a class="navbar-brand" href="${baseurl}/admin"><img src="${baseurl}/resources/img/Photoshop_white.png"/></a>
             </div>
             <!-- /.navbar-header -->
 
@@ -284,6 +284,17 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        <c:if test="${sessionScope.UserType == 'ADMIN' && sessionScope.UserID != null}">
+                        <li>
+                            <a href="#"><i class="fa fa-eur fa-fw"></i> <spring:message code="Order" text="%Order" /><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="${baseurl}/order/orderoverzicht"><i class="fa fa-list-ul fa-fw"></i> <spring:message code="OrderSummary" text="%OrderSummary" /></a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        </c:if>
                         <!--
                         <li>
                             <a href="${baseurl}/admin/barcodes"><i class="fa fa-barcode fa-fw"></i> <spring:message code="barcode" text="%barcode" /></a>

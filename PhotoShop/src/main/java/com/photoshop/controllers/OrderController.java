@@ -37,11 +37,19 @@ import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.photoshop.misc.Indexkaartgenerator;
 import com.photoshop.models.orderrow.OrderRowDao;
-import com.photoshop.misc.Pdfgenerator;
+import com.photoshop.misc.Factuurgenerator;
 import com.photoshop.models.address.Address;
+import com.photoshop.models.orderrow.OrderRow;
+import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.product.ProductDao;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.core.env.Environment;
 
 /**
@@ -65,27 +73,24 @@ public class OrderController extends AbstractController {
     @Autowired
     private OrderDao orderDao;
     @Autowired
-    private OrderRowDao orderregelDao;
+    private OrderRowDao orderrowDao;
+    @Autowired
+    private ProductDao productDao;
+    @Autowired
+    private PhotoDao photoDao;
     
     @Autowired
     private Environment env;
     
 
     private Order order;
-    private Pdfgenerator pdf;
+    private Factuurgenerator pdf;
+    private Indexkaartgenerator index;
 
     //http://www.vogella.com/tutorials/JavaPDF/article.html infromatie pdf creator
     public OrderController() {
     }
-
-    @RequestMapping(value = "/startpage", method = RequestMethod.GET)
-    public String list(ModelMap map, HttpServletRequest request) {
-        if (this.authenticate(UserType.STUDENT)) {
-            return "order/startpage";
-        }
-        return "redirect:../";
-    }
-
+    
     @RequestMapping(value = "/orderoverzicht", method = RequestMethod.GET)
     public String Monitoring(ModelMap map, HttpServletRequest request) {
         if (this.authenticate(UserType.ADMIN)) {
@@ -96,6 +101,77 @@ public class OrderController extends AbstractController {
         System.out.println("Yay :)");
         return "redirect:../";
     }
+    
+    @RequestMapping(value = "/orderhistory", method = RequestMethod.GET)
+    public String orderhistory(ModelMap map, HttpServletRequest request) {
+        if (this.authenticate(UserType.STUDENT)) {
+            map.put("orders", this.orderDao.getList());
+            
+            return "order/orderhistory";
+        }
+        return "redirect:../";
+    }
+    
+    @RequestMapping(value = "/indexkaart /{OrderId:^[0-9]+$}", method = RequestMethod.GET)
+    public String Indexkaart(ModelMap map, HttpServletRequest request, @PathVariable("OrderId") int id) throws InterruptedException {
+        if (this.authenticate(UserType.STUDENT)) {
+
+            String filename = env.getProperty("logo") + "Indexkaart " + id + ".pdf";
+            String OS = System.getProperty("os.name").toLowerCase();
+            OS = OS.toLowerCase();
+            if (OS.contains("windows")) {
+                try {
+                    Process p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + filename);
+                    p.waitFor();
+                    return "redirect:../../order/orderhistory";
+                } catch (IOException ex) {
+                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (OS.contains("mac")) {
+                try {
+                    Process p = Runtime.getRuntime().exec(new String[]{"/usr/bin/open", filename});
+                    p.waitFor();
+                    return "redirect:../../order/orderhistory";
+                } catch (IOException ex) {
+                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return "redirect:../../";
+    }
+    
+    @RequestMapping(value = "/factuur/{OrderId:^[0-9]+$}", method = RequestMethod.GET)
+    public String Factuur(ModelMap map, HttpServletRequest request, @PathVariable("OrderId") int id) throws InterruptedException {
+        if (this.authenticate(UserType.STUDENT)) {
+            
+            String filename = env.getProperty("logo") + "Factuur " + id + ".pdf";
+            String OS = System.getProperty("os.name").toLowerCase();
+            OS = OS.toLowerCase();
+            if (OS.contains("windows")) {
+                try {
+                    Process p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + filename);
+                    p.waitFor();
+                    return "redirect:../../order/orderhistory";
+                } catch (IOException ex) {
+                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if(OS.contains("mac"))
+            {
+                try {
+                    Process p = Runtime.getRuntime().exec(new String[]{"/usr/bin/open", filename});
+                    p.waitFor();
+                    return "redirect:../../order/orderhistory";
+                } catch (IOException ex) {
+                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return "redirect:../../";
+    }
 
     @RequestMapping(value = "/detail/{OrderId:^[0-9]+$}", method = RequestMethod.GET)
     public String detail(ModelMap map, HttpServletRequest request, @PathVariable("OrderId") int id) {
@@ -104,7 +180,7 @@ public class OrderController extends AbstractController {
             Student student = order.getStudent();
             map.put("order", order);
             map.put("student", student);
-            map.put("productlist", orderregelDao.getOrderRegelsByOrderNr(id));
+            map.put("productlist", orderrowDao.getOrderRowByOrderNr(id));
             return "order/detail";
         }
         return "redirect:../../";
@@ -113,10 +189,11 @@ public class OrderController extends AbstractController {
     @RequestMapping(value = "/pdf", method = RequestMethod.GET)
     public String pdf(ModelMap map, HttpServletRequest request) throws IOException {
         if (this.authenticate(UserType.STUDENT)) {
-            this.order = new Order();
+            this.order = this.orderDao.getById(1);
             this.order.setInvoiceaddress( new Address("Willem de kok","Oorion 32","5527CR","Hapert","0612345678"));
-            pdf = new Pdfgenerator(order,env);
-            return "order/startpage";
+            pdf = new Factuurgenerator(order,env);
+            index = new Indexkaartgenerator(order,env,photoDao);
+            return "redirect:../";
         }
         return "redirect:../";
     }

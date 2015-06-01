@@ -199,3 +199,10 @@ code {
     margin-right: 10px;
     width: 50px;
 }
+
+.box canvas{
+    width: 90%;
+    position: absolute;
+    z-index: 10;
+}
+
