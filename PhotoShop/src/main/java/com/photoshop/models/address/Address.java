@@ -5,11 +5,13 @@
  */
 package com.photoshop.models.address;
 
+import java.io.Serializable;
+
 /**
  *
  * @author bart
  */
-public class Address {
+public class Address implements Serializable {
     private String klantnaam;
     private String adres;
     private String postcode;
