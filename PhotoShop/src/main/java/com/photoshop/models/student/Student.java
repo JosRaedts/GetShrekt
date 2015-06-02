@@ -7,6 +7,8 @@ package com.photoshop.models.student;
 
 import com.photoshop.models.IUser;
 import com.photoshop.models.UserType;
+import com.photoshop.models.cartproduct.Cartproduct;
+import com.photoshop.models.cartproduct.CartproductDao;
 import com.photoshop.models.photo.Photo;
 import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.schoolClass.SchoolClass;
@@ -153,4 +155,10 @@ public class Student implements IUser {
     }
 
     public boolean doIHaveAccess(Photo photo) { return this.dao.doIHaveAccess(this, photo);}
+
+    public List<Cartproduct> getCartProducts()
+    {
+        CartproductDao cartproductDao = new CartproductDao();
+        return cartproductDao.getList(this.id);
+    }
 }

@@ -5,17 +5,21 @@
  */
 package com.photoshop.models.address;
 
+import java.io.Serializable;
+
 /**
  *
  * @author bart
  */
-public class Address {
+public class Address implements Serializable {
     private String klantnaam;
     private String adres;
     private String postcode;
     private String woonplaats;
     private String telefoonnummer;
-
+    private int id;
+    
+    
     public Address(String klantnaam, String adres, String postcode, String woonplaats, String telefoonnummer) {
         this.klantnaam = klantnaam;
         this.adres = adres;
@@ -23,6 +27,17 @@ public class Address {
         this.woonplaats = woonplaats;
         this.telefoonnummer = telefoonnummer;
     }
+    
+    public int getId()
+    {
+        return id;
+    }
+    
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+    
 
     public String getKlantnaam() {
         return klantnaam;

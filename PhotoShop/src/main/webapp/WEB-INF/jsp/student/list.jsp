@@ -27,18 +27,11 @@
                         <div class="pull-right">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    Actions
+                                    <spring:message code="action" text="%action" />
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu pull-right" role="menu">
                                     <li><a href="${baseurl}/schoolclass/barcodes/${schoolclass.id}"><spring:message code="generate" text="%generate" /></a>
-                                    </li>
-                                    <li><a href="#">Another action</a>
-                                    </li>
-                                    <li><a href="#">Something else here</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a>
                                     </li>
                                 </ul>
                             </div>
@@ -59,7 +52,6 @@
                                     <form id="formid" method="post" action="${baseurl}/student/list">
                                         <input type="hidden" id="hiddenIdfield" name="id" value="${schoolclass.id}">
                                         <a href="#" onclick="document.getElementById('formid').submit()"><i class="fa fa-long-arrow-left" title="<spring:message code="back" text="%back" />"></i></a>
-
                                     </form>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="studenttable"> 
                                         <thead>
