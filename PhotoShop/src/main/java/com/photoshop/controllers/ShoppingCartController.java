@@ -113,19 +113,26 @@ public class ShoppingCartController extends AbstractController {
 
             student = (Student) this.getUser();
             userID = student.getId();
-            
+
             int photoid = Integer.parseInt(request.getParameter("photo_id"));
             int productid = Integer.parseInt(request.getParameter("product_id"));
             double price = cartproductDao.getPrice(photoid, productid);
             int amount = Integer.parseInt(request.getParameter("product_qty"));
             String name = cartproductDao.getName(productid);
-            float x = Float.valueOf(request.getParameter("photo_data[x]"));
-            float y = Float.valueOf(request.getParameter("photo_data[y]"));
+            System.out.println("kkkkkk");
+            System.out.println(request.getParameterMap());
+            float x = Float.valueOf(request.getParameter("photo_data[left]"));
+            System.out.println("PPPP");
+            float y = Float.valueOf(request.getParameter("photo_data[top]"));
+            System.out.println("qqqqqq");
             float height = Float.valueOf(request.getParameter("photo_data[height]"));
+            System.out.println("tttttttt");
             float width = Float.valueOf(request.getParameter("photo_data[width]"));
-            
-            Imgdata imgdata = new Imgdata(x,y,height,width,Filter.COLOR);
-
+            System.out.println("000000000");
+            Imgdata imgdata = new Imgdata(x, y, height, width, Filter.COLOR);
+            System.out.println("1111111");
+            cartproductDao.saveImageData(imgdata);
+            System.out.println("22222222");
             Cartproduct temp = new Cartproduct();
             temp.setPrice(price);
             temp.setAmount(amount);
@@ -133,6 +140,7 @@ public class ShoppingCartController extends AbstractController {
             temp.setStudentID(userID);
             temp.setContent(name);
             temp.setProductId(productid);
+            temp.setImageId(imgdata.getId());
             cartproductDao.addToCart(temp);
 
         } catch (Exception ex) {
@@ -161,12 +169,12 @@ public class ShoppingCartController extends AbstractController {
             neworder.setStatus(OrderEnum.NIET_BETAALD);
             neworder.setFactuur("factuur");
             neworder.setIndexkaart("indexkaart");
-            
+
             orderDao.save(neworder);
             neworder.setFactuur("Factuur " + neworder.getId());
             neworder.setIndexkaart("Indexkaart " + neworder.getId());
             orderDao.save(neworder);
-            
+
             products = cartproductDao.getList(userID);
 
             for (Cartproduct c : products) {

@@ -23,12 +23,12 @@ import static org.junit.Assert.*;
  *
  * @author Bart
  */
-public class ProductPrijs {
+public class ProductPrijsTests {
 
     Photographer photographer;
     List<Product> photos;
 
-    public ProductPrijs() {
+    public ProductPrijsTests() {
     }
 
     @BeforeClass
