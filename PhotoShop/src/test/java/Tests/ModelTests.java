@@ -9,6 +9,8 @@ import com.photoshop.misc.ImageManager;
 import com.photoshop.models.address.Address;
 import com.photoshop.models.admin.Admin;
 import com.photoshop.models.admin.AdminDao;
+import com.photoshop.models.cartproduct.Cartproduct;
+import com.photoshop.models.cartproduct.CartproductDao;
 import com.photoshop.models.order.Order;
 import com.photoshop.models.order.OrderDao;
 import com.photoshop.models.order.OrderEnum;
@@ -49,6 +51,7 @@ public class ModelTests {
     Photo photo;
     Product product;
     Order order;
+    Cartproduct cartproduct;
     
     public ModelTests() {
     }
@@ -71,6 +74,7 @@ public class ModelTests {
         PhotoDao photoDao = new PhotoDao();
         ProductDao productDao = new ProductDao();
         OrderDao orderDao = new OrderDao();
+        CartproductDao cartproductdao = new CartproductDao();
         
         this.student = studentDao.getById(2);
         this.photographer = photographerDao.getById(2);
@@ -80,6 +84,7 @@ public class ModelTests {
         this.photo = photoDao.getById(1);
         this.product = productDao.getById(1);
         this.order = orderDao.getById(12);
+        this.cartproduct = cartproductdao.getById(30);
     }
     
     @After
@@ -359,5 +364,12 @@ public class ModelTests {
         assertEquals("Status should be NIET_BETAALD", "1", order.getStatus().toString());
         assertEquals("Factuur should be Factuur 4", "Factuur 4", order.getFactuur());
         assertEquals("Indexkaart should be Indexkaart 4", "Indexkaart 4", order.getIndexkaart());
+    }
+    
+    @Test
+    public void testCartproduct(){
+        assertEquals("cartproductid should be 30", 30, cartproduct.getId());
+        assertEquals("content should be Foto op iPhone 5 hoesje", "Foto op iPhone 5 hoesje", cartproduct.getContent());
+        assertEquals("amount should be 3", 3, cartproduct.getAmount());
     }
 }
