@@ -45,11 +45,19 @@ import com.photoshop.models.orderrow.OrderRow;
 import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.product.ProductDao;
 import java.awt.Desktop;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.env.Environment;
 
 /**
@@ -105,70 +113,49 @@ public class OrderController extends AbstractController {
     @RequestMapping(value = "/orderhistory", method = RequestMethod.GET)
     public String orderhistory(ModelMap map, HttpServletRequest request) {
         if (this.authenticate(UserType.STUDENT)) {
-            map.put("orders", this.orderDao.getList());
-            
+            int studentid = (int)request.getSession().getAttribute("UserID");
+            Student student = (Student) this.getUser();
+            map.put("studentnaam", student.getName());
+            map.put("orders", this.orderDao.getOrderlistByStudentId(studentid));            
             return "order/orderhistory";
         }
         return "redirect:../";
     }
     
     @RequestMapping(value = "/indexkaart /{OrderId:^[0-9]+$}", method = RequestMethod.GET)
-    public String Indexkaart(ModelMap map, HttpServletRequest request, @PathVariable("OrderId") int id) throws InterruptedException {
+    public String Indexkaart(ModelMap map, HttpServletRequest request,HttpServletResponse response, @PathVariable("OrderId") int id) throws InterruptedException, IOException {
         if (this.authenticate(UserType.STUDENT)) {
-
+            // use the response passed as parameter
             String filename = env.getProperty("logo") + "Indexkaart " + id + ".pdf";
-            String OS = System.getProperty("os.name").toLowerCase();
-            OS = OS.toLowerCase();
-            if (OS.contains("windows")) {
-                try {
-                    Process p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + filename);
-                    p.waitFor();
-                    return "redirect:../../order/orderhistory";
-                } catch (IOException ex) {
-                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            File file = new File(filename);
+            InputStream in = null;
+            try {
+                in = new BufferedInputStream(new FileInputStream(file));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            if (OS.contains("mac")) {
-                try {
-                    Process p = Runtime.getRuntime().exec(new String[]{"/usr/bin/open", filename});
-                    p.waitFor();
-                    return "redirect:../../order/orderhistory";
-                } catch (IOException ex) {
-                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            ServletOutputStream out = response.getOutputStream();
+            IOUtils.copy(in, out);
+            response.flushBuffer();
         }
         return "redirect:../../";
     }
     
     @RequestMapping(value = "/factuur/{OrderId:^[0-9]+$}", method = RequestMethod.GET)
-    public String Factuur(ModelMap map, HttpServletRequest request, @PathVariable("OrderId") int id) throws InterruptedException {
+    public String Factuur(ModelMap map, HttpServletRequest request,HttpServletResponse response, @PathVariable("OrderId") int id) throws InterruptedException, IOException {
         if (this.authenticate(UserType.STUDENT)) {
             
             String filename = env.getProperty("logo") + "Factuur " + id + ".pdf";
-            String OS = System.getProperty("os.name").toLowerCase();
-            OS = OS.toLowerCase();
-            if (OS.contains("windows")) {
-                try {
-                    Process p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + filename);
-                    p.waitFor();
-                    return "redirect:../../order/orderhistory";
-                } catch (IOException ex) {
-                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            File file = new File(filename);
+            InputStream in = null;
+            try {
+                in = new BufferedInputStream(new FileInputStream(file));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            if(OS.contains("mac"))
-            {
-                try {
-                    Process p = Runtime.getRuntime().exec(new String[]{"/usr/bin/open", filename});
-                    p.waitFor();
-                    return "redirect:../../order/orderhistory";
-                } catch (IOException ex) {
-                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            ServletOutputStream out = response.getOutputStream();
+            IOUtils.copy(in, out);
+            response.flushBuffer();
         }
         return "redirect:../../";
     }
@@ -187,11 +174,11 @@ public class OrderController extends AbstractController {
     }
 
     @RequestMapping(value = "/pdf", method = RequestMethod.GET)
-    public String pdf(ModelMap map, HttpServletRequest request) throws IOException {
+    public String pdf(ModelMap map, HttpServletRequest request, Locale locale) throws IOException {
         if (this.authenticate(UserType.STUDENT)) {
             this.order = this.orderDao.getById(1);
             this.order.setInvoiceaddress( new Address("Willem de kok","Oorion 32","5527CR","Hapert","0612345678"));
-            pdf = new Factuurgenerator(order,env);
+            pdf = new Factuurgenerator(order,env, locale);
             index = new Indexkaartgenerator(order,env,photoDao);
             return "redirect:../";
         }

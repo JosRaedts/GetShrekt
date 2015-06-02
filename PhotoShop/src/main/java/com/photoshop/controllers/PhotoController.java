@@ -59,7 +59,7 @@ public class PhotoController extends AbstractController {
 
     @Autowired
     private PhotoDao photodao;
-    
+
     @Autowired
     private ProductDao productdao;
 
@@ -77,7 +77,7 @@ public class PhotoController extends AbstractController {
 
     @Autowired
     private SchoolDao schoolDao;
-    
+
     @Autowired
     private ImageManager imageManager;
 
@@ -91,7 +91,8 @@ public class PhotoController extends AbstractController {
     }
 
     @RequestMapping(value = "/upload/do_upload", method = RequestMethod.POST)
-    public @ResponseBody String do_upload(MultipartHttpServletRequest request, HttpServletRequest response) {
+    public @ResponseBody
+    String do_upload(MultipartHttpServletRequest request, HttpServletRequest response) {
         if (this.authenticate(UserType.PHOTOGRAPHER)) {
             Photographer photographer = (Photographer) this.getUser();
             Iterator<String> itr = request.getFileNames();
@@ -103,44 +104,39 @@ public class PhotoController extends AbstractController {
                     String newFilename = System.currentTimeMillis() + "-" + mpf.getOriginalFilename();
                     FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(path + newFilename));
                     BufferedImage bimg = ImageIO.read(new File(path + newFilename));
-                    
+
                     BufferedImage blowres = bimg;
                     BufferedImage bthumbnail = bimg;
-                    
-                    if(bimg.getHeight() > bimg.getWidth())
-                    {
-                        if(bimg.getHeight() > 1024)
-                        {
-                            int ratio = bimg.getHeight() / 1024;
-                            blowres = imageManager.resize(bimg, 1024, bimg.getWidth()/ratio);
-                        }
-                        if(bimg.getHeight() > 100)
-                        {
-                            int ratio = bimg.getHeight() / 100;
-                            bthumbnail = imageManager.resize(bimg, 100, bimg.getWidth()/ratio);
-                        }
-                    }
-                    else
-                    if(bimg.getWidth()> bimg.getHeight())
-                    {
-                        if(bimg.getWidth() > 1024)
-                        {
-                            int ratio = bimg.getWidth() / 1024;
-                            blowres = imageManager.resize(bimg, bimg.getHeight()/ratio, 1024);
-                        }
-                        if(bimg.getWidth() > 100)
-                        {
-                            int ratio = bimg.getWidth() / 100;
-                            bthumbnail = imageManager.resize(bimg, bimg.getHeight()/ratio, 100);
-                        }
-                    }
 
+                    if (bimg.getHeight() > bimg.getWidth()) {
+                        if (bimg.getHeight() > 1024) {
+                            int ratio = bimg.getHeight() / 1024;
+                            blowres = imageManager.resize(bimg, 1024, bimg.getWidth() / ratio);
+                        }
+                        if (bimg.getHeight() > 100) {
+                            int ratio = bimg.getHeight() / 100;
+                            bthumbnail = imageManager.resize(bimg, 100, bimg.getWidth() / ratio);
+                        }
+                    } else if (bimg.getWidth() > bimg.getHeight()) {
+                        if (bimg.getWidth() > 1024) {
+                            int ratio = bimg.getWidth() / 1024;
+                            blowres = imageManager.resize(bimg, bimg.getHeight() / ratio, 1024);
+                        }
+                        if (bimg.getWidth() > 100) {
+                            int ratio = bimg.getWidth() / 100;
+                            bthumbnail = imageManager.resize(bimg, bimg.getHeight() / ratio, 100);
+                        }
+                    }
 
                     File lowdir = new File(path + "/low");
-                    if (!lowdir.exists()){ lowdir.mkdirs(); }
+                    if (!lowdir.exists()) {
+                        lowdir.mkdirs();
+                    }
                     File thumbdir = new File(path + "/thumb");
-                    if (!thumbdir.exists()){ thumbdir.mkdirs(); }
-                    
+                    if (!thumbdir.exists()) {
+                        thumbdir.mkdirs();
+                    }
+
                     String lowres = path + "/low/lowres-" + newFilename;
                     String thumbnail = path + "/thumb/thumb-" + newFilename;
                     ImageIO.write(blowres, "jpg", new FileOutputStream(lowres));
@@ -157,8 +153,7 @@ public class PhotoController extends AbstractController {
                     photo.setThumbnailURL("thumb-" + newFilename);
                     photo.setPhotographerID(photographer.getId());
                     photo.save();
-                    try
-                    {
+                    try {
                         String[] file = originalFilename.split("\\.");
                         String type = file[0].split("-")[0];
                         int id = Integer.parseInt(file[0].split("-")[1]);
@@ -178,18 +173,16 @@ public class PhotoController extends AbstractController {
                                 break;
                         }
 
-                    }
-                    catch(Exception ex)
-                    {
+                    } catch (Exception ex) {
                         //System.out.println(e);
                     }
                     //JSON
                     //Files object
                     JSONObject object = new JSONObject();
-                    
+
                     //Filelist array
                     JSONArray array = new JSONArray();
-                    
+
                     //File object
                     JSONObject fileobject = new JSONObject();
                     fileobject.put("url", request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath()) + "/photo/view/low/" + photo.getId());
@@ -198,10 +191,10 @@ public class PhotoController extends AbstractController {
                     fileobject.put("size", mpf.getSize());
                     fileobject.put("delete_url", "");
                     fileobject.put("delete_type", "DELETE");
-                    
+
                     array.put(fileobject);
                     object.put("files", array);
-                    
+
                     return object.toString();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -218,12 +211,11 @@ public class PhotoController extends AbstractController {
         if (photo != null) {
 
             IUser user = this.getUser();
-            if(user != null) {
+            if (user != null) {
                 switch (this.getUser().getType()) {
                     case PHOTOGRAPHER:
                         Photographer photographer = (Photographer) user;
-                        if (photo.getPhotographerID() != photographer.getId())
-                        {
+                        if (photo.getPhotographerID() != photographer.getId()) {
                             return null;
                         }
                         break;
@@ -231,17 +223,14 @@ public class PhotoController extends AbstractController {
                         break;
                     case STUDENT:
                         Student student = (Student) user;
-                        if(!student.doIHaveAccess(photo))
-                        {
+                        if (!student.doIHaveAccess(photo)) {
                             return null;
                         }
                         break;
                     default:
                         return null;
                 }
-            }
-            else
-            {
+            } else {
                 return null;
             }
 
@@ -254,16 +243,15 @@ public class PhotoController extends AbstractController {
                     filename = env.getProperty("uploadDir") + "low/" + photo.getLowResURL();
                     break;
                 case "thumb":
-                    filename = env.getProperty("uploadDir") + "thumb/" +photo.getThumbnailURL();
+                    filename = env.getProperty("uploadDir") + "thumb/" + photo.getThumbnailURL();
                     break;
             }
 
             InputStream in = new FileInputStream(filename);
             BufferedImage img = ImageIO.read(in);
             System.out.println("Watermark test1");
-            if(format.equals("low"))
-            {
-                BufferedImage watermark = ImageIO.read(new FileInputStream(env.getProperty("uploadDir")+"watermerk.png"));
+            if (format.equals("low")) {
+                BufferedImage watermark = ImageIO.read(new FileInputStream(env.getProperty("uploadDir") + "watermerk.png"));
                 watermark = imageManager.resize(watermark, img.getHeight(), img.getWidth());
                 Watermark filter = new Watermark(Positions.CENTER, watermark, 0.2f);
                 img = filter.apply(img);
@@ -292,12 +280,11 @@ public class PhotoController extends AbstractController {
         }
         return "redirect:../";
     }
-    
+
     @RequestMapping(value = "/active/{PhotoId:^[0-9]+$}", method = RequestMethod.GET)
-    public String active(ModelMap map, HttpServletRequest request,@PathVariable("PhotoId") int id) {
+    public String active(ModelMap map, HttpServletRequest request, @PathVariable("PhotoId") int id) {
         if (this.authenticate(UserType.ADMIN, UserType.PHOTOGRAPHER)) {
-            if (id != 0)
-            {
+            if (id != 0) {
                 photodao.active(id);
             }
 
@@ -311,83 +298,73 @@ public class PhotoController extends AbstractController {
         }
         return "redirect:../";
     }
-    
+
     @RequestMapping(value = "/unlinkedlist", method = RequestMethod.GET)
     public String unlinkedList(ModelMap map, HttpServletRequest request) {
         if (this.authenticate(UserType.PHOTOGRAPHER)) {
-            int userID = (int)request.getSession().getAttribute("UserID");
+            int userID = (int) request.getSession().getAttribute("UserID");
             map.put("pictures", photodao.getUnlinkedList(userID));
             return "photo/list";
         }
         return "redirect:../";
     }
-    
+
     @RequestMapping(value = "/mypictures", method = RequestMethod.GET)
-    public String mypictures(ModelMap map, HttpServletRequest request)
-    {
+    public String mypictures(ModelMap map, HttpServletRequest request) {
         ArrayList<Photo> photos = new ArrayList<Photo>();
-        if (this.authenticate(UserType.PHOTOGRAPHER,UserType.STUDENT,UserType.ADMIN)) {
-            int userID = (int)request.getSession().getAttribute("UserID");
-            for(Photo temp : photodao.getPhotosByStudent(userID))
-            {
-                if(temp.getActive() == true)
-                {
+        if (this.authenticate(UserType.PHOTOGRAPHER, UserType.STUDENT, UserType.ADMIN)) {
+            int userID = (int) request.getSession().getAttribute("UserID");
+            for (Photo temp : photodao.getPhotosByStudent(userID)) {
+                if (temp.getActive() == true) {
                     photos.add(temp);
                 }
             }
             map.put("Photo", photos);
-            map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
+            Student student = (Student) this.getUser();
+            map.put("studentnaam", student.getName());
             return "photo/mypictures";
         } else {
             return "redirect:../";
         }
-        
+
     }
-    
 
     @RequestMapping(value = "/myschoolclasspictures", method = RequestMethod.GET)
-    public String myschoolklasspictures(ModelMap map, HttpServletRequest request)
-    {
+    public String myschoolklasspictures(ModelMap map, HttpServletRequest request) {
         ArrayList<Photo> photos = new ArrayList<Photo>();
-        if (this.authenticate(UserType.PHOTOGRAPHER,UserType.STUDENT,UserType.ADMIN))
-        {
-        int userID = (int)request.getSession().getAttribute("UserID");
-        int schoolclassid = studentDao.getById(userID).getSchoolclass_id();
-        for(Photo temp : photodao.getClassPhotosByStudentclass(schoolclassid))
-            {
-                if(temp.getActive() == true)
-                {
+        if (this.authenticate(UserType.PHOTOGRAPHER, UserType.STUDENT, UserType.ADMIN)) {
+            int userID = (int) request.getSession().getAttribute("UserID");
+            int schoolclassid = studentDao.getById(userID).getSchoolclass_id();
+            for (Photo temp : photodao.getClassPhotosByStudentclass(schoolclassid)) {
+                if (temp.getActive() == true) {
                     photos.add(temp);
                 }
             }
-        map.put("Photo", photos);
-        map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
-        return "photo/myschoolclasspictures";
+            map.put("Photo", photos);
+            Student student = (Student) this.getUser();
+            map.put("studentnaam", student.getName());
+            return "photo/myschoolclasspictures";
         } else {
             return "redirect:../";
         }
     }
-    
+
     @RequestMapping(value = "/myschoolpictures", method = RequestMethod.GET)
-    public String myschoolpictures(ModelMap map, HttpServletRequest request)
-    {    
+    public String myschoolpictures(ModelMap map, HttpServletRequest request) {
         ArrayList<Photo> photos = new ArrayList<Photo>();
-        if (this.authenticate(UserType.PHOTOGRAPHER,UserType.STUDENT,UserType.ADMIN))
-        {
-        int userID = (int)request.getSession().getAttribute("UserID");
-        Student student = this.studentDao.getById(userID);
-        SchoolClass schoolclass = student.getSchoolClass();
-        School school = schoolclass.getSchool();
-        for(Photo temp :photodao.getSchoolPhotos(school.getId()))
-            {
-                if(temp.getActive() == true)
-                {
+        if (this.authenticate(UserType.PHOTOGRAPHER, UserType.STUDENT, UserType.ADMIN)) {
+            int userID = (int) request.getSession().getAttribute("UserID");
+            Student student = this.studentDao.getById(userID);
+            SchoolClass schoolclass = student.getSchoolClass();
+            School school = schoolclass.getSchool();
+            for (Photo temp : photodao.getSchoolPhotos(school.getId())) {
+                if (temp.getActive() == true) {
                     photos.add(temp);
                 }
             }
-        map.put("Photo", photos);
-        map.put("studentnaam", request.getSession().getAttribute("UserName").toString());
-        return "photo/myschoolpictures";
+            map.put("Photo", photos);
+            map.put("studentnaam", student.getName());
+            return "photo/myschoolpictures";
         } else {
             return "redirect:../";
         }
@@ -395,8 +372,7 @@ public class PhotoController extends AbstractController {
 
     @RequestMapping(value = "/detail/{PhotoId:^[0-9]+$}", method = RequestMethod.GET)
     public String detail(ModelMap map, HttpServletRequest request, @PathVariable("PhotoId") int id) {
-        if (this.authenticate(UserType.STUDENT, UserType.ADMIN, UserType.PHOTOGRAPHER))
-        {
+        if (this.authenticate(UserType.STUDENT, UserType.ADMIN, UserType.PHOTOGRAPHER)) {
             Photo photo = photodao.getById(id);
             map.put("photo", photo);
             map.put("products", productdao.getPriceList(photo.getPhotographerID()));
@@ -405,14 +381,13 @@ public class PhotoController extends AbstractController {
         return this.frontendLogin();
     }
 
-    @RequestMapping(value="/edit/{PhotoId:^[0-9]+$}", method = RequestMethod.GET)
-    public String edit(ModelMap map, HttpServletRequest request, @PathVariable("PhotoId") int id)
-    {
-        if(authenticate(UserType.PHOTOGRAPHER)) {
+    @RequestMapping(value = "/edit/{PhotoId:^[0-9]+$}", method = RequestMethod.GET)
+    public String edit(ModelMap map, HttpServletRequest request, @PathVariable("PhotoId") int id) {
+        if (authenticate(UserType.PHOTOGRAPHER)) {
             Photographer photographer = (Photographer) this.getUser();
             Photo photo = photodao.getById(id);
-            if(photo != null) {
-                if(photo.getPhotographerID() == photographer.getId()) {
+            if (photo != null) {
+                if (photo.getPhotographerID() == photographer.getId()) {
                     map.put("students", studentDao.getList());
                     map.put("schoolclasses", schoolClassDao.getList());
                     map.put("schools", schoolDao.getList());
@@ -423,25 +398,22 @@ public class PhotoController extends AbstractController {
                 }
             }
             return "photo/edit";
-        }
-        else
-        {
+        } else {
             return backendLogin();
         }
     }
 
-    @RequestMapping(value="/edit/{PhotoId:^[0-9]+$}", method = RequestMethod.POST)
-    public String save(ModelMap map, HttpServletRequest request, @PathVariable("PhotoId") int id, @RequestParam(value = "students", required = false) int[] student_ids, @RequestParam(value = "schoolclasses", required = false) int[] schoolclass_ids, @RequestParam(value = "schools", required = false) int[] school_ids)
-    {
-        if(authenticate(UserType.PHOTOGRAPHER)) {
+    @RequestMapping(value = "/edit/{PhotoId:^[0-9]+$}", method = RequestMethod.POST)
+    public String save(ModelMap map, HttpServletRequest request, @PathVariable("PhotoId") int id, @RequestParam(value = "students", required = false) int[] student_ids, @RequestParam(value = "schoolclasses", required = false) int[] schoolclass_ids, @RequestParam(value = "schools", required = false) int[] school_ids) {
+        if (authenticate(UserType.PHOTOGRAPHER)) {
             Photographer photographer = (Photographer) this.getUser();
             Photo photo = photodao.getById(id);
-            if(photo != null) {
-                if(photo.getPhotographerID() == photographer.getId()) {
+            if (photo != null) {
+                if (photo.getPhotographerID() == photographer.getId()) {
                     List<Student> students = new ArrayList();
                     List<SchoolClass> schoolClasses = new ArrayList();
                     List<School> schools = new ArrayList();
-                    if(student_ids != null) {
+                    if (student_ids != null) {
                         for (int sid : student_ids) {
                             Student student = studentDao.getById(sid);
                             if (student != null) {
@@ -449,7 +421,7 @@ public class PhotoController extends AbstractController {
                             }
                         }
                     }
-                    if(schoolclass_ids != null) {
+                    if (schoolclass_ids != null) {
                         for (int scid : schoolclass_ids) {
                             SchoolClass schoolClass = schoolClassDao.getById(scid);
                             if (schoolClass != null) {
@@ -457,7 +429,7 @@ public class PhotoController extends AbstractController {
                             }
                         }
                     }
-                    if(school_ids != null) {
+                    if (school_ids != null) {
                         for (int sid : school_ids) {
                             School school = schoolDao.getById(sid);
                             if (school != null) {
@@ -475,11 +447,10 @@ public class PhotoController extends AbstractController {
             return this.backendLogin();
         }
     }
-    
-    @RequestMapping(value="/test", method = RequestMethod.POST)
-    public String test(ModelMap map, HttpServletRequest request)
-    {   
-        System.out.println("jeej"+request.getParameterMap().toString());
+
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public String test(ModelMap map, HttpServletRequest request) {
+        System.out.println("jeej" + request.getParameterMap().toString());
         return "photo/test";
     }
 }
