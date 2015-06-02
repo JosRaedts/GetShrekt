@@ -132,6 +132,7 @@ public class ShoppingCartController extends AbstractController {
             temp.setPhotoID(photoid);
             temp.setStudentID(userID);
             temp.setContent(name);
+            temp.setProductId(productid);
             cartproductDao.addToCart(temp);
 
         } catch (Exception ex) {
