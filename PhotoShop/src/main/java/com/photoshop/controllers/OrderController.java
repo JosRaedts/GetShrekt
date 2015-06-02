@@ -45,6 +45,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.photoshop.misc.Indexkaartgenerator;
 import com.photoshop.models.orderrow.OrderRowDao;
 import com.photoshop.misc.Factuurgenerator;
+import com.photoshop.misc.Mailgenerator;
 import com.photoshop.models.address.Address;
 import com.photoshop.models.orderrow.OrderRow;
 import com.photoshop.models.photo.PhotoDao;
@@ -193,6 +194,8 @@ public class OrderController extends AbstractController {
             this.order.setInvoiceaddress(new Address("Willem de kok", "Orion 32", "5527CR", "Hapert", "0612345678"));
             pdf = new Factuurgenerator(order, env,messageSource,locale);
             index = new Indexkaartgenerator(order, env, photoDao);
+            Mailgenerator mail = new Mailgenerator();
+            mail.Sendmail("willem1995@hotmail.com", order);
             return "redirect:../";
         }
         return "redirect:../";

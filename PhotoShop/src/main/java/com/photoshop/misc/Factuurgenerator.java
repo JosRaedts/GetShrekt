@@ -63,7 +63,7 @@ public class Factuurgenerator {
         this.messageSource = messageSource;
         this.env = env;
         this.order = order;
-        String FILE = env.getProperty("logo") + "Factuur " + order.getId() +".pdf"; //order generate moet nog gemaakt worden
+        String FILE = env.getProperty("logo") + "Factuur " + order.getId() +".pdf";
         catFont = new Font(Font.FontFamily.HELVETICA, 18,
                 Font.BOLD);
         subtitel = new Font(Font.FontFamily.HELVETICA, 14,
@@ -93,9 +93,9 @@ public class Factuurgenerator {
     }
 
     private void addMetaData(Document document) {
-        document.addTitle("Order1"); //Moet order nummer uit database worden
-        document.addAuthor("fotograaf1"); // naam fotograaf
-        document.addCreator("Photowinkel"); // aangeboden door;
+        document.addTitle("Factuur: " + order.getId()); //Moet order nummer uit database worden
+        document.addAuthor("Photowinkel");
+        document.addCreator("Photowinkel");
     }
 
     private void addTitlePage(Document document)
