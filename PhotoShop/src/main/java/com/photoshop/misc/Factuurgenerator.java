@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
@@ -53,9 +54,13 @@ public class Factuurgenerator {
     private static Font subtitel;
     private double totaalprijs = 0;
     private Order order;  
+    private MessageSource messageSource;
+    private Locale locale;
     
-    public Factuurgenerator(Order order,Environment env)
+    public Factuurgenerator(Order order,Environment env,MessageSource messageSource,Locale locale)
     {
+        this.locale = locale;
+        this.messageSource = messageSource;
         this.env = env;
         this.order = order;
         String FILE = env.getProperty("logo") + "Factuur " + order.getId() +".pdf"; //order generate moet nog gemaakt worden
@@ -81,11 +86,16 @@ public class Factuurgenerator {
             e.printStackTrace();
         }
     }
+    
+    private String Getspringmessage(String messagecode)
+    {
+        return this.messageSource.getMessage(messagecode,null,this.locale);
+    }
 
     private void addMetaData(Document document) {
         document.addTitle("Order1"); //Moet order nummer uit database worden
         document.addAuthor("fotograaf1"); // naam fotograaf
-        document.addCreator("Photowinkel"); // aangeboden door
+        document.addCreator("Photowinkel"); // aangeboden door;
     }
 
     private void addTitlePage(Document document)
@@ -102,24 +112,24 @@ public class Factuurgenerator {
         }
         SimpleDateFormat simpledatafo = new SimpleDateFormat("dd/MM/yyyy");     
         preface.add(Logo);
-        Paragraph datum = new Paragraph("Datum: " + simpledatafo.format(new Date()),smallBold);
+        Paragraph datum = new Paragraph(this.Getspringmessage("Date") +": " + simpledatafo.format(new Date()),smallBold);
         datum.setAlignment(Element.ALIGN_RIGHT);
         preface.add(datum);
-        Paragraph Factuurnummer = new Paragraph("Factuurnummer: " + order.getId(),smallBold);
+        Paragraph Factuurnummer = new Paragraph(this.Getspringmessage("invoicenumber")+ ": " + order.getId(),smallBold);
         Factuurnummer.setAlignment(Element.ALIGN_RIGHT);
         preface.add(Factuurnummer);
         addEmptyLine(preface, 1);
         
         //Aanmaken van de bedrijfs gegevens
-        preface.add(new Paragraph("Bedrijf:", subtitel));
+        preface.add(new Paragraph(this.Getspringmessage("company"), subtitel));
         preface.add(new Paragraph("Rachelsmolen 1", subFont));
         preface.add(new Paragraph("5612MA Eindhoven", subFont)); //order nummer ingelezen worde
-        preface.add(new Paragraph("Rekening: 165947888", subFont));
+        preface.add(new Paragraph(this.Getspringmessage("accountNumber") + ": 165947888", subFont));
         preface.add(new Paragraph("Bank: Paypal", subFont));
         addEmptyLine(preface, 1);
         
         //Aanmaken van de bestellende persoons gegevens
-        preface.add(new Paragraph("Aan:", subtitel));
+        preface.add(new Paragraph(this.Getspringmessage("reciver") + ":", subtitel));
         preface.add(new Paragraph(order.getInvoiceaddress().getKlantnaam(), subFont)); //order nummer ingelezen worde
         preface.add(new Paragraph(order.getInvoiceaddress().getAdres(), subFont));
         preface.add(new Paragraph(order.getInvoiceaddress().getPostcode() + " " + order.getInvoiceaddress().getWoonplaats(), subFont));
@@ -127,25 +137,25 @@ public class Factuurgenerator {
         addEmptyLine(preface, 1);
         
         //Aanmaken van de start zin 
-        preface.add(new Paragraph("Geachte heer" + " " + order.getInvoiceaddress().getKlantnaam(), subtitel));
+        preface.add(new Paragraph(this.Getspringmessage("dear") + " " + order.getInvoiceaddress().getKlantnaam(), subtitel));
         addEmptyLine(preface, 1);
-        preface.add(new Paragraph("Hierbij ontvang u het betaaloverzicht voor de bestelde producten.", subFont));
+        preface.add(new Paragraph(this.Getspringmessage("paymentvieuw"), subFont));
         addEmptyLine(preface, 1);
         //Aanmaken van de betaal tabel
         createTable(preface);
         //Overzicht bwt bedrag
         addEmptyLine(preface, 1);
-        Paragraph btw = new Paragraph("Btw bedrag: " + "€ " + String.format( "%.2f",(this.totaalprijs / 100) * 19),subFont);
+        Paragraph btw = new Paragraph(this.Getspringmessage("taxamount") + ": " + "€ " + String.format( "%.2f",(this.totaalprijs / 100) * 19),subFont);
         btw.setAlignment(Element.ALIGN_RIGHT);
         preface.add(btw);
         //Overzicht Totaalbedrag
-        Paragraph Totaalbedrag = new Paragraph("Totaal bedrag: " + "€ " + String.format( "%.2f",this.totaalprijs),subtitel);
+        Paragraph Totaalbedrag = new Paragraph(this.Getspringmessage("totalamount")+ ": " + "€ " + String.format( "%.2f",this.totaalprijs),subtitel);
         Totaalbedrag.setAlignment(Element.ALIGN_RIGHT);
         preface.add(Totaalbedrag);
         addEmptyLine(preface, 1);
         
         //Toevoegen footerzin
-        Paragraph footer = new Paragraph("Wij verzoeken vriendelijk het verschuldigde bedrag binnen 14 dagen over te maken onder vermelding van het factuurnummer.",subFont);
+        Paragraph footer = new Paragraph(this.Getspringmessage("invoicend") ,subFont);
         footer.setAlignment(Element.ALIGN_CENTER);
         preface.add(footer);
         document.add(preface);
@@ -177,11 +187,11 @@ public class Factuurgenerator {
         table.setWidthPercentage(100);
         table.setWidths(new float[]{0.6f,0.4f, 1.4f, 0.8f,0.8f});
         table.setHeaderRows(1);
-        creatCell("Aantal",table,true);
-        creatCell("FotoNr",table,true);
-        creatCell("Beschrijving",table,true);
-        creatCell("Prijs per eenheid",table,true);
-        creatCell("Totaal",table,true);
+        creatCell(this.Getspringmessage("amount"),table,true);
+        creatCell(this.Getspringmessage("photonumber"),table,true);
+        creatCell(this.Getspringmessage("description"),table,true);
+        creatCell(this.Getspringmessage("productprice"),table,true);
+        creatCell(this.Getspringmessage("total"),table,true);
 
         for(OrderRow row : order.getOrderRows())
         {

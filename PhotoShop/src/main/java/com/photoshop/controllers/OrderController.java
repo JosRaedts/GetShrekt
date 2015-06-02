@@ -70,7 +70,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import org.springframework.context.MessageSource;
 
 /**
  *
@@ -98,10 +98,11 @@ public class OrderController extends AbstractController {
     private ProductDao productDao;
     @Autowired
     private PhotoDao photoDao;
-    
+    @Autowired
+    private MessageSource messageSource;
+
     @Autowired
     private Environment env;
-    
 
     private Order order;
     private Factuurgenerator pdf;
@@ -110,7 +111,7 @@ public class OrderController extends AbstractController {
     //http://www.vogella.com/tutorials/JavaPDF/article.html infromatie pdf creator
     public OrderController() {
     }
-    
+
     @RequestMapping(value = "/orderoverzicht", method = RequestMethod.GET)
     public String Monitoring(ModelMap map, HttpServletRequest request) {
         if (this.authenticate(UserType.ADMIN)) {
@@ -121,21 +122,21 @@ public class OrderController extends AbstractController {
         System.out.println("Yay :)");
         return "redirect:../";
     }
-    
+
     @RequestMapping(value = "/history", method = RequestMethod.GET)
     public String history(ModelMap map, HttpServletRequest request) {
         if (this.authenticate(UserType.STUDENT)) {
-            int studentid = (int)request.getSession().getAttribute("UserID");
+            int studentid = (int) request.getSession().getAttribute("UserID");
             Student student = (Student) this.getUser();
             map.put("studentnaam", student.getName());
-            map.put("orders", this.orderDao.getOrderlistByStudentId(studentid));            
+            map.put("orders", this.orderDao.getOrderlistByStudentId(studentid));
             return "order/history";
         }
         return "redirect:../";
     }
-    
+
     @RequestMapping(value = "/indexkaart /{OrderId:^[0-9]+$}", method = RequestMethod.GET)
-    public String Indexkaart(ModelMap map, HttpServletRequest request,HttpServletResponse response, @PathVariable("OrderId") int id) throws InterruptedException, IOException {
+    public String Indexkaart(ModelMap map, HttpServletRequest request, HttpServletResponse response, @PathVariable("OrderId") int id) throws InterruptedException, IOException {
         if (this.authenticate(UserType.STUDENT)) {
             // use the response passed as parameter
             String filename = env.getProperty("logo") + "Indexkaart " + id + ".pdf";
@@ -152,11 +153,11 @@ public class OrderController extends AbstractController {
         }
         return "redirect:../../";
     }
-    
+
     @RequestMapping(value = "/factuur/{OrderId:^[0-9]+$}", method = RequestMethod.GET)
-    public String Factuur(ModelMap map, HttpServletRequest request,HttpServletResponse response, @PathVariable("OrderId") int id) throws InterruptedException, IOException {
+    public String Factuur(ModelMap map, HttpServletRequest request, HttpServletResponse response, @PathVariable("OrderId") int id) throws InterruptedException, IOException {
         if (this.authenticate(UserType.STUDENT)) {
-            
+
             String filename = env.getProperty("logo") + "Factuur " + id + ".pdf";
             File file = new File(filename);
             InputStream in = null;
@@ -186,23 +187,22 @@ public class OrderController extends AbstractController {
     }
 
     @RequestMapping(value = "/pdf", method = RequestMethod.GET)
-    public String pdf(ModelMap map, HttpServletRequest request) throws IOException {
+    public String pdf(ModelMap map, HttpServletRequest request,Locale locale) throws IOException {
         if (this.authenticate(UserType.STUDENT)) {
             this.order = this.orderDao.getById(1);
-            this.order.setInvoiceaddress( new Address("Willem de kok","Orion 32","5527CR","Hapert","0612345678"));
-            pdf = new Factuurgenerator(order,env);
-            index = new Indexkaartgenerator(order,env,photoDao);
+            this.order.setInvoiceaddress(new Address("Willem de kok", "Orion 32", "5527CR", "Hapert", "0612345678"));
+            pdf = new Factuurgenerator(order, env,messageSource,locale);
+            index = new Indexkaartgenerator(order, env, photoDao);
             return "redirect:../";
         }
         return "redirect:../";
     }
 
     @RequestMapping(value = "/address", method = RequestMethod.GET)
-    public String address(ModelMap map, HttpServletRequest request)  {
+    public String address(ModelMap map, HttpServletRequest request) {
         if (this.authenticate(UserType.STUDENT)) {
             Student student = (Student) this.getUser();
-            if(student.getCartProducts().size() > 0)
-            {
+            if (student.getCartProducts().size() > 0) {
                 map.put("student", student);
                 return "order/addressdetail";
             }
@@ -211,20 +211,16 @@ public class OrderController extends AbstractController {
     }
 
     @RequestMapping(value = "/address", method = RequestMethod.POST)
-    public String saveaddress(ModelMap map, HttpServletRequest request)  {
+    public String saveaddress(ModelMap map, HttpServletRequest request) {
         if (this.authenticate(UserType.STUDENT)) {
             System.out.println("test");
             Student student = (Student) this.getUser();
-            if(student.getCartProducts().size() > 0)
-            {
+            if (student.getCartProducts().size() > 0) {
                 Address invoiceaddress = new Address(request.getParameter("invoice_name"), request.getParameter("invoice_address"), request.getParameter("invoice_zipcode"), request.getParameter("invoice_city"), request.getParameter("invoice_phone"));
                 Address shippingaddress;
-                if(request.getParameter("sameaddress") != null)
-                {
+                if (request.getParameter("sameaddress") != null) {
                     shippingaddress = new Address(request.getParameter("shipping_name"), request.getParameter("shipping_address"), request.getParameter("shipping_zipcode"), request.getParameter("shipping_city"), request.getParameter("shipping_phone"));
-                }
-                else
-                {
+                } else {
                     shippingaddress = invoiceaddress;
                 }
 
