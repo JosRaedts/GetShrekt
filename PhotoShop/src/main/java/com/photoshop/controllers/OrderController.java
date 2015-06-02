@@ -25,12 +25,52 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.List;
+import com.itextpdf.text.ListItem;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.photoshop.misc.Indexkaartgenerator;
+import com.photoshop.models.orderrow.OrderRowDao;
+import com.photoshop.misc.Factuurgenerator;
+import com.photoshop.models.address.Address;
+import com.photoshop.models.orderrow.OrderRow;
+import com.photoshop.models.photo.PhotoDao;
+import com.photoshop.models.product.ProductDao;
+import java.awt.Desktop;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  *
@@ -82,73 +122,52 @@ public class OrderController extends AbstractController {
         return "redirect:../";
     }
     
-    @RequestMapping(value = "/orderhistory", method = RequestMethod.GET)
-    public String orderhistory(ModelMap map, HttpServletRequest request) {
+    @RequestMapping(value = "/history", method = RequestMethod.GET)
+    public String history(ModelMap map, HttpServletRequest request) {
         if (this.authenticate(UserType.STUDENT)) {
-            map.put("orders", this.orderDao.getList());
-            
-            return "order/orderhistory";
+            int studentid = (int)request.getSession().getAttribute("UserID");
+            Student student = (Student) this.getUser();
+            map.put("studentnaam", student.getName());
+            map.put("orders", this.orderDao.getOrderlistByStudentId(studentid));            
+            return "order/history";
         }
         return "redirect:../";
     }
     
     @RequestMapping(value = "/indexkaart /{OrderId:^[0-9]+$}", method = RequestMethod.GET)
-    public String Indexkaart(ModelMap map, HttpServletRequest request, @PathVariable("OrderId") int id) throws InterruptedException {
+    public String Indexkaart(ModelMap map, HttpServletRequest request,HttpServletResponse response, @PathVariable("OrderId") int id) throws InterruptedException, IOException {
         if (this.authenticate(UserType.STUDENT)) {
-
+            // use the response passed as parameter
             String filename = env.getProperty("logo") + "Indexkaart " + id + ".pdf";
-            String OS = System.getProperty("os.name").toLowerCase();
-            OS = OS.toLowerCase();
-            if (OS.contains("windows")) {
-                try {
-                    Process p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + filename);
-                    p.waitFor();
-                    return "redirect:../../order/orderhistory";
-                } catch (IOException ex) {
-                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            File file = new File(filename);
+            InputStream in = null;
+            try {
+                in = new BufferedInputStream(new FileInputStream(file));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            if (OS.contains("mac")) {
-                try {
-                    Process p = Runtime.getRuntime().exec(new String[]{"/usr/bin/open", filename});
-                    p.waitFor();
-                    return "redirect:../../order/orderhistory";
-                } catch (IOException ex) {
-                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            ServletOutputStream out = response.getOutputStream();
+            IOUtils.copy(in, out);
+            response.flushBuffer();
         }
         return "redirect:../../";
     }
     
     @RequestMapping(value = "/factuur/{OrderId:^[0-9]+$}", method = RequestMethod.GET)
-    public String Factuur(ModelMap map, HttpServletRequest request, @PathVariable("OrderId") int id) throws InterruptedException {
+    public String Factuur(ModelMap map, HttpServletRequest request,HttpServletResponse response, @PathVariable("OrderId") int id) throws InterruptedException, IOException {
         if (this.authenticate(UserType.STUDENT)) {
             
             String filename = env.getProperty("logo") + "Factuur " + id + ".pdf";
-            String OS = System.getProperty("os.name").toLowerCase();
-            OS = OS.toLowerCase();
-            if (OS.contains("windows")) {
-                try {
-                    Process p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + filename);
-                    p.waitFor();
-                    return "redirect:../../order/orderhistory";
-                } catch (IOException ex) {
-                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            File file = new File(filename);
+            InputStream in = null;
+            try {
+                in = new BufferedInputStream(new FileInputStream(file));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            if(OS.contains("mac"))
-            {
-                try {
-                    Process p = Runtime.getRuntime().exec(new String[]{"/usr/bin/open", filename});
-                    p.waitFor();
-                    return "redirect:../../order/orderhistory";
-                } catch (IOException ex) {
-                    Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            ServletOutputStream out = response.getOutputStream();
+            IOUtils.copy(in, out);
+            response.flushBuffer();
         }
         return "redirect:../../";
     }
@@ -170,7 +189,7 @@ public class OrderController extends AbstractController {
     public String pdf(ModelMap map, HttpServletRequest request) throws IOException {
         if (this.authenticate(UserType.STUDENT)) {
             this.order = this.orderDao.getById(1);
-            this.order.setInvoiceaddress( new Address("Willem de kok","Oorion 32","5527CR","Hapert","0612345678"));
+            this.order.setInvoiceaddress( new Address("Willem de kok","Orion 32","5527CR","Hapert","0612345678"));
             pdf = new Factuurgenerator(order,env);
             index = new Indexkaartgenerator(order,env,photoDao);
             return "redirect:../";

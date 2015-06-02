@@ -49,7 +49,28 @@ public class OrderDao extends Database {
         return orders;
     }
 
-    public Order getById(int id) {
+    
+    public List<Order> getOrderlistByStudentId(int studentid)
+    {
+        List<Order> orders = new ArrayList();
+        try {
+            String querystring = "SELECT * FROM orders where student_id = ? ";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1,studentid);
+            ResultSet rs = stat.executeQuery();
+            
+            while(rs.next())
+            {
+                orders.add(build(rs));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return orders;
+    }
+        
+    public Order getById(int id)
+    {
         Order order = null;
         try {
             String querystring = "SELECT * FROM orders WHERE id = ?";
