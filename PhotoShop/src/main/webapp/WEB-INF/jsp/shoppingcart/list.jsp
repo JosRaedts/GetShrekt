@@ -50,9 +50,7 @@
             </tr>
         </tbody>
     </table>
-    <form method="post" action="${baseurl}/shoppingcart/order">
-        <input type="submit" name="order" value="Bestel" style="float: right" >
-    </form>
+                <a href="${baseurl}/order/address" class="btn btn-primary" style="float: right"><spring:message code="bestel" text="%bestel" /></a>
 </div> <!-- /container -->
 <jsp:include page="/WEB-INF/jsp/footer.jsp" />
 

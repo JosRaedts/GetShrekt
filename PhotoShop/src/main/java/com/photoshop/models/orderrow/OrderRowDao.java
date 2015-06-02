@@ -102,12 +102,12 @@ public class OrderRowDao extends Database {
             boolean exists = idExists(or.getId());
             if(exists)
             {
-                querystring = "UPDATE order_regels SET order_id = ?, product_id = ?, photographer_id = ?, photo_id = ?, aantal = ? WHERE id = ?";
+                querystring = "UPDATE order_regels SET order_id = ?, product_id = ?, photographer_id = ?, photo_id = ?, aantal = ?, productprice = ? WHERE id = ?";
                 stat = conn.prepareStatement(querystring);
             }
             else
             {
-                querystring = "INSERT INTO order_regels(order_id, product_id, photographer_id, photo_id, aantal) VALUES(?, ?, ?, ?, ?)";
+                querystring = "INSERT INTO order_regels(order_id, product_id, photographer_id, photo_id, aantal, productprice) VALUES(?, ?, ?, ?, ?, ?)";
                 stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             }
 
@@ -120,7 +120,7 @@ public class OrderRowDao extends Database {
 
             if(exists)
             {
-                stat.setInt(6, or.getId());
+                stat.setInt(7, or.getId());
             }
             stat.execute();
             if(!exists)

@@ -97,6 +97,15 @@ public class DefaultController extends AbstractController {
             map.put("size", this.orderRowDao.getNumberOfSalesForPhotographer(Integer.parseInt(request.getSession().getAttribute("UserID").toString())));
             
             System.out.println(photocount);
+            
+            int lol = 1;
+            for (int[] array : this.orderRowDao.getTopProducts()) {
+                Product product = this.productDao.getById(array[0]);
+                map.put("product" + lol, product);
+                map.put("aantal" + lol, array[1]);
+                lol++;
+            }
+            
             return "admin/home";
         } else if (authenticate(UserType.ADMIN)) {
             int photocount = this.photoDao.getTotalCount();

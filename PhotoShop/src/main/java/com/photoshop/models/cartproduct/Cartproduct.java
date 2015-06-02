@@ -18,7 +18,8 @@ public class Cartproduct {
     private int amount;
     private int studentid;
     private int photoid;
-    
+    private int productid;
+    private int imageid;
     
     private final CartproductDao dao;
     
@@ -82,6 +83,26 @@ public class Cartproduct {
     public void setStudentID(int studentid)
     {
         this.studentid = studentid;
+    }
+    
+    public int getProductId()
+    {
+        return productid;
+    }
+    
+    public void setProductId(int id)
+    {
+        this.productid = id;
+    }
+    
+    public int getImageId()
+    {
+        return imageid;
+    }
+    
+    public void setImageId(int id)
+    {
+        this.imageid = id;
     }
     
 }

@@ -111,13 +111,13 @@ public class OrderController extends AbstractController {
     //http://www.vogella.com/tutorials/JavaPDF/article.html infromatie pdf creator
     public OrderController() {
     }
-
-    @RequestMapping(value = "/orderoverzicht", method = RequestMethod.GET)
+    
+    @RequestMapping(value = "/overzicht", method = RequestMethod.GET)
     public String Monitoring(ModelMap map, HttpServletRequest request) {
         if (this.authenticate(UserType.ADMIN)) {
             map.put("orders", this.orderDao.getList());
             System.out.println("Yay :)");
-            return "order/orderoverzicht";
+            return "order/overzicht";
         }
         System.out.println("Yay :)");
         return "redirect:../";

@@ -59,13 +59,15 @@
                         </div>
                     </div>
                 </div>
-                <a href="${baseurl}/order/orderoverzicht/">
-                    <div class="panel-footer">
-                        <span class="pull-left"><spring:message code="ViewDetails" text="%ViewDetails" /></span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
+                <c:if test="${sessionScope.UserType == 'ADMIN' && sessionScope.UserID != null}">
+                    <a href="${baseurl}/order/overzicht/">
+                        <div class="panel-footer">
+                            <span class="pull-left"><spring:message code="ViewDetails" text="%ViewDetails" /></span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </c:if>            
             </div>
         </div>
         <div class="col-lg-3 col-md-6">

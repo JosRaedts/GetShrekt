@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col-md-6">
         <!-- <h3 class="page-header">Demo:</h3> -->
-        <div class="img-container">
+        <div id="cropper" class="img-container">
           <img src="${baseurl}/photo/view/low/${photo.id}" alt="Picture">
         </div>
       </div>
@@ -200,6 +200,7 @@
                 $(document).ready(function(){
                     $("#add_btn").click(function(){
                         var products = [];
+                        var $image = $('.img-container > img')
                      $('.box').each(function() {
                         var id = $(this).find('input:hidden').val();
                         var qty = $(this).find('option:selected').val();
@@ -212,7 +213,7 @@
                             $.post("${baseurl}/shoppingcart/add",
                         {
                           photo_id: "${photo.id}",
-                          photo_data: "data",
+                          photo_data: $image.cropper("getCropBoxData"),
                           product_id: id,
                           product_qty: qty
                         },

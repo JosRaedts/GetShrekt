@@ -7,6 +7,7 @@ package com.photoshop.models.order;
 
 import com.mysql.jdbc.Statement;
 import com.photoshop.models.Database;
+import com.photoshop.models.address.Address;
 import com.photoshop.models.student.StudentDao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,26 +24,23 @@ import org.springframework.stereotype.Component;
  * @author Willem
  */
 @Component
-public class OrderDao extends Database{
-    
-    public OrderDao()
-    {
+public class OrderDao extends Database {
+
+    public OrderDao() {
         super();
     }
-    
+
     @Autowired
     StudentDao dao;
-    
-    public List<Order> getList()
-    {
+
+    public List<Order> getList() {
         List<Order> orders = new ArrayList();
         try {
             String querystring = "SELECT * FROM orders";
             PreparedStatement stat = conn.prepareStatement(querystring);
             ResultSet rs = stat.executeQuery();
-            
-            while(rs.next())
-            {
+
+            while (rs.next()) {
                 orders.add(build(rs));
             }
         } catch (SQLException ex) {
@@ -50,6 +48,7 @@ public class OrderDao extends Database{
         }
         return orders;
     }
+
     
     public List<Order> getOrderlistByStudentId(int studentid)
     {
@@ -78,9 +77,8 @@ public class OrderDao extends Database{
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
-            
-            while(rs.next())
-            {
+
+            while (rs.next()) {
                 order = build(rs);
             }
         } catch (SQLException ex) {
@@ -88,9 +86,8 @@ public class OrderDao extends Database{
         }
         return order;
     }
-    
-    public boolean idExists(int id)
-    {
+
+    public boolean idExists(int id) {
         boolean exists = false;
         try {
             String querystring = "SELECT * FROM orders WHERE id = ?";
@@ -98,12 +95,11 @@ public class OrderDao extends Database{
             stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
-            
-            while(rs.next())
-            {
-               exists = true;
+
+            while (rs.next()) {
+                exists = true;
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(OrderDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -111,75 +107,118 @@ public class OrderDao extends Database{
         return exists;
     }
     
-    public boolean save(Order order)
+    public int saveAddress(Address address)
     {
         try {
-            PreparedStatement stat;
+            String querystring = null;
+            boolean exists = idExists(address.getId());
+            if (exists) {
+                querystring = "UPDATE addresses SET customername = ?, address = ?, zipcode = ?,city = ?,phone = ? WHERE id = ?";
+            } else {
+                querystring = "INSERT INTO addresses(customername, address, zipcode,city,phone) VALUES(?, ?, ?, ?, ?)";
+            }
+
+            PreparedStatement stat = conn.prepareStatement(querystring);
+
+            stat.setString(1, address.getKlantnaam());
+            stat.setString(2, address.getAdres());
+            stat.setString(3, address.getPostcode());
+            stat.setString(4, address.getWoonplaats());
+            stat.setString(5, address.getTelefoonnummer());
+
+            if (exists) {
+                stat.setInt(6, address.getId());
+            }
+            if (!exists) {
+                ResultSet rs = stat.getGeneratedKeys();
+                rs.next();
+                address.setId(rs.getInt(1));
+            }
+            stat.execute();
+            return address.getId();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDao.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+        
+        
+        
+    }
+
+    public boolean save(Order order) {
+        try {
             String querystring = null;
             boolean exists = idExists(order.getId());
-            if(exists)
-            {
-                querystring = "UPDATE orders SET student_id = ?, datum = ?, status = ?,factuurUrl = ?,indexkaartUrl = ?";
-                stat = conn.prepareStatement(querystring);
+            if (exists) {
+                querystring = "UPDATE orders SET student_id = ?, datum = ?, status = ?,factuurUrl = ?,indexkaartUrl = ?, invoice_address_id = ?, shipping_address_id = ? WHERE id = ?";
+            } else {
+                querystring = "INSERT INTO orders(student_id, datum, status,factuurUrl,indexkaartUrl, invoice_address_id, shipping_address_id) VALUES(?, ?, ?, ?, ?, ?, ?)";
             }
-            else
-            {
-                querystring = "INSERT INTO orders(student_id, datum, status,factuurUrl,indexkaartUrl) VALUES(?, ?, ?, ?, ?)";
-                stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
-            }
+
+            PreparedStatement stat = conn.prepareStatement(querystring);
 
             stat.setInt(1, order.getStudent().getId());
             stat.setTimestamp(2, order.getDatum());
             stat.setInt(3, Integer.parseInt(order.getStatus().toString()));
             stat.setString(4, order.getFactuur());
             stat.setString(5, order.getIndexkaart());
-            
-            stat.execute();
-            if(!exists)
-            {
+
+            if (exists) {
+                stat.setInt(6, order.getId());
+            }
+            if (!exists) {
                 ResultSet rs = stat.getGeneratedKeys();
                 rs.next();
                 order.setId(rs.getInt(1));
             }
+            stat.execute();
+
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(OrderDao.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
-    private Order build(ResultSet rs)
-    {
+
+    private Order build(ResultSet rs) {
         Order order = null;
-        try {            
+        try {
             order = new Order();
             order.setId(rs.getInt("id"));
             order.setStudent(this.dao.getById(rs.getInt("student_id")));
             order.setDatum(rs.getTimestamp(3));
             order.setFactuur(rs.getString("factuurUrl"));
             order.setIndexkaart(rs.getString("indexkaartUrl"));
-            
-            switch (rs.getInt("status")) {
-            case 1:  order.setStatus(OrderEnum.NIET_BETAALD);
-                     break;
-            case 2:  order.setStatus(OrderEnum.BETAALD);
-                     break;
-            case 3:  order.setStatus(OrderEnum.IN_BEHANDELING);
-                     break;
-            case 4:  order.setStatus(OrderEnum.VERZONDEN);
-                     break;
-            case 5:  order.setStatus(OrderEnum.ONTVANGEN);
-                     break;
-            default: order.setStatus(OrderEnum.NIET_BETAALD);
-                     break;
 
-        }
+            switch (rs.getInt("status")) {
+                case 1:
+                    order.setStatus(OrderEnum.NIET_BETAALD);
+                    break;
+                case 2:
+                    order.setStatus(OrderEnum.BETAALD);
+                    break;
+                case 3:
+                    order.setStatus(OrderEnum.IN_BEHANDELING);
+                    break;
+                case 4:
+                    order.setStatus(OrderEnum.VERZONDEN);
+                    break;
+                case 5:
+                    order.setStatus(OrderEnum.ONTVANGEN);
+                    break;
+                default:
+                    order.setStatus(OrderEnum.NIET_BETAALD);
+                    break;
+
+            }
 
         } catch (SQLException ex) {
             Logger.getLogger(OrderDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return order;
     }
-    
+
 //    public List<Order> getOrdersByPhotographer(int id){
 //        ArrayList<Order> orders = new ArrayList<Order>();
 //        try {
@@ -195,4 +234,23 @@ public class OrderDao extends Database{
 //        }
 //        return orders;
 //    }
+    
+    public List<Order> getOrderlistByPhotographerId(int studentid)
+    {
+        List<Order> orders = new ArrayList();
+        try {
+            String querystring = "SELECT * FROM orders where photographer_id = ? ";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1,studentid);
+            ResultSet rs = stat.executeQuery();
+            
+            while(rs.next())
+            {
+                orders.add(build(rs));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return orders;
+    }
 }

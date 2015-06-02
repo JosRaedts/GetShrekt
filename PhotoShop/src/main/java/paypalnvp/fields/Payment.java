@@ -407,11 +407,15 @@ public final class Payment implements RequestFields {
 
 				/* item amount */
 				if (entry.getKey().equals("L_AMT")) {
-					/* remove decimal point and parse to int */
-					itemAmt += Integer.parseInt(
-							entry.getValue().replace(".", ""));
-				}
-
+                                    int currentItemAmount = Integer.parseInt(entry.getValue().replace(".", ""));
+                                    String quantityString = items.get(i).get("L_QTY");
+                                    if(quantityString != null && quantityString.trim().length() > 0){
+                                        int quantity = Integer.parseInt(quantityString);
+                                        currentItemAmount = currentItemAmount * quantity;
+                                        itemAmt += currentItemAmount;
+                                    }
+                                }
+                                
 				/* tax amount */
 				if (entry.getKey().equals("L_TAXAMT")) {
 					/* remove decimal point and parse to int */

@@ -289,7 +289,7 @@
                             <a href="#"><i class="fa fa-eur fa-fw"></i> <spring:message code="Order" text="%Order" /><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="${baseurl}/order/orderoverzicht"><i class="fa fa-list-ul fa-fw"></i> <spring:message code="OrderSummary" text="%OrderSummary" /></a>
+                                    <a href="${baseurl}/order/overzicht"><i class="fa fa-list-ul fa-fw"></i> <spring:message code="OrderSummary" text="%OrderSummary" /></a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
