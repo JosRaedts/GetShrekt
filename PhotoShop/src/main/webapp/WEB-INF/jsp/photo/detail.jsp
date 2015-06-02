@@ -21,7 +21,12 @@
       <div class="col-md-6">
         <!-- <h3 class="page-header">Preview:</h3> -->
         <div class="docs-preview clearfix">
-          <div class="img-preview preview-lg"></div>
+          <div class="img-preview preview-lg "></div>
+          <select value="" class="filter" name="filter">
+                <option value="0">color</option>
+                <option value="1">sepia</option>
+                <option value="2">zwart-wit</option>
+          </select>
         </div>
       </div>
     </div>
@@ -180,6 +185,7 @@
                     $('.box').change(function(){
                         update_amounts();
                     });
+                    
                 });
 
                 function update_amounts()
@@ -200,11 +206,12 @@
                 $(document).ready(function(){
                     $("#add_btn").click(function(){
                         var products = [];
-                        var $image = $('.img-container > img')
+                        var $image = $('.img-container > img');
                      $('.box').each(function() {
                         var id = $(this).find('input:hidden').val();
                         var qty = $(this).find('option:selected').val();
                         var price = $('#price'+id).attr('price');
+                        var filter = $('.filter').val();
                         if(qty > 0) {
                             var product = [];
                             product["id"] = id;
@@ -214,6 +221,7 @@
                         {
                           photo_id: "${photo.id}",
                           photo_data: $image.cropper("getData"),
+                          photo_filter: filter,
                           product_id: id,
                           product_qty: qty
                         },
