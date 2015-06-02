@@ -206,11 +206,12 @@
                 $(document).ready(function(){
                     $("#add_btn").click(function(){
                         var products = [];
-                        var $image = $('.img-container > img')
+                        var $image = $('.img-container > img');
                      $('.box').each(function() {
                         var id = $(this).find('input:hidden').val();
                         var qty = $(this).find('option:selected').val();
                         var price = $('#price'+id).attr('price');
+                        var filter = $('.filter').val();
                         if(qty > 0) {
                             var product = [];
                             product["id"] = id;
@@ -220,6 +221,7 @@
                         {
                           photo_id: "${photo.id}",
                           photo_data: $image.cropper("getCropBoxData"),
+                          photo_filter: filter,
                           product_id: id,
                           product_qty: qty
                         },
