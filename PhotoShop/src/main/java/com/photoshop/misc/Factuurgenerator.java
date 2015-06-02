@@ -56,6 +56,7 @@ public class Factuurgenerator {
     private Order order;  
     private MessageSource messageSource;
     private Locale locale;
+    private String filename;
     
     public Factuurgenerator(Order order,Environment env,MessageSource messageSource,Locale locale)
     {
@@ -63,7 +64,8 @@ public class Factuurgenerator {
         this.messageSource = messageSource;
         this.env = env;
         this.order = order;
-        String FILE = env.getProperty("logo") + "Factuur " + order.getId() +".pdf"; //order generate moet nog gemaakt worden
+        this.filename = "Factuur " + order.getId();
+        String FILE = env.getProperty("logo") + this.filename +".pdf"; //order generate moet nog gemaakt worden
         catFont = new Font(Font.FontFamily.HELVETICA, 18,
                 Font.BOLD);
         subtitel = new Font(Font.FontFamily.HELVETICA, 14,
@@ -85,6 +87,10 @@ public class Factuurgenerator {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public String getFilename() {
+        return this.filename;
     }
     
     private String Getspringmessage(String messagecode)

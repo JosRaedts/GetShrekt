@@ -80,7 +80,7 @@ public class Indexkaartgenerator {
     }
     
     public String getFilename() {
-        return this.
+        return this.getFilename();
     }
 
     private String Getspringmessage(String messagecode) {
