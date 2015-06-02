@@ -180,19 +180,22 @@ public class OrderDao extends Database{
         return order;
     }
     
-//    public List<Order> getOrdersByPhotographer(int id){
-//        ArrayList<Order> orders = new ArrayList<Order>();
-//        try {
-//            String querystring = "SELECT id, height, width, thumbnailURL, lowresURL, highresURL, photographer_id, active, date FROM photos WHERE photographer_id = ? ORDER BY date";
-//            PreparedStatement stat = conn.prepareStatement(querystring);
-//            stat.setInt(1, id);
-//            ResultSet rs = stat.executeQuery();
-//            while (rs.next()) {
-//                orders.add(build(rs));
-//            }
-//        } catch (Exception ex) {
-//            Logger.getLogger(PhotoDao.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return orders;
-//    }
+    public List<Order> getOrderlistByPhotographerId(int studentid)
+    {
+        List<Order> orders = new ArrayList();
+        try {
+            String querystring = "SELECT * FROM orders where photographer_id = ? ";
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1,studentid);
+            ResultSet rs = stat.executeQuery();
+            
+            while(rs.next())
+            {
+                orders.add(build(rs));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return orders;
+    }
 }
