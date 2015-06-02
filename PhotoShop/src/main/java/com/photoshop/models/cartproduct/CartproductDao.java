@@ -147,7 +147,7 @@ public class CartproductDao extends Database {
     public boolean addToCart(Cartproduct product) {
         try {
             String querystring = null;
-            querystring = "INSERT INTO cartproducts(content, price, amount, student_id, photo_id) VALUES(?, ?, ?, ?, ?)";
+            querystring = "INSERT INTO cartproducts(content, price, amount, student_id, photo_id, product_id) VALUES(?, ?, ?, ?, ?, ?)";
 
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setString(1, product.getContent());
@@ -156,7 +156,7 @@ public class CartproductDao extends Database {
             stat.setInt(4, product.getStudentID());
 
             stat.setInt(5, product.getPhotoID());
-
+            stat.setInt(6, product.getProductId());
             stat.execute();
             return true;
         } catch (SQLException ex) {
