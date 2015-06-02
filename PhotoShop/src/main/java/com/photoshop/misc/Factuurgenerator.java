@@ -44,7 +44,7 @@ import org.springframework.stereotype.Component;
  *
  * @author bart
  */
-@Component
+
 public class Factuurgenerator {
     private Environment env;
     private static Font catFont;
@@ -52,15 +52,10 @@ public class Factuurgenerator {
     private static Font smallBold;
     private static Font subtitel;
     private double totaalprijs = 0;
-    private Order order;
+    private Order order;  
     
-    @Autowired
-    private MessageSource messageSource;
-    private Locale locale;
-    
-    public Factuurgenerator(Order order,Environment env, Locale locale)
+    public Factuurgenerator(Order order,Environment env)
     {
-        this.locale = locale;
         this.env = env;
         this.order = order;
         String FILE = env.getProperty("logo") + "Factuur " + order.getId() +".pdf"; //order generate moet nog gemaakt worden
@@ -116,7 +111,7 @@ public class Factuurgenerator {
         addEmptyLine(preface, 1);
         
         //Aanmaken van de bedrijfs gegevens
-        preface.add(new Paragraph(messageSource.getMessage("company", null, locale)+":", subtitel));
+        preface.add(new Paragraph("Bedrijf:", subtitel));
         preface.add(new Paragraph("Rachelsmolen 1", subFont));
         preface.add(new Paragraph("5612MA Eindhoven", subFont)); //order nummer ingelezen worde
         preface.add(new Paragraph("Rekening: 165947888", subFont));

@@ -186,11 +186,11 @@ public class OrderController extends AbstractController {
     }
 
     @RequestMapping(value = "/pdf", method = RequestMethod.GET)
-    public String pdf(ModelMap map, HttpServletRequest request, Locale locale) throws IOException {
+    public String pdf(ModelMap map, HttpServletRequest request) throws IOException {
         if (this.authenticate(UserType.STUDENT)) {
             this.order = this.orderDao.getById(1);
-            this.order.setInvoiceaddress( new Address("Willem de kok","Oorion 32","5527CR","Hapert","0612345678"));
-            pdf = new Factuurgenerator(order,env, locale);
+            this.order.setInvoiceaddress( new Address("Willem de kok","Orion 32","5527CR","Hapert","0612345678"));
+            pdf = new Factuurgenerator(order,env);
             index = new Indexkaartgenerator(order,env,photoDao);
             return "redirect:../";
         }
