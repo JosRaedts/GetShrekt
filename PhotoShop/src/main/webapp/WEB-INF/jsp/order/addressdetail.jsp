@@ -37,23 +37,23 @@
                     <table border="0" id="shipping" style="float:left; ">
                         <tr>
                         <td width="200px"><spring:message code="name" text="%name" />:</td>
-                        <td><input required type="text" name="shipping_name" value="${student.name}" /></td>
+                        <td><input required type="text" name="shipping_name" /></td>
                         </tr>
                         <tr>
                         <td width="200px"><spring:message code="address" text="%address" />:</td>
-                        <td><input required type="text" name="shipping_address" value="${student.address}" /></td>
+                        <td><input required type="text" name="shipping_address"  /></td>
                         </tr>
                         <tr>
                         <td width="200px"><spring:message code="city" text="%city" />:</td>
-                        <td width="200px"><input required type="text" name="shipping_city" value="${student.city}" /></td>
+                        <td width="200px"><input required type="text" name="shipping_city" /></td>
                         </tr>
                         <tr>
                         <td width="200px"><spring:message code="zipcode" text="%zipcode" />:</td>
-                        <td width="200px"><input required type="text" name="shipping_zipcode" value="${student.zipcode}"/></td>
+                        <td width="200px"><input required type="text" name="shipping_zipcode" /></td>
                         </tr>
                         <tr>
                         <td width="200px"><spring:message code="phone" text="%phone" />:</td>
-                        <td width="200px"><input required type="text" name="shipping_phone" value="" /></td>
+                        <td width="200px"><input required type="text" name="shipping_phone" /></td>
                         </tr>
                     </table>
                 </div>
@@ -61,16 +61,13 @@
 
                     function hideShipping(checkbox)
                     {
-                        alert("tes2t")
                         if(!checkbox.is(":checked"))
                         {
-                            alert("checked")
                             $("#shipping :input").attr("disabled", false);
                             $("#shipping").show();
                         }
                         else
                         {
-                            alert("notchecked")
                             $("#shipping :input").attr("disabled", true);
                             $("#shipping").hide();
 
@@ -81,7 +78,6 @@
                     $("#sameaddress").change(function()
                     {
                         hideShipping($(this));
-                        alert("test")
                     });
                 </script>
             </div>
