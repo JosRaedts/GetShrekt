@@ -120,6 +120,7 @@ public class CartproductDao extends Database {
             product.setPhotoID(rs.getInt("photo_id"));
             product.setProductId(rs.getInt("product_id"));
             product.setStudentID(rs.getInt("student_id"));
+            product.setImageId(rs.getInt("image_id"));
 
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);

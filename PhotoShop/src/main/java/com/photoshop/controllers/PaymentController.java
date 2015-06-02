@@ -1,6 +1,7 @@
 package com.photoshop.controllers;
 
 import com.photoshop.misc.Factuurgenerator;
+import com.photoshop.misc.Indexkaartgenerator;
 import com.photoshop.models.UserType;
 import com.photoshop.models.address.Address;
 import com.photoshop.models.cartproduct.Cartproduct;
@@ -32,9 +33,12 @@ import paypalnvp.request.GetExpressCheckoutDetails;
 import paypalnvp.request.SetExpressCheckout;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.core.env.Environment;
 
 /**
  * Created by Bram on 25-5-2015.
@@ -99,10 +103,12 @@ public class PaymentController extends AbstractController{
     @Autowired
     private OrderRowDao orderrowdao;
     @Autowired
-    private Enviroment env;
+    private Environment env;
+    @Autowired
+    private MessageSource messageSource;
     
     @RequestMapping(value="/confirm", method=RequestMethod.GET)
-    public String confirm(@RequestParam("token") String token, HttpServletRequest request)
+    public String confirm(@RequestParam("token") String token, HttpServletRequest request, Locale locale)
     {
         Profile user = new BaseProfile.Builder("info_api1.photoshop.nl", "AL6B27VXTC3LHTLP").signature("AiPC9BjkCyDFQXbSkoZcgqH3hpacAu8Jct0bClyKsrPt4W5HFgqgaI6U").build();
         PayPal pp = new PayPal(user, PayPal.Environment.SANDBOX);
@@ -117,6 +123,8 @@ public class PaymentController extends AbstractController{
         order.setStudent((Student) this.getUser());
         order.setInvoiceaddress((Address) request.getSession().getAttribute("invoiceaddress"));
         order.setShippingaddress((Address) request.getSession().getAttribute("shippingaddress"));
+        order.setFactuur("");
+        order.setIndexkaart("");
         order.save();
         
         List<OrderRow> orderrows = new ArrayList();
@@ -137,7 +145,7 @@ public class PaymentController extends AbstractController{
                 orderrow.setProduct_id(cp.getProductId());
                 orderrow.setPhoto_id(cp.getPhotoID());
                 orderrow.setOrder_id(order.getId());
-                orderrow.setImagedata_id(0);
+                orderrow.setImagedata_id(cp.getImageId());
                 orderrowdao.save(orderrow); 
             }
             catch(NumberFormatException nbe)
@@ -146,7 +154,11 @@ public class PaymentController extends AbstractController{
             }
         }
    
-        Factuurgenerator factuurgenerator = new Factuurgenerator(order, env);
+        Factuurgenerator factuurgenerator = new Factuurgenerator(order, env, messageSource, locale);
+        order.setFactuur(factuurgenerator.getFilename());
+        Indexkaartgenerator indexkaartgenerator = new Indexkaartgenerator(order, env, photodao, messageSource, locale);
+        order.setIndexkaart(indexkaartgenerator.getFilename());
+        order.save();
         
         return "";
     }

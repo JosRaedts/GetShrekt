@@ -221,7 +221,7 @@ public class OrderController extends AbstractController {
             if (student.getCartProducts().size() > 0) {
                 Address invoiceaddress = new Address(request.getParameter("invoice_name"), request.getParameter("invoice_address"), request.getParameter("invoice_zipcode"), request.getParameter("invoice_city"), request.getParameter("invoice_phone"));
                 Address shippingaddress;
-                if (request.getParameter("sameaddress") != null) {
+                if (request.getParameter("sameaddress") == null) {
                     shippingaddress = new Address(request.getParameter("shipping_name"), request.getParameter("shipping_address"), request.getParameter("shipping_zipcode"), request.getParameter("shipping_city"), request.getParameter("shipping_phone"));
                 } else {
                     shippingaddress = invoiceaddress;

@@ -48,6 +48,7 @@ public class Indexkaartgenerator {
     private PhotoDao photoDao;
     private MessageSource messageSource;
     private Locale locale;
+    private String filename;
 
     public Indexkaartgenerator(Order order, Environment env, PhotoDao photoDao, MessageSource messageSource, Locale locale) {
         this.photoDao = photoDao;
@@ -55,6 +56,7 @@ public class Indexkaartgenerator {
         this.order = order;
         this.messageSource = messageSource;
         this.locale = locale;
+        this.filename = "Indexkaart " + order.getId();
         String filename = "Indexkaart " + order.getId();
         String FILE = env.getProperty("logo") + filename + ".pdf"; //order generate moet nog gemaakt worden
         catFont = new Font(Font.FontFamily.HELVETICA, 18,
@@ -80,7 +82,7 @@ public class Indexkaartgenerator {
     }
     
     public String getFilename() {
-        return this.getFilename();
+         return this.filename;
     }
 
     private String Getspringmessage(String messagecode) {
