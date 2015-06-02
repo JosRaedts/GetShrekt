@@ -17,7 +17,9 @@ public class Address implements Serializable {
     private String postcode;
     private String woonplaats;
     private String telefoonnummer;
-
+    private int id;
+    
+    
     public Address(String klantnaam, String adres, String postcode, String woonplaats, String telefoonnummer) {
         this.klantnaam = klantnaam;
         this.adres = adres;
@@ -25,6 +27,17 @@ public class Address implements Serializable {
         this.woonplaats = woonplaats;
         this.telefoonnummer = telefoonnummer;
     }
+    
+    public int getId()
+    {
+        return id;
+    }
+    
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+    
 
     public String getKlantnaam() {
         return klantnaam;

@@ -7,15 +7,24 @@ package com.photoshop.controllers;
 
 import com.photoshop.models.cartproduct.Cartproduct;
 import com.photoshop.models.cartproduct.CartproductDao;
+import com.photoshop.models.order.Order;
+import com.photoshop.models.order.OrderDao;
+import com.photoshop.models.order.OrderEnum;
+import com.photoshop.models.orderrow.OrderRow;
+import com.photoshop.models.orderrow.OrderRowDao;
+import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -30,6 +39,15 @@ public class ShoppingCartController extends AbstractController {
 
     @Autowired
     private StudentDao studentDao;
+
+    @Autowired
+    private OrderDao orderDao;
+
+    @Autowired
+    private OrderRowDao orderrowDao;
+
+    @Autowired
+    private PhotoDao photoDao;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(ModelMap map, HttpServletRequest request) {
@@ -87,11 +105,6 @@ public class ShoppingCartController extends AbstractController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addProduct(ModelMap map, HttpServletRequest request) {
 
-            //System.out.println(request.getParameter("photo_id"));
-        //System.out.println(request.getParameter("photo_data"));
-        //System.out.println(request.getAttribute("products[]").toString());
-        //System.out.println(request.getParameter("product_id"));
-        //System.out.println(request.getParameter("product_qty"));
         int userID = 0;
         Student student;
         try {
@@ -112,9 +125,7 @@ public class ShoppingCartController extends AbstractController {
             temp.setStudentID(userID);
             temp.setContent(name);
             cartproductDao.addToCart(temp);
-            //System.out.println("test");
-            //System.out.println(products);
-            ///Cartproduct temp = cartproductDao.getById(Integer.parseInt(request.getParameter("id")));
+
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return "redirect:list";
@@ -125,10 +136,45 @@ public class ShoppingCartController extends AbstractController {
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)
     public String orderProducts(ModelMap map, HttpServletRequest request) {
-        
-        
-        return null;
+
+        int userID = 0;
+        Student student;
+        Order neworder = new Order();
+        OrderRow newrow = new OrderRow();
+        List<Cartproduct> products = new ArrayList();
+        try {
+            student = (Student) this.getUser();
+            userID = student.getId();
+            Date date = new Date();
+
+            neworder.setStudent(student);
+            neworder.setDatum(new Timestamp(date.getTime()));
+            neworder.setStatus(OrderEnum.NIET_BETAALD);
+            neworder.setFactuur("factuur");
+            neworder.setIndexkaart("indexkaart");
+            
+            orderDao.save(neworder);
+            neworder.setFactuur("Factuur " + neworder.getId());
+            neworder.setIndexkaart("Indexkaart " + neworder.getId());
+            orderDao.save(neworder);
+            
+            products = cartproductDao.getList(userID);
+
+            for (Cartproduct c : products) {
+                newrow.setOrder_id(neworder.getId());
+                newrow.setProduct_id(c.getId());
+                newrow.setAantal(c.getAmount());
+                newrow.setPhoto_id(c.getPhotoID());
+                newrow.setPhotographer_id(photoDao.getById(c.getPhotoID()).getPhotographerID());
+                newrow.setProductprice(c.getPrice());
+                orderrowDao.save(newrow);
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return "redirect:list";
+        }
+        return "redirect:../order/detail";
     }
-    
-    
+
 }
