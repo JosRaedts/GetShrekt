@@ -123,4 +123,12 @@ public class ShoppingCartController extends AbstractController {
         return "redirect:../";
     }
 
+    @RequestMapping(value = "/order", method = RequestMethod.POST)
+    public String orderProducts(ModelMap map, HttpServletRequest request) {
+        
+        
+        return null;
+    }
+    
+    
 }
