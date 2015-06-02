@@ -5,6 +5,7 @@
  */
 package com.photoshop.misc;
 
+import com.photoshop.models.imgdata.Imgdata;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.color.ColorSpace;
@@ -101,5 +102,23 @@ public class ImageManager {
         raster.setPixels(0, 0, w, h, pixels);
 
         return sepia;
+    }
+    
+    public static BufferedImage crop(Imgdata imgdata, BufferedImage img, String type)
+    {
+        BufferedImage dest = null;
+        if(type == "lowres")
+        {
+            dest = img.getSubimage((int)imgdata.getX(), (int)imgdata.getY(), (int)imgdata.getWidth(), (int)imgdata.getHeight());
+        }  
+        else if(type == "normal")
+        {
+            //scale
+        }
+        else if(type == "thumb")
+        {
+            //scale
+        }
+        return dest;
     }
 }
