@@ -213,7 +213,7 @@
                             $.post("${baseurl}/shoppingcart/add",
                         {
                           photo_id: "${photo.id}",
-                          photo_data: $image.cropper("getCropBoxData"),
+                          photo_data: $image.cropper("getData"),
                           product_id: id,
                           product_qty: qty
                         },

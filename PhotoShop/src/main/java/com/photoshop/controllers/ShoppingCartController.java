@@ -5,6 +5,7 @@
  */
 package com.photoshop.controllers;
 
+import com.photoshop.misc.ImageManager;
 import com.photoshop.models.cartproduct.Cartproduct;
 import com.photoshop.models.cartproduct.CartproductDao;
 import com.photoshop.models.imgdata.Filter;
@@ -17,16 +18,20 @@ import com.photoshop.models.orderrow.OrderRowDao;
 import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -91,6 +96,11 @@ public class ShoppingCartController extends AbstractController {
     public String deleteRecord(ModelMap map, HttpServletRequest request) {
         try {
             Cartproduct temp = cartproductDao.getById(Integer.parseInt(request.getParameter("id")));
+
+            File dir = new File(env.getProperty("uploadDir") + "cart/"+temp.getId());
+            FileUtils.cleanDirectory(dir);
+            dir.delete();
+
             if (temp != null) {
                 cartproductDao.delete(temp);
                 return "redirect:list";
@@ -103,6 +113,9 @@ public class ShoppingCartController extends AbstractController {
 
         return "redirect:../";
     }
+
+    @Autowired
+    private Environment env;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addProduct(ModelMap map, HttpServletRequest request) {
@@ -121,9 +134,9 @@ public class ShoppingCartController extends AbstractController {
             String name = cartproductDao.getName(productid);
             System.out.println("kkkkkk");
             System.out.println(request.getParameterMap());
-            float x = Float.valueOf(request.getParameter("photo_data[left]"));
+            float x = Float.valueOf(request.getParameter("photo_data[x]"));
             System.out.println("PPPP");
-            float y = Float.valueOf(request.getParameter("photo_data[top]"));
+            float y = Float.valueOf(request.getParameter("photo_data[y]"));
             System.out.println("qqqqqq");
             float height = Float.valueOf(request.getParameter("photo_data[height]"));
             System.out.println("tttttttt");
@@ -142,6 +155,8 @@ public class ShoppingCartController extends AbstractController {
             temp.setProductId(productid);
             temp.setImageId(imgdata.getId());
             cartproductDao.addToCart(temp);
+
+            ImageManager.crop(imgdata, photoDao.getById(photoid), env, env.getProperty("uploadDir") + "cart/"+temp.getId(), temp.getId());
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

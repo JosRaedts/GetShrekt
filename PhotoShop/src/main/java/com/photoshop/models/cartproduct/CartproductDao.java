@@ -7,16 +7,17 @@ package com.photoshop.models.cartproduct;
 
 import com.photoshop.models.Database;
 import com.photoshop.models.imgdata.Imgdata;
-import com.photoshop.models.product.Product;
 import com.photoshop.models.product.ProductDao;
+import org.springframework.stereotype.Component;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.stereotype.Component;
 
 /**
  *
@@ -141,6 +142,10 @@ public class CartproductDao extends Database {
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, product.getId());
             stat.execute();
+
+            PreparedStatement stat2 = conn.prepareStatement("DELETE FROM imagedata WHERE id = ?");
+            stat2.setInt(1, product.getImageId());
+            stat2.execute();
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -154,7 +159,7 @@ public class CartproductDao extends Database {
             String querystring = null;
             querystring = "INSERT INTO cartproducts(content, price, amount, student_id, photo_id, product_id, image_id) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement stat = conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             stat.setString(1, product.getContent());
             stat.setDouble(2, product.getPrice());
             stat.setInt(3, product.getAmount());
@@ -164,6 +169,11 @@ public class CartproductDao extends Database {
             stat.setInt(6, product.getProductId());
             stat.setInt(7, product.getImageId());
             stat.execute();
+
+            ResultSet rs = stat.getGeneratedKeys();
+            rs.next();
+            product.setId(rs.getInt(1));
+
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -220,7 +230,7 @@ public class CartproductDao extends Database {
                 querystring = "INSERT INTO imagedata(x, y, height, width, filter) VALUES(?, ?, ?, ?, ?)";
             }
 
-            PreparedStatement stat = conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
 
             stat.setFloat(1, imgdata.getX());
             stat.setFloat(2, imgdata.getY());
@@ -232,6 +242,12 @@ public class CartproductDao extends Database {
                 stat.setInt(3, imgdata.getId());
             }
             stat.execute();
+            if(!exists)
+            {
+                ResultSet rs = stat.getGeneratedKeys();
+                rs.next();
+                imgdata.setId(rs.getInt(1));
+            }
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
