@@ -38,7 +38,7 @@ public class OrderRowDao extends Database {
     {
         List<OrderRow> orderregel = new ArrayList();
         try {
-            String querystring = "SELECT * FROM order_regels";
+            String querystring = "SELECT * FROM order_rows";
             PreparedStatement stat = conn.prepareStatement(querystring);
             ResultSet rs = stat.executeQuery();
             
@@ -57,7 +57,7 @@ public class OrderRowDao extends Database {
     {
         OrderRow or = null;
         try {
-            String querystring = "SELECT * FROM order_regels WHERE id = ?";
+            String querystring = "SELECT * FROM order_rows WHERE id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
@@ -76,7 +76,7 @@ public class OrderRowDao extends Database {
     {
         boolean exists = false;
         try {
-            String querystring = "SELECT * FROM order_regels WHERE id = ?";
+            String querystring = "SELECT * FROM order_rows WHERE id = ?";
             PreparedStatement stat;
             stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
@@ -102,12 +102,12 @@ public class OrderRowDao extends Database {
             boolean exists = idExists(or.getId());
             if(exists)
             {
-                querystring = "UPDATE order_regels SET order_id = ?, product_id = ?, photographer_id = ?, photo_id = ?, aantal = ?, productprice = ? WHERE id = ?";
+                querystring = "UPDATE order_rows SET order_id = ?, product_id = ?, photographer_id = ?, photo_id = ?, aantal = ?, productprice = ? WHERE id = ?";
                 stat = conn.prepareStatement(querystring);
             }
             else
             {
-                querystring = "INSERT INTO order_regels(order_id, product_id, photographer_id, photo_id, aantal, productprice) VALUES(?, ?, ?, ?, ?, ?)";
+                querystring = "INSERT INTO order_rows(order_id, product_id, photographer_id, photo_id, aantal, productprice) VALUES(?, ?, ?, ?, ?)";
                 stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             }
 
@@ -158,7 +158,7 @@ public class OrderRowDao extends Database {
     public List<OrderRow> getOrderRowByOrderNr(int id){
         ArrayList<OrderRow> orderregels = new ArrayList<OrderRow>();
         try {
-            String querystring = "SELECT * FROM order_regels where order_id = ?";
+            String querystring = "SELECT * FROM order_rows where order_id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
@@ -174,7 +174,7 @@ public class OrderRowDao extends Database {
     public int getNumberOfSalesForPhotographer(int photograhper_id) {
         int i = 0;
         try {
-            String querystring = "SELECT aantal as aantal FROM order_regels where photographer_id = ?";
+            String querystring = "SELECT aantal as aantal FROM order_rows where photographer_id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, photograhper_id);
             ResultSet rs = stat.executeQuery();
@@ -193,7 +193,7 @@ public class OrderRowDao extends Database {
         List<int[]> products = new ArrayList();
         try {
             String querystring = "SELECT product_id as id, SUM( aantal ) AS aantal\n" +
-                                    "FROM order_regels\n" +
+                                    "FROM order_rows\n" +
                                     "GROUP BY product_id\n" +
                                     "ORDER BY SUM( aantal ) DESC \n" +
                                     "LIMIT 5";

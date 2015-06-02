@@ -120,10 +120,10 @@ public class PaymentController extends AbstractController{
                 OrderRow orderrow = new OrderRow();
                 orderrow.setAantal(amount);
                 orderrow.setProductprice(cp.getPrice());
-                orderrow.setPhotographer_id();
-                orderrow.setProduct_id();
+                //orderrow.setPhotographer_id();
+                //orderrow.setProduct_id();
                 orderrow.setPhoto_id(cp.getPhotoID());
-                orderrows.add(orderrow);
+                orderrow.setOrder_id(order.getId());
             }
             catch(NumberFormatException nbe)
             {
@@ -132,11 +132,6 @@ public class PaymentController extends AbstractController{
         }
    
         
-        for(Or p : products)
-        {
-            OrderRow orderRow = new OrderRow();
-            orderRow.setAantal(amount);
-        }
         
         return "";
     }
