@@ -107,18 +107,38 @@ public class OrderDao extends Database {
         return exists;
     }
     
+    public boolean idAddressExists(int id) {
+        boolean exists = false;
+        try {
+            String querystring = "SELECT * FROM addresses WHERE id = ?";
+            PreparedStatement stat;
+            stat = conn.prepareStatement(querystring);
+            stat.setInt(1, id);
+            ResultSet rs = stat.executeQuery();
+
+            while (rs.next()) {
+                exists = true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return exists;
+    }
+    
     public int saveAddress(Address address)
     {
         try {
             String querystring = null;
-            boolean exists = idExists(address.getId());
+            boolean exists = idAddressExists(address.getId());
             if (exists) {
                 querystring = "UPDATE addresses SET customername = ?, address = ?, zipcode = ?,city = ?,phone = ? WHERE id = ?";
             } else {
                 querystring = "INSERT INTO addresses(customername, address, zipcode,city,phone) VALUES(?, ?, ?, ?, ?)";
             }
 
-            PreparedStatement stat = conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
 
             stat.setString(1, address.getKlantnaam());
             stat.setString(2, address.getAdres());
@@ -129,12 +149,12 @@ public class OrderDao extends Database {
             if (exists) {
                 stat.setInt(6, address.getId());
             }
+            stat.execute();
             if (!exists) {
                 ResultSet rs = stat.getGeneratedKeys();
                 rs.next();
                 address.setId(rs.getInt(1));
             }
-            stat.execute();
             return address.getId();
 
         } catch (SQLException ex) {
@@ -148,6 +168,9 @@ public class OrderDao extends Database {
 
     public boolean save(Order order) {
         try {
+            
+            int iaddressid = this.saveAddress(order.getInvoiceaddress());
+            int saddressid = this.saveAddress(order.getShippingaddress());
             String querystring = null;
             boolean exists = idExists(order.getId());
             if (exists) {
@@ -156,23 +179,25 @@ public class OrderDao extends Database {
                 querystring = "INSERT INTO orders(student_id, datum, status,factuurUrl,indexkaartUrl, invoice_address_id, shipping_address_id) VALUES(?, ?, ?, ?, ?, ?, ?)";
             }
 
-            PreparedStatement stat = conn.prepareStatement(querystring);
+            PreparedStatement stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
 
             stat.setInt(1, order.getStudent().getId());
             stat.setTimestamp(2, order.getDatum());
             stat.setInt(3, Integer.parseInt(order.getStatus().toString()));
             stat.setString(4, order.getFactuur());
             stat.setString(5, order.getIndexkaart());
+            stat.setInt(6, iaddressid);
+            stat.setInt(7, saddressid);
 
             if (exists) {
-                stat.setInt(6, order.getId());
+                stat.setInt(8, order.getId());
             }
+             stat.execute();
             if (!exists) {
                 ResultSet rs = stat.getGeneratedKeys();
                 rs.next();
-                order.setId(rs.getInt(1));
+                    order.setId(rs.getInt(1));
             }
-            stat.execute();
 
             return true;
         } catch (SQLException ex) {

@@ -102,12 +102,12 @@ public class OrderRowDao extends Database {
             boolean exists = idExists(or.getId());
             if(exists)
             {
-                querystring = "UPDATE order_rows SET order_id = ?, product_id = ?, photographer_id = ?, photo_id = ?, aantal = ?, productprice = ? WHERE id = ?";
+                querystring = "UPDATE order_rows SET order_id = ?, product_id = ?, photographer_id = ?, photo_id = ?, aantal = ?, image_id = ? productprice = ? WHERE id = ?";
                 stat = conn.prepareStatement(querystring);
             }
             else
             {
-                querystring = "INSERT INTO order_rows(order_id, product_id, photographer_id, photo_id, aantal, productprice) VALUES(?, ?, ?, ?, ?)";
+                querystring = "INSERT INTO order_rows(order_id, product_id, photographer_id, photo_id, aantal, image_id, productprice) VALUES(?, ?, ?, ?, ?, ?, ?)";
                 stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             }
 
@@ -116,11 +116,12 @@ public class OrderRowDao extends Database {
             stat.setInt(3, or.getPhotographer_id());
             stat.setInt(4, or.getPhoto_id());
             stat.setInt(5, or.getAantal());
-            stat.setDouble(6, or.getProductprice());
+            stat.setInt(6, or.getImagedata_id());
+            stat.setDouble(7, or.getProductprice());
 
             if(exists)
             {
-                stat.setInt(7, or.getId());
+                stat.setInt(8, or.getId());
             }
             stat.execute();
             if(!exists)
@@ -148,6 +149,7 @@ public class OrderRowDao extends Database {
             or.setProduct_id(rs.getInt("product_id"));
             or.setAantal(rs.getInt("aantal"));
             or.setProductprice(rs.getDouble("productprice"));
+            or.setImagedata_id(rs.getInt("image_id"));
             
         } catch (SQLException ex) {
             Logger.getLogger(OrderRowDao.class.getName()).log(Level.SEVERE, null, ex);

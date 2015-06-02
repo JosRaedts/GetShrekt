@@ -117,6 +117,9 @@ public class CartproductDao extends Database {
             product.setContent(rs.getString("content"));
             product.setPrice(rs.getDouble("price"));
             product.setAmount(rs.getInt("amount"));
+            product.setPhotoID(rs.getInt("photo_id"));
+            product.setProductId(rs.getInt("product_id"));
+            product.setStudentID(rs.getInt("student_id"));
 
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);

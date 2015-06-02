@@ -1,5 +1,6 @@
 package com.photoshop.controllers;
 
+import com.photoshop.misc.Factuurgenerator;
 import com.photoshop.models.UserType;
 import com.photoshop.models.address.Address;
 import com.photoshop.models.cartproduct.Cartproduct;
@@ -7,7 +8,11 @@ import com.photoshop.models.cartproduct.CartproductDao;
 import com.photoshop.models.order.Order;
 import com.photoshop.models.order.OrderEnum;
 import com.photoshop.models.orderrow.OrderRow;
+import com.photoshop.models.orderrow.OrderRowDao;
+import com.photoshop.models.photo.Photo;
+import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.product.Product;
+import com.photoshop.models.product.ProductDao;
 import com.photoshop.models.student.Student;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -89,6 +94,12 @@ public class PaymentController extends AbstractController{
     
     @Autowired
     private CartproductDao cartproductDao;
+    @Autowired
+    private PhotoDao photodao;
+    @Autowired
+    private OrderRowDao orderrowdao;
+    @Autowired
+    private Enviroment env;
     
     @RequestMapping(value="/confirm", method=RequestMethod.GET)
     public String confirm(@RequestParam("token") String token, HttpServletRequest request)
@@ -101,7 +112,7 @@ public class PaymentController extends AbstractController{
         System.out.println();
         
         Order order = new Order();
-        order.setDatum((Timestamp) Calendar.getInstance().getTime());
+        order.setDatum(new Timestamp(Calendar.getInstance().getTime().getTime()));
         order.setStatus(OrderEnum.BETAALD);
         order.setStudent((Student) this.getUser());
         order.setInvoiceaddress((Address) request.getSession().getAttribute("invoiceaddress"));
@@ -120,10 +131,14 @@ public class PaymentController extends AbstractController{
                 OrderRow orderrow = new OrderRow();
                 orderrow.setAantal(amount);
                 orderrow.setProductprice(cp.getPrice());
-                //orderrow.setPhotographer_id();
-                //orderrow.setProduct_id();
+                System.out.println(cp.getPhotoID());
+                Photo photo = photodao.getById(cp.getPhotoID());
+                orderrow.setPhotographer_id(photo.getPhotographerID());
+                orderrow.setProduct_id(cp.getProductId());
                 orderrow.setPhoto_id(cp.getPhotoID());
                 orderrow.setOrder_id(order.getId());
+                orderrow.setImagedata_id(0);
+                orderrowdao.save(orderrow); 
             }
             catch(NumberFormatException nbe)
             {
@@ -131,7 +146,7 @@ public class PaymentController extends AbstractController{
             }
         }
    
-        
+        Factuurgenerator factuurgenerator = new Factuurgenerator(order, env);
         
         return "";
     }
