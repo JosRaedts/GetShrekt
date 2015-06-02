@@ -32,15 +32,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author bart
  */
+
 public class Factuurgenerator {
     private Environment env;
     private static Font catFont;
@@ -48,7 +52,7 @@ public class Factuurgenerator {
     private static Font smallBold;
     private static Font subtitel;
     private double totaalprijs = 0;
-    private Order order;
+    private Order order;  
     
     public Factuurgenerator(Order order,Environment env)
     {
@@ -174,7 +178,7 @@ public class Factuurgenerator {
         table.setWidths(new float[]{0.6f,0.4f, 1.4f, 0.8f,0.8f});
         table.setHeaderRows(1);
         creatCell("Aantal",table,true);
-        creatCell("PhotoID",table,true);
+        creatCell("FotoNr",table,true);
         creatCell("Beschrijving",table,true);
         creatCell("Prijs per eenheid",table,true);
         creatCell("Totaal",table,true);

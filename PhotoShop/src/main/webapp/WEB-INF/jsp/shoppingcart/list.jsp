@@ -6,11 +6,11 @@
     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="producttable">
         <thead>
             <tr>
-                <th>Product</th>
-                <th>Omschrijving</th>
-                <th>Prijs</th>
-                <th>Aantal</th>
-                <th>Totaal</th>
+                <th><spring:message code="product" text="%product" /></th>
+                <th><spring:message code="omschrijving" text="%omschrijving" /></th>
+                <th><spring:message code="prijs" text="%prijs" /></th>
+                <th><spring:message code="aantal" text="%aantal" /></th>
+                <th><spring:message code="totaal" text="%totaal" /></th>
                 <th></th>
             </tr>
         </thead>
@@ -34,7 +34,7 @@
                             </select>
                         </form></td>  
 
-                    <td>&#128; <fmt:formatNumber value="${cartproduct.amount * cartproduct.price}" maxFractionDigits="2"/></td> 
+                    <td>&#128; <fmt:formatNumber value="${cartproduct.amount * cartproduct.price}" minFractionDigits="2" maxFractionDigits="2"/></td> 
                     <td><a href="${baseurl}/shoppingcart/delete?id=${cartproduct.id}"><i class="fa fa-trash-o" title="Delete"></i></a>
                     </td>
                 </tr>
@@ -44,13 +44,15 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>                
-                <td>&#128; ${total}</td>
+                <td><b><spring:message code="totaal" text="%totaal" />:</b></td>                
+                <td>&#128; <fmt:formatNumber value="${total}" minFractionDigits="2" maxFractionDigits="2"/></td>
                 <td></td>
             </tr>
-
         </tbody>
     </table>
+    <form method="post" action="${baseurl}/shoppingcart/order">
+        <input type="submit" name="order" value="Bestel" style="float: right" >
+    </form>
 </div> <!-- /container -->
 <jsp:include page="/WEB-INF/jsp/footer.jsp" />
 
