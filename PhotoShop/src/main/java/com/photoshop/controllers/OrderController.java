@@ -191,8 +191,8 @@ public class OrderController extends AbstractController {
         if (this.authenticate(UserType.STUDENT)) {
             this.order = this.orderDao.getById(1);
             this.order.setInvoiceaddress(new Address("Willem de kok", "Orion 32", "5527CR", "Hapert", "0612345678"));
-            pdf = new Factuurgenerator(order, env,messageSource,locale);
-            index = new Indexkaartgenerator(order, env, photoDao);
+            pdf = new Factuurgenerator(order, env, messageSource,locale);
+            index = new Indexkaartgenerator(order, env, photoDao, messageSource, locale);
             return "redirect:../";
         }
         return "redirect:../";

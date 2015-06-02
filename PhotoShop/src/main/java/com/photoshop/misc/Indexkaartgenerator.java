@@ -27,8 +27,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 
 /**
@@ -36,6 +38,7 @@ import org.springframework.core.env.Environment;
  * @author bart
  */
 public class Indexkaartgenerator {
+
     private Environment env;
     private static Font catFont;
     private static Font subFont;
@@ -43,13 +46,17 @@ public class Indexkaartgenerator {
     private static Font subtitel;
     private Order order;
     private PhotoDao photoDao;
-    
-    public Indexkaartgenerator(Order order,Environment env,PhotoDao photoDao)
-    {
+    private MessageSource messageSource;
+    private Locale locale;
+
+    public Indexkaartgenerator(Order order, Environment env, PhotoDao photoDao, MessageSource messageSource, Locale locale) {
         this.photoDao = photoDao;
         this.env = env;
         this.order = order;
-        String FILE = env.getProperty("logo") + "Indexkaart " + order.getId() +".pdf"; //order generate moet nog gemaakt worden
+        this.messageSource = messageSource;
+        this.locale = locale;
+        String filename = "Indexkaart " + order.getId();
+        String FILE = env.getProperty("logo") + filename + ".pdf"; //order generate moet nog gemaakt worden
         catFont = new Font(Font.FontFamily.HELVETICA, 18,
                 Font.BOLD);
         subtitel = new Font(Font.FontFamily.HELVETICA, 14,
@@ -71,11 +78,19 @@ public class Indexkaartgenerator {
             e.printStackTrace();
         }
     }
+    
+    public String getFilename() {
+        return this.
+    }
+
+    private String Getspringmessage(String messagecode) {
+        return this.messageSource.getMessage(messagecode, null, this.locale);
+    }
 
     private void addMetaData(Document document) {
-        document.addTitle("Indexkaart1"); //Moet order nummer uit database worden
-        document.addAuthor("fotograaf1"); // naam fotograaf
-        document.addCreator("Photowinkel");
+        document.addTitle("Indexkaart: " + order.getId()); //Moet order nummer uit database worden
+        document.addAuthor("Fotowinkel"); // naam fotograaf
+        document.addCreator("Fotowinkel");
     }
 
     private void addTitlePage(Document document)
@@ -91,51 +106,50 @@ public class Indexkaartgenerator {
         } catch (BadElementException | IOException ex) {
             Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        SimpleDateFormat simpledatafo = new SimpleDateFormat("dd/MM/yyyy");     
+        SimpleDateFormat simpledatafo = new SimpleDateFormat("dd/MM/yyyy");
         preface.add(Logo);
-        Paragraph datum = new Paragraph("Datum: " + simpledatafo.format(new Date()),smallBold);
+        Paragraph datum = new Paragraph(Getspringmessage("Date") + " " + simpledatafo.format(new Date()), smallBold);
         datum.setAlignment(Element.ALIGN_RIGHT);
         preface.add(datum);
-        Paragraph Factuurnummer = new Paragraph("Factuurnummer: " + order.getId(),smallBold);
+        Paragraph Factuurnummer = new Paragraph(this.Getspringmessage("invoicenumber") + " " + order.getId(), smallBold);
         Factuurnummer.setAlignment(Element.ALIGN_RIGHT);
         preface.add(Factuurnummer);
         addEmptyLine(preface, 1);
-        
+
         //Aanmaken van de bedrijfs gegevens
-        preface.add(new Paragraph("Bedrijf:", subtitel));
+        preface.add(new Paragraph(this.Getspringmessage("company"), subtitel));
         preface.add(new Paragraph("Rachelsmolen 1", subFont));
         preface.add(new Paragraph("5612MA Eindhoven", subFont)); //order nummer ingelezen worde
-        preface.add(new Paragraph("Rekening: 165947888", subFont));
+        preface.add(new Paragraph(this.Getspringmessage("accountNumber") + ": 165947888", subFont));
         preface.add(new Paragraph("Bank: Paypal", subFont));
         addEmptyLine(preface, 1);
-        
+
         //Aanmaken van de bestellende persoons gegevens
-        preface.add(new Paragraph("Aan:", subtitel));
+        preface.add(new Paragraph(this.Getspringmessage("reciver") + ": ", subtitel));
         preface.add(new Paragraph(order.getInvoiceaddress().getKlantnaam(), subFont)); //order nummer ingelezen worde
         preface.add(new Paragraph(order.getInvoiceaddress().getAdres(), subFont));
         preface.add(new Paragraph(order.getInvoiceaddress().getPostcode() + " " + order.getInvoiceaddress().getWoonplaats(), subFont));
         preface.add(new Paragraph(order.getInvoiceaddress().getTelefoonnummer(), subFont));
         addEmptyLine(preface, 1);
-        
+
         //Aanmaken van de start zin 
-        preface.add(new Paragraph("Geachte heer" + " " + order.getInvoiceaddress().getKlantnaam(), subtitel));
+        preface.add(new Paragraph(this.Getspringmessage("dear") + " " + order.getInvoiceaddress().getKlantnaam(), subtitel));
         addEmptyLine(preface, 1);
-        preface.add(new Paragraph("Overzicht van producten die " + order.getInvoiceaddress().getKlantnaam() + " heeft besteld", subFont));
+        preface.add(new Paragraph(this.Getspringmessage("allordersby") + " " +  order.getInvoiceaddress().getKlantnaam(), subFont));
         addEmptyLine(preface, 1);
         //Aanmaken van de betaal tabel
         createTable(preface);
-        
+
         //Toevoegen footerzin
-        Paragraph footer = new Paragraph("Bedankt voor het bestellen van de volgende producten.",subFont);
+        Paragraph footer = new Paragraph(this.Getspringmessage("thanksforordering"), subFont);
         footer.setAlignment(Element.ALIGN_CENTER);
         preface.add(footer);
-        
+
         document.add(preface);
-        
+
     }
-  
-    private void creatCell(String cellnaam,PdfPTable table,boolean header)
-    {
+
+    private void creatCell(String cellnaam, PdfPTable table, boolean header) {
         if (header == true) {
             Font font = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
             PdfPCell c1 = new PdfPCell(new Phrase(cellnaam, font));
@@ -150,23 +164,22 @@ public class Indexkaartgenerator {
             table.addCell(c1);
         }
     }
-    
+
     private void createTable(Paragraph preface)
             throws BadElementException, DocumentException {
         // create header cell
         PdfPTable table = new PdfPTable(4);
-        
+
         // set the width of the table to 100% of page
         table.setWidthPercentage(100);
-        table.setWidths(new float[]{1f,0.6f,0.4f, 2f});
+        table.setWidths(new float[]{1f, 0.6f, 0.4f, 2f});
         table.setHeaderRows(1);
-        creatCell("Voorbeeld foto",table,true);
-        creatCell("Aantal",table,true);
-        creatCell("PhotoID",table,true);
-        creatCell("Beschrijving",table,true);
+        creatCell("Voorbeeld foto", table, true);
+        creatCell("Aantal", table, true);
+        creatCell("PhotoID", table, true);
+        creatCell("Beschrijving", table, true);
 
-        for(OrderRow row : order.getOrderRows())
-        {
+        for (OrderRow row : order.getOrderRows()) {
             Photo pfdphoto = this.photoDao.getById(row.getPhoto_id());
             Image Logo = null;
             try {
@@ -187,12 +200,11 @@ public class Indexkaartgenerator {
         }
         preface.add(table);
     }
-    
+
     private void addEmptyLine(Paragraph paragraph, int number) {
         for (int i = 0; i < number; i++) {
             paragraph.add(new Paragraph(" "));
         }
     }
-    
-    
+
 }
