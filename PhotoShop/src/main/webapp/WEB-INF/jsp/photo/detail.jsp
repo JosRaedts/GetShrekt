@@ -21,7 +21,12 @@
       <div class="col-md-6">
         <!-- <h3 class="page-header">Preview:</h3> -->
         <div class="docs-preview clearfix">
-          <div class="img-preview preview-lg"></div>
+          <div class="img-preview preview-lg "></div>
+          <select value="" class="filter" name="filter">
+                <option value="0">color</option>
+                <option value="1">sepia</option>
+                <option value="2">zwart-wit</option>
+          </select>
         </div>
       </div>
     </div>
@@ -180,6 +185,7 @@
                     $('.box').change(function(){
                         update_amounts();
                     });
+                    
                 });
 
                 function update_amounts()
@@ -235,4 +241,5 @@
   <div class="docs-alert"><span class="warning message"></span></div>
   <script src="${baseurl}/resources/js/cropper.js"></script>
   <script src="${baseurl}/resources/js/crop.js"></script>
+  <script src="${baseurl}/resources/js/colorup.js"></script>
 <jsp:include page="/WEB-INF/jsp/footer.jsp" />
