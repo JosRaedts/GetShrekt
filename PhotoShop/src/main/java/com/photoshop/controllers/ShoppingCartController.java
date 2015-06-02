@@ -7,6 +7,8 @@ package com.photoshop.controllers;
 
 import com.photoshop.models.cartproduct.Cartproduct;
 import com.photoshop.models.cartproduct.CartproductDao;
+import com.photoshop.models.imgdata.Filter;
+import com.photoshop.models.imgdata.Imgdata;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
 import javax.servlet.http.HttpServletRequest;
@@ -98,12 +100,18 @@ public class ShoppingCartController extends AbstractController {
 
             student = (Student) this.getUser();
             userID = student.getId();
-
+            
             int photoid = Integer.parseInt(request.getParameter("photo_id"));
             int productid = Integer.parseInt(request.getParameter("product_id"));
             double price = cartproductDao.getPrice(photoid, productid);
             int amount = Integer.parseInt(request.getParameter("product_qty"));
             String name = cartproductDao.getName(productid);
+            float x = Float.valueOf(request.getParameter("photo_data[x]"));
+            float y = Float.valueOf(request.getParameter("photo_data[y]"));
+            float height = Float.valueOf(request.getParameter("photo_data[height]"));
+            float width = Float.valueOf(request.getParameter("photo_data[width]"));
+            
+            Imgdata imgdata = new Imgdata(x,y,height,width,Filter.COLOR);
 
             Cartproduct temp = new Cartproduct();
             temp.setPrice(price);
