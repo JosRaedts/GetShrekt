@@ -5,7 +5,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Order detail pagina</h1>
+            <h1 class="page-header"><spring:message code="orderdetail" text="%Orderdetailpagina" /></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -18,7 +18,7 @@
             <!-- /.panel -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-comments fa-fw"></i> Products
+                    <i class="fa fa-comments fa-fw"></i><spring:message code="productendetail" text="%productendetail" />
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -27,11 +27,11 @@
                             <div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
                                     <tr>
-                                        <td> Product example </td>
-                                        <td> Product name </td>
-                                        <td> Amount </td>
-                                        <td> Product price </td>
-                                        <td class="totalprice"> Total price </td>
+                                        <td> <spring:message code="productexample" text="%productexample" /> </td>
+                                        <td> <spring:message code="orderproductname" text="%productname" /> </td>
+                                        <td> <spring:message code="orderproductamount" text="%productamount" /> </td>
+                                        <td> <spring:message code="orderproductprice" text="%orderproductprice" /> </td>
+                                        <td class="totalprice"> <spring:message code="orderpriceperproduct" text="%orderpriceperproduct" /> </td>
                                     </tr>
                                     <c:set var="total" value="0" scope="page"/>
                                     <c:forEach var="orderrow" items="${productlist}">
@@ -46,7 +46,7 @@
                                     </c:forEach>
                                 </table>
                                     <hr>
-                                    <p align='right' style='margin-right: 10px; font-weight: bold; font-size:18px;' >Total price: &#128; <fmt:formatNumber value="${total}" minFractionDigits="2" maxFractionDigits="2"/></p>
+                                    <p align='right' style='margin-right: 10px; font-weight: bold; font-size:18px;' ><spring:message code="ordertotalprice" text="%ordertotalprice" /> &#128; <fmt:formatNumber value="${total}" minFractionDigits="2" maxFractionDigits="2"/></p>
                             </div>
                             <!-- /.table-responsive -->
                         </div>
@@ -63,22 +63,22 @@
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-comments fa-fw"></i> Studentgegevens
+                    <i class="fa fa-comments fa-fw"></i> <spring:message code="orderstudentinfo" text="%orderstudents" />
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="dataTable_wrapper">
                         <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
                             <tr>
-                                <td> Factuuradres </td>
+                                <td> <spring:message code="orderinvoiceaddress" text="%orderinvoiceaddress" /> </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Naam <br />
-                                    Adres <br />
-                                    Postcode <br />
-                                    Woonplaats <br />
-                                    Studentnummer
+                                    <spring:message code="invoicestudentname" text="%invoicestudentname" /> <br />
+                                    <spring:message code="invoicestudentaddress" text="%invoicestudentaddress" /> <br />
+                                    <spring:message code="invoicestudentzipcode" text="%invoicestudentzipcode" /> <br />
+                                    <spring:message code="invoicestudentcity" text="%invoicestudentcity" /> <br />
+                                    <spring:message code="invoicestudentnumber" text="%invoicestudentnumber" />
                                 </td>
                                 <td>
                                     ${student.name} <br />
@@ -91,14 +91,14 @@
                         </table> <br />
                         <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
                             <tr>
-                                <td> Bezorgadres </td>
+                                <td> <spring:message code="ordershippingaddress" text="%ordershippingaddress" /> </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Naam <br />
-                                    Adres <br />
-                                    Postcode <br />
-                                    Woonplaats
+                                    <spring:message code="shippingstudentname" text="%shippingstudentname" /> <br />
+                                    <spring:message code="shippingstudentadres" text="%shippingstudentadres" /> <br />
+                                    <spring:message code="shippingstudentzipcode" text="%shippingstudentzipcode" /> <br />
+                                    <spring:message code="shippingstudentcity" text="%shippingstudentcity" />
                                 </td>
                                 <td>
                                     ${student.name} <br />

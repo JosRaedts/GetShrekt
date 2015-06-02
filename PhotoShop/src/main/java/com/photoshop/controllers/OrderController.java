@@ -122,14 +122,14 @@ public class OrderController extends AbstractController {
         return "redirect:../";
     }
     
-    @RequestMapping(value = "/orderhistory", method = RequestMethod.GET)
-    public String orderhistory(ModelMap map, HttpServletRequest request) {
+    @RequestMapping(value = "/history", method = RequestMethod.GET)
+    public String history(ModelMap map, HttpServletRequest request) {
         if (this.authenticate(UserType.STUDENT)) {
             int studentid = (int)request.getSession().getAttribute("UserID");
             Student student = (Student) this.getUser();
             map.put("studentnaam", student.getName());
             map.put("orders", this.orderDao.getOrderlistByStudentId(studentid));            
-            return "order/orderhistory";
+            return "order/history";
         }
         return "redirect:../";
     }

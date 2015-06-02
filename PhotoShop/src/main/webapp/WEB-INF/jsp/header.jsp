@@ -73,7 +73,7 @@
                                         </c:if>
                                         <c:if test="${sessionScope.UserType == 'STUDENT' && sessionScope.UserID != null}">
                                         <li><a href="${baseurl}/student/accountgegevens"><spring:message code="information" text="%information" /></a></li>
-                                        <li><a href="${baseurl}/order/orderhistory"><spring:message code="Orderhistory" text="%Orderhistory" /></a></li>
+                                        <li><a href="${baseurl}/order/history"><spring:message code="Orderhistory" text="%Orderhistory" /></a></li>
                                         <li class="divider"></li>
                                         <li><a href="${baseurl}/logout.html"><spring:message code="logout" text="%logout" /></a></li>
                                         </c:if>
