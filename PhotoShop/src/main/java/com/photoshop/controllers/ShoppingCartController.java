@@ -145,10 +145,10 @@ public class ShoppingCartController extends AbstractController {
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            return "redirect:list";
+            return "redirect:../";
         }
 
-        return "redirect:../";
+        return "redirect:../shoppingcart/list";
     }
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)

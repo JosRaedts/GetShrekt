@@ -7,13 +7,10 @@ package com.photoshop.misc;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.color.ColorSpace;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.WritableRaster;
-import javax.imageio.ImageIO;
 import org.springframework.stereotype.Component;
 
 /**
@@ -39,12 +36,12 @@ public class ImageManager {
         return resizeImage;
     }    
     
-    public static BufferedImage toGrayScale(BufferedImage master) {
-        BufferedImage gray = new BufferedImage(master.getWidth(), master.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    public static BufferedImage toGrayScale(BufferedImage img) {
+        BufferedImage gray = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
         ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-        op.filter(master, gray);
-
+        op.filter(img, gray);
+        
         return gray;
     }
 

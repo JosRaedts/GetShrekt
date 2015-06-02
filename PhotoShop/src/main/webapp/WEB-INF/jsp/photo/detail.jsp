@@ -222,6 +222,7 @@
                         });
                         }
                     });
+                    window.location.href = "${baseurl}/shoppingcart/list";
                         //console.log(products);
                     });
                 });
