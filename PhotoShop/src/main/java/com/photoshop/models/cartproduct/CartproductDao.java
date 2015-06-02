@@ -6,6 +6,7 @@
 package com.photoshop.models.cartproduct;
 
 import com.photoshop.models.Database;
+import com.photoshop.models.imgdata.Imgdata;
 import com.photoshop.models.product.Product;
 import com.photoshop.models.product.ProductDao;
 import java.sql.PreparedStatement;
@@ -204,10 +205,35 @@ public class CartproductDao extends Database {
         return name;
     }
     
-    public boolean saveImageData()
+    public boolean saveImageData(Imgdata imgdata)
     {
+        try {
+            String querystring = null;
+            boolean exists = idExists(imgdata.getId());
+            if (exists) {
+                querystring = "UPDATE imagedata SET x = ?, y = ?, height = ?, width = ?, filter = ? WHERE id = ?";
+            } else {
+                querystring = "INSERT INTO imagedata(x, y, height, width, filter) VALUES(?, ?, ?, ?, ?)";
+            }
+
+            PreparedStatement stat = conn.prepareStatement(querystring);
+
+            stat.setFloat(1, imgdata.getX());
+            stat.setFloat(2, imgdata.getY());
+            stat.setFloat(3, imgdata.getHeight());
+            stat.setFloat(4, imgdata.getWidth());
+            stat.setString(5, imgdata.getFilter().toString());
+
+            if (exists) {
+                stat.setInt(3, imgdata.getId());
+            }
+            stat.execute();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
         
-        return false;
     }
 
 }
