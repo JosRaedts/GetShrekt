@@ -211,6 +211,9 @@ public class OrderDao extends Database {
         try {
             order = new Order();
             order.setId(rs.getInt("id"));
+            if(dao == null){
+                dao = new StudentDao();
+            }
             order.setStudent(this.dao.getById(rs.getInt("student_id")));
             order.setDatum(rs.getTimestamp(3));
             order.setFactuur(rs.getString("factuurUrl"));

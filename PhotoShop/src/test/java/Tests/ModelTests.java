@@ -6,10 +6,12 @@
 package Tests;
 
 import com.photoshop.misc.ImageManager;
+import com.photoshop.models.address.Address;
 import com.photoshop.models.admin.Admin;
 import com.photoshop.models.admin.AdminDao;
 import com.photoshop.models.order.Order;
 import com.photoshop.models.order.OrderDao;
+import com.photoshop.models.order.OrderEnum;
 import com.photoshop.models.photo.Photo;
 import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.photographer.Photographer;
@@ -35,7 +37,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Willem
+ * @author Wilhelmus Theodorus Maria de Kok & Jos Raedts
  */
 public class ModelTests {
     
@@ -77,7 +79,7 @@ public class ModelTests {
         this.schoolClass = schoolClassDao.getById(1);
         this.photo = photoDao.getById(1);
         this.product = productDao.getById(1);
-        this.order = orderDao.getById(1);
+        this.order = orderDao.getById(12);
     }
     
     @After
@@ -325,6 +327,37 @@ public class ModelTests {
     
     @Test
     public void orderTest(){
+        assertEquals("Orderid should be 1", 12, order.getId());
+        assertEquals("Studentname should be Henk de Student", "Henk de Student", order.getStudent().getName());
+        assertEquals("Status should be NIET_BETAALD", "1", order.getStatus().toString());
+        assertEquals("Factuur should be Factuur 4", "Factuur 4", order.getFactuur());
+        assertEquals("Indexkaart should be Indexkaart 4", "Indexkaart 4", order.getIndexkaart());
         
+        order.setId(4);
+        order.setStatus(OrderEnum.BETAALD);
+        order.setShippingaddress(new Address("Henk", "Pinda", "5975SE", "Sevenum", "28343241"));
+        order.setInvoiceaddress(new Address("Henk", "de Pinda", "5975SE", "Sevenum", "28343241"));
+        order.setFactuur("Factuur 3");
+        order.setIndexkaart("Indexkaart 3");
+        
+        assertEquals("Orderid should be 4", 4, order.getId());
+        assertEquals("Status should be BETAALD", "2", order.getStatus().toString());
+        assertEquals("Shipping address should be Pinda", "Pinda", order.getShippingaddress().getAdres());
+        assertEquals("Invoice address should be de Pinda", "de Pinda", order.getInvoiceaddress().getAdres());
+        assertEquals("Factuur should be Factuur 4", "Factuur 3", order.getFactuur());
+        assertEquals("Indexkaart should be Indexkaart 4", "Indexkaart 3", order.getIndexkaart());
+        
+        order.setId(12);
+        order.setStatus(OrderEnum.NIET_BETAALD);
+        order.setShippingaddress(null);
+        order.setInvoiceaddress(null);
+        order.setFactuur("Factuur 4");
+        order.setIndexkaart("Indexkaart 4");
+        
+        assertEquals("Orderid should be 1", 12, order.getId());
+        assertEquals("Studentname should be Henk de Student", "Henk de Student", order.getStudent().getName());
+        assertEquals("Status should be NIET_BETAALD", "1", order.getStatus().toString());
+        assertEquals("Factuur should be Factuur 4", "Factuur 4", order.getFactuur());
+        assertEquals("Indexkaart should be Indexkaart 4", "Indexkaart 4", order.getIndexkaart());
     }
 }
