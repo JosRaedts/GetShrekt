@@ -2,64 +2,92 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <jsp:include page="/WEB-INF/jsp/header.jsp" />
 <div class="container">
-    <c:if test="${Type == 'student'}">
-        <form class="form-accountinfo" method="post" action="${baseurl}/student/modify/">
+        <form class="form-accountinfo" method="post" action="${baseurl}/order/address">
             <br>
             <br>
-            <table border="0" style="">
-                <tr>
-                    <td width="200px"><spring:message code="accountTypeText" text="%accountTypeText" />:</td>
-                    <td><spring:message code="student" text="%student" /></td>
-                </tr>
-                <tr>
-                    <td width="200px"><spring:message code="studentnumber" text="%studentnumber" />:</td>
-                    <td>${Studentnumber}</td>
-                </tr>
-                <tr>
-                    <td width="200px"><spring:message code="name" text="%name" />:</td>
-                    <td>${Name}</td>
-                </tr>
-                <tr>
-                    <td width="200px"><spring:message code="schoolcode" text="%schoolcode" />:</td>
-                    <td style="margin-top-5px">${Schoolcode}</td>
+            <div class="row">
+                <div class="col-sm-6">
+                    <table border="0">
+                        <tr>
+                            <td width="200px"><spring:message code="name" text="%name" />:</td>
+                            <td><input required type="text" name="invoice_name" value="${student.name}" /></td>
+                        </tr>
+                        <tr>
+                            <td width="200px"><spring:message code="address" text="%address" />:</td>
+                            <td><input required type="text" name="invoice_address" value="${student.address}" /></td>
+                        </tr>
+                        <tr>
+                            <td width="200px"><spring:message code="city" text="%city" />:</td>
+                            <td width="200px"><input required type="text" name="invoice_city" value="${student.city}" /></td>
+                        </tr>
+                        <tr>
+                            <td width="200px"><spring:message code="zipcode" text="%zipcode" />:</td>
+                            <td width="200px"><input required type="text" name="invoice_zipcode" value="${student.zipcode}"/></td>
+                        </tr>
+                        <tr>
+                            <td width="200px"><spring:message code="phone" text="%phone" />:</td>
+                            <td width="200px"><input required type="text" name="invoice_phone" value="" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="checkbox" id="sameaddress" name="sameaddress" checked value="1"> <spring:message code="sameaddress" text="%sameaddress"></spring:message> </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm-6">
+                    <table border="0" id="shipping" style="float:left; ">
+                        <tr>
+                        <td width="200px"><spring:message code="name" text="%name" />:</td>
+                        <td><input required type="text" name="shipping_name" value="${student.name}" /></td>
+                        </tr>
+                        <tr>
+                        <td width="200px"><spring:message code="address" text="%address" />:</td>
+                        <td><input required type="text" name="shipping_address" value="${student.address}" /></td>
+                        </tr>
+                        <tr>
+                        <td width="200px"><spring:message code="city" text="%city" />:</td>
+                        <td width="200px"><input required type="text" name="shipping_city" value="${student.city}" /></td>
+                        </tr>
+                        <tr>
+                        <td width="200px"><spring:message code="zipcode" text="%zipcode" />:</td>
+                        <td width="200px"><input required type="text" name="shipping_zipcode" value="${student.zipcode}"/></td>
+                        </tr>
+                        <tr>
+                        <td width="200px"><spring:message code="phone" text="%phone" />:</td>
+                        <td width="200px"><input required type="text" name="shipping_phone" value="" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <script type="text/javascript">
 
-                </tr>
-                <tr>
-                    <td width="200px"><spring:message code="username" text="%username" />:</td>
-                    <td><input required type="textfield" name="username" value="${UserName}" /></td>
-                </tr>
-            </table>
-            <table border="0" style="">
-                <br>
-                <tr>
-                    <td width="200px"><spring:message code="city" text="%city" />:</td>
-                    <td><input required type="textfield" name="city" value="${City}" /></td>
-                </tr>
-                <tr>
-                    <td width="200px"><spring:message code="zipcode" text="%zipcode" />:</td>
-                    <td width="200px"><input required type="textfield" name="zipcode" value="${Zipcode}" /></td>
-                </tr>
-                <tr>
-                    <td width="200px"><spring:message code="address" text="%address" />:</td>
-                    <td width="200px"><input required type="textfield" name="address" value="${Address}" /></td>
-                </tr>
-            </table>
+                    function hideShipping(checkbox)
+                    {
+                        alert("tes2t")
+                        if(!checkbox.is(":checked"))
+                        {
+                            alert("checked")
+                            $("#shipping :input").attr("disabled", false);
+                            $("#shipping").show();
+                        }
+                        else
+                        {
+                            alert("notchecked")
+                            $("#shipping :input").attr("disabled", true);
+                            $("#shipping").hide();
+
+                        }
+                    }
+
+                    hideShipping($("#sameaddress"));
+                    $("#sameaddress").change(function()
+                    {
+                        hideShipping($(this));
+                        alert("test")
+                    });
+                </script>
+            </div>
             <br>
-            <spring:message code="changepassword" text="%changepassword" />:
             <br>
-            <table border="0" style="">
-                <tr>
-                    <td width="200px"><spring:message code="newPassword" text="%newPassword" />:</td>
-                    <td><input type="password" name="newPassword" /></td>
-                </tr>
-                <tr>
-                    <td width="200px"><spring:message code="confirmPassword" text="%confirmPassword" />:</td>
-                    <td><input type="password" name="confirmPassword" /></td>
-                </tr>
-            </table>
-        </c:if>
-        <br>
-        <button style="width: 100px" class="btn btn-lg btn-primary btn-block" type="submit"><spring:message code="save" text="%save" /></button>
+            <div class="row"><button style="width: 100px" class="btn btn-primary" type="submit"><spring:message code="topay" text="%topay" /></button></div>
     </form>
 </div>
 <jsp:include page="/WEB-INF/jsp/footer.jsp" />

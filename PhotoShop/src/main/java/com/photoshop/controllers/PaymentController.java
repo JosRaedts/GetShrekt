@@ -1,29 +1,23 @@
 package com.photoshop.controllers;
 
-import com.photoshop.models.address.Address;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.Base64;
+import com.photoshop.models.UserType;
+import com.photoshop.models.cartproduct.Cartproduct;
+import com.photoshop.models.student.Student;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import paypalnvp.core.PayPal;
 import paypalnvp.fields.Currency;
 import paypalnvp.fields.Payment;
 import paypalnvp.fields.PaymentItem;
 import paypalnvp.profile.BaseProfile;
 import paypalnvp.profile.Profile;
+import paypalnvp.request.GetExpressCheckoutDetails;
 import paypalnvp.request.SetExpressCheckout;
 
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.springframework.web.bind.annotation.RequestParam;
-import paypalnvp.request.GetExpressCheckoutDetails;
 
 /**
  * Created by Bram on 25-5-2015.
@@ -31,40 +25,50 @@ import paypalnvp.request.GetExpressCheckoutDetails;
 
 @RequestMapping("/payment")
 @Controller
-public class PaymentController {
+public class PaymentController extends AbstractController{
 
     @RequestMapping(method = RequestMethod.GET)
     public String pay()
     {
-        Profile user = new BaseProfile.Builder("info_api1.photoshop.nl", "AL6B27VXTC3LHTLP").signature("AiPC9BjkCyDFQXbSkoZcgqH3hpacAu8Jct0bClyKsrPt4W5HFgqgaI6U").build();
-        PayPal pp = new PayPal(user, PayPal.Environment.SANDBOX);
+        if (this.authenticate(UserType.STUDENT)) {
+            Student student = (Student) this.getUser();
+
+            Profile user = new BaseProfile.Builder("info_api1.photoshop.nl", "AL6B27VXTC3LHTLP").signature("AiPC9BjkCyDFQXbSkoZcgqH3hpacAu8Jct0bClyKsrPt4W5HFgqgaI6U").build();
+            PayPal pp = new PayPal(user, PayPal.Environment.SANDBOX);
         /* create items (items from a shopping basket) */
-        PaymentItem item1 = new PaymentItem();
-        item1.setQuantity(1);
-        item1.setAmount("20.00");
-        item1.setDescription("teest");
-        //item1.setItemNumber(null);
 
-        PaymentItem item2 = new PaymentItem();
-        item2.setQuantity(1);
-        item2.setAmount("30.00");
-        item2.setDescription("teest2");
-        //item2.setItemNumber(null);
+            List<Cartproduct> cartproducts = student.getCartProducts();
 
-        PaymentItem[] items = {item1, item2};
+            System.out.println(cartproducts.size()+"pizza");
+            PaymentItem[] items = new PaymentItem[cartproducts.size()];
+            int i = 0;
+            for(Cartproduct cp : cartproducts)
+            {
+                System.out.println("test");
+                PaymentItem item = new PaymentItem();
+                item.setQuantity(cp.getAmount());
+                item.setItemNumber(String.valueOf(cp.getId()));
+                item.setAmount("1.00");
+                item.setDescription(cp.getContent());
+                items[i] = item;
+                i++;
+            }
 
+            System.out.println(items);
         /* create payment (now you can create payment from the items) */
-        Payment payment = new Payment(items);
-        payment.setCurrency(Currency.EUR);
+            Payment payment = new Payment(items);
+            payment.setCurrency(Currency.EUR);
 
         /* create set express checkout - the first paypal request */
-        SetExpressCheckout setEC = new SetExpressCheckout(payment, "http://localhost:8080/PhotoShop/payment/confirm", "https://www.cancelurl.com");
+            SetExpressCheckout setEC = new SetExpressCheckout(payment, "http://localhost:8080/PhotoShop/payment/confirm", "https://www.cancelurl.com");
         /* send request and set response */
-        pp.setResponse(setEC);
+            pp.setResponse(setEC);
 
-        Map<String, String> response = setEC.getNVPResponse();
+            Map<String, String> response = setEC.getNVPResponse();
 
-        return "redirect: "+pp.getRedirectUrl(setEC);
+            return "redirect: " + pp.getRedirectUrl(setEC);
+        }
+        return null;
     }
     
     @RequestMapping(value="/confirm", method=RequestMethod.GET)
