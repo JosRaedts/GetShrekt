@@ -137,7 +137,7 @@ public class Factuurgenerator {
         addEmptyLine(preface, 1);
         
         //Aanmaken van de start zin 
-        preface.add(new Paragraph(this.Getspringmessage("dear") + " " + order.getInvoiceaddress().getKlantnaam(), subtitel));
+        preface.add(new Paragraph(this.Getspringmessage("dear") + " " + order.getInvoiceaddress().getKlantnaam() + ",", subtitel));
         addEmptyLine(preface, 1);
         preface.add(new Paragraph(this.Getspringmessage("paymentvieuw"), subFont));
         addEmptyLine(preface, 1);
