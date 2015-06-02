@@ -47,8 +47,7 @@ public final class Address implements RequestFields {
     public Address(String name, String street, String city, String state,
             Country country) throws IllegalArgumentException {
 
-        if (street.length() > 100 || city.length() > 40 ||
-                state.length() > 40) {
+        if (street.length() > 100 || city.length() > 40) {
 
             throw new IllegalArgumentException();
         }

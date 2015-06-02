@@ -5,52 +5,32 @@
  */
 package com.photoshop.controllers;
 
+import com.photoshop.misc.Factuurgenerator;
+import com.photoshop.misc.Indexkaartgenerator;
 import com.photoshop.models.UserType;
+import com.photoshop.models.address.Address;
 import com.photoshop.models.admin.AdminDao;
 import com.photoshop.models.order.Order;
 import com.photoshop.models.order.OrderDao;
+import com.photoshop.models.orderrow.OrderRowDao;
+import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.photographer.PhotographerDao;
+import com.photoshop.models.product.ProductDao;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import com.itextpdf.text.Anchor;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chapter;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.List;
-import com.itextpdf.text.ListItem;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Section;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.photoshop.misc.Indexkaartgenerator;
-import com.photoshop.models.orderrow.OrderRowDao;
-import com.photoshop.misc.Factuurgenerator;
-import com.photoshop.models.address.Address;
-import com.photoshop.models.orderrow.OrderRow;
-import com.photoshop.models.photo.PhotoDao;
-import com.photoshop.models.product.ProductDao;
-import java.awt.Desktop;
-import java.io.File;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.core.env.Environment;
 
 /**
  *
@@ -194,6 +174,46 @@ public class OrderController extends AbstractController {
             pdf = new Factuurgenerator(order,env);
             index = new Indexkaartgenerator(order,env,photoDao);
             return "redirect:../";
+        }
+        return "redirect:../";
+    }
+
+    @RequestMapping(value = "/address", method = RequestMethod.GET)
+    public String address(ModelMap map, HttpServletRequest request)  {
+        if (this.authenticate(UserType.STUDENT)) {
+            Student student = (Student) this.getUser();
+            if(student.getCartProducts().size() > 0)
+            {
+                map.put("student", student);
+                return "order/addressdetail";
+            }
+        }
+        return "redirect:../";
+    }
+
+    @RequestMapping(value = "/address", method = RequestMethod.POST)
+    public String saveaddress(ModelMap map, HttpServletRequest request)  {
+        if (this.authenticate(UserType.STUDENT)) {
+            System.out.println("test");
+            Student student = (Student) this.getUser();
+            if(student.getCartProducts().size() > 0)
+            {
+                Address invoiceaddress = new Address(request.getParameter("invoice_name"), request.getParameter("invoice_address"), request.getParameter("invoice_zipcode"), request.getParameter("invoice_city"), request.getParameter("invoice_phone"));
+                Address shippingaddress;
+                if(request.getParameter("sameaddress") != null)
+                {
+                    shippingaddress = new Address(request.getParameter("shipping_name"), request.getParameter("shipping_address"), request.getParameter("shipping_zipcode"), request.getParameter("shipping_city"), request.getParameter("shipping_phone"));
+                }
+                else
+                {
+                    shippingaddress = invoiceaddress;
+                }
+
+                request.getSession().setAttribute("invoiceaddress", invoiceaddress);
+                request.getSession().setAttribute("shippingaddress", shippingaddress);
+
+                return "redirect:../payment";
+            }
         }
         return "redirect:../";
     }
