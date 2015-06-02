@@ -24,6 +24,15 @@ public class OrderRow {
     private int photo_id;
     private int aantal;
     private double productprice;
+    private int imagedata_id;
+
+    public int getImagedata_id() {
+        return imagedata_id;
+    }
+
+    public void setImagedata_id(int imagedata_id) {
+        this.imagedata_id = imagedata_id;
+    }
     
     @Autowired
     private OrderRowDao dao;

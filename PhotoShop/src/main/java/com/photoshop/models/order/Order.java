@@ -43,6 +43,10 @@ public class Order {
     }
 
     public void save() {
+        if(this.dao == null)
+        {
+            this.dao = new OrderDao();
+        }
         this.dao.save(this);
     }
 

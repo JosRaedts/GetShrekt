@@ -32,6 +32,7 @@
                                         <td> <spring:message code="orderproductamount" text="%productamount" /> </td>
                                         <td> <spring:message code="orderproductprice" text="%orderproductprice" /> </td>
                                         <td class="totalprice"> <spring:message code="orderpriceperproduct" text="%orderpriceperproduct" /> </td>
+                                        <td> <spring:message code="orderstatus" text="%orderstatus" /> </td>
                                     </tr>
                                     <c:set var="total" value="0" scope="page"/>
                                     <c:forEach var="orderrow" items="${productlist}">
@@ -41,6 +42,7 @@
                                                 <td>${orderrow.getAantal()}</td>
                                                 <td>&#128; <fmt:formatNumber value="${orderrow.getProductprice()}" minFractionDigits="2" maxFractionDigits="2"/></td>
                                                 <td>&#128; <fmt:formatNumber value="${orderrow.aantal * orderrow.productprice}" minFractionDigits="2" maxFractionDigits="2"/></td>
+                                                <td>${order.getStatus()}</td>
                                             </tr>
                                             <c:set var="total" value="${total + (orderrow.aantal * orderrow.productprice)}" scope="page"/>
                                     </c:forEach>

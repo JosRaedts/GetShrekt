@@ -16,6 +16,7 @@ public class Imgdata {
     float height;
     float width;
     Filter filter;
+    int id;
 
     public Imgdata(float x, float y, float height, float width, Filter filter) {
         this.x = x;
@@ -63,6 +64,16 @@ public class Imgdata {
 
     public void setFilter(Filter filter) {
         this.filter = filter;
+    }
+    
+    public int getId()
+    {
+        return id;
+    }
+    
+    public void setId(int id)
+    {
+        this.id = id;
     }
     
 }
