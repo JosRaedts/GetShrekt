@@ -61,7 +61,7 @@ public class Mailgenerator {
             message.setFrom(new InternetAddress("fotowinkelpts42@gmail.com"));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(OntvangerEmail));
-            message.setSubject("Factuur" + order.getId());
+            message.setSubject("Factuur " + order.getId());
 
             BodyPart messageBodyPart = new MimeBodyPart();
 
