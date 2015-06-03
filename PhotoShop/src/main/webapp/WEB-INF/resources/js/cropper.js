@@ -745,7 +745,7 @@
         width: $this.width(),
         height: $this.height(),
         original: $this.html()
-      }).html('<img class="colorup" effect=""  inverse="true" src="' + url + '" style="display:block;width:100%;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;image-orientation: 0deg!important">');
+      }).html('<img class="colorup" effect="none"  inverse="true" src="' + url + '" style="display:block;width:100%;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;image-orientation: 0deg!important">');
     });
   };
 
