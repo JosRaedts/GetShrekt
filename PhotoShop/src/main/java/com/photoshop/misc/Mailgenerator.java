@@ -91,7 +91,6 @@ public class Mailgenerator {
         } catch (MessagingException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
-
         }
     }
 
