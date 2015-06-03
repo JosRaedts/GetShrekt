@@ -62,7 +62,7 @@
                                             <c:forEach var="Photo" items="${Photos}">
                                                 <tr> 
                                                     <td>${Photo.id}</td>
-                                                    <td><img SRC="${baseurl}/photo/view/thumb/${Photo.id}"></td>
+                                                    <td><a href="${baseurl}/photo/edit/${Photo.id}"><img SRC="${baseurl}/photo/view/thumb/${Photo.id}"></a></td>
                                                     <td>${Photo.height}</td>
                                                     <td>${Photo.width}</td>
                                                     <td><fmt:formatDate value="${Photo.date}" type="both" pattern="dd-MM-yyyy" /></td> 
