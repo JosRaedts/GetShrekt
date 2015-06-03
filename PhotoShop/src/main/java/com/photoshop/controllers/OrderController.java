@@ -193,7 +193,7 @@ public class OrderController extends AbstractController {
             this.order = this.orderDao.getById(1);
             this.order.setInvoiceaddress(new Address("Willem de kok", "Orion 32", "5527CR", "Hapert", "0612345678"));
             Mailgenerator mail = new Mailgenerator();
-            mail.Sendmail("willem1995@hotmail.com", order);
+            mail.Sendmail("willem1995@hotmail.com", order, this.env);
             pdf = new Factuurgenerator(order, env, messageSource,locale);
             index = new Indexkaartgenerator(order, env, photoDao, messageSource, locale);
             return "redirect:../";
