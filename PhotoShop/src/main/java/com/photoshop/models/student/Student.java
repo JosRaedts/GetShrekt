@@ -31,6 +31,7 @@ public class Student implements IUser {
     private String zipcode;
     private String username;
     private String password;
+    private String email;
     private int schoolclass_id;
     private SchoolClass schoolclass = null;
             
@@ -94,6 +95,14 @@ public class Student implements IUser {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getZipcode() {
