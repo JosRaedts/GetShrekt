@@ -13,7 +13,7 @@
     <div class="row">
     <!-- /.row -->
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
 
             <!-- /.panel -->
             <div class="panel panel-default">
@@ -62,7 +62,7 @@
             <!-- /.panel -->
         </div>
         <!-- /.col-lg-8 -->
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-comments fa-fw"></i> <spring:message code="orderstudentinfo" text="%orderstudents" />
@@ -70,46 +70,52 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="dataTable_wrapper">
-                        <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
-                            <tr>
-                                <td> <spring:message code="orderinvoiceaddress" text="%orderinvoiceaddress" /> </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <spring:message code="invoicestudentname" text="%invoicestudentname" /> <br />
-                                    <spring:message code="invoicestudentaddress" text="%invoicestudentaddress" /> <br />
-                                    <spring:message code="invoicestudentzipcode" text="%invoicestudentzipcode" /> <br />
-                                    <spring:message code="invoicestudentcity" text="%invoicestudentcity" /> <br />
-                                    <spring:message code="invoicestudentnumber" text="%invoicestudentnumber" />
-                                </td>
-                                <td>
-                                    ${student.name} <br />
-                                    ${student.address} <br />
-                                    ${student.zipcode} <br />
-                                    ${student.city} <br />
-                                    ${student.studentnr} <br />
-                                </td>
-                            </tr>
-                        </table> <br />
-                        <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
-                            <tr>
-                                <td> <spring:message code="ordershippingaddress" text="%ordershippingaddress" /> </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <spring:message code="shippingstudentname" text="%shippingstudentname" /> <br />
-                                    <spring:message code="shippingstudentadres" text="%shippingstudentadres" /> <br />
-                                    <spring:message code="shippingstudentzipcode" text="%shippingstudentzipcode" /> <br />
-                                    <spring:message code="shippingstudentcity" text="%shippingstudentcity" />
-                                </td>
-                                <td>
-                                    ${student.name} <br />
-                                    ${student.address} <br />
-                                    ${student.zipcode} <br />
-                                    ${student.city}
-                                </td>
-                            </tr>
-                        </table>
+                        <div class="col-lg-6">
+                            <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
+                                <tr>
+                                    <td> <spring:message code="orderinvoiceaddress" text="%orderinvoiceaddress" /> </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <spring:message code="invoicestudentname" text="%invoicestudentname" /> <br />
+                                        <spring:message code="invoicestudentaddress" text="%invoicestudentaddress" /> <br />
+                                        <spring:message code="invoicestudentzipcode" text="%invoicestudentzipcode" /> <br />
+                                        <spring:message code="invoicestudentcity" text="%invoicestudentcity" /> <br />
+                                        <spring:message code="invoicestudentnumber" text="%invoicestudentnumber" />
+                                    </td>
+                                    <td>
+                                        ${student.name} <br />
+                                        ${student.address} <br />
+                                        ${student.zipcode} <br />
+                                        ${student.city} <br />
+                                        ${student.studentnr} <br />
+                                    </td>
+                                </tr>
+                            </table> 
+                        </div>
+                        <div class="col-lg-6">
+                            <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
+                                <tr>
+                                    <td> <spring:message code="ordershippingaddress" text="%ordershippingaddress" /> </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <spring:message code="shippingstudentname" text="%shippingstudentname" /> <br />
+                                        <spring:message code="shippingstudentadres" text="%shippingstudentadres" /> <br />
+                                        <spring:message code="shippingstudentzipcode" text="%shippingstudentzipcode" /> <br />
+                                        <spring:message code="shippingstudentcity" text="%shippingstudentcity" />
+                                    </td>
+                                    <td>
+                                        ${student.name} <br />
+                                        ${student.address} <br />
+                                        ${student.zipcode} <br />
+                                        ${student.city}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
