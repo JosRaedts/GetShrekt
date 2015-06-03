@@ -165,26 +165,36 @@
                             <tr>
                                 <spring:message code="BestSales" text="%BestSales" />
                             </tr>
+                            <c:if test="${aantal1 != null}">
                             <tr>
                                 <td><img width="100px" height="100px" src="${baseurl}/product/view/${product1.getId()}"/></td> 
                                 <td>${aantal1}x</td>
                             </tr>
+                            </c:if>
+                            <c:if test="${aantal2 != null}">
                             <tr>
                                 <td><img width="100px" height="100px" src="${baseurl}/product/view/${product2.getId()}"/></td> 
                                 <td>${aantal2}x</td>
-                            </tr> 
+                            </tr>
+                            </c:if>
+                            <c:if test="${aantal3  != null}">
                             <tr>
                                 <td><img width="100px" height="100px" src="${baseurl}/product/view/${product3.getId()}"/></td> 
                                 <td>${aantal3}x</td>
-                            </tr> 
+                            </tr>
+                            </c:if>
+                            <c:if test="${aantal4  != null}">
                             <tr>
                                 <td><img width="100px" height="100px" src="${baseurl}/product/view/${product4.getId()}"/></td> 
                                 <td>${aantal4}x</td>
                             </tr> 
+                            </c:if>
+                            <c:if test="${aantal5  != null}">
                             <tr>
                                 <td><img width="100px" height="100px" src="${baseurl}/product/view/${product5.getId()}"/></td> 
                                 <td>${aantal5}x</td>
                             </tr> 
+                            </c:if>
                         </table>
                     </div>
                 </div>
