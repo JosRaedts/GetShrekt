@@ -19,12 +19,14 @@
     <spring:message code="StudentBarcode" text="%StudentBarcode" />:
     <br>
     <br>
+    <div >
     <c:forEach var="student" items="${ClassForBarcode.getStudents()}">
         <div class="BarcodeHoeken FloatLeft">
             <p style="margin-left: 20px;">${student.getName()}, ${student.getStudentnr()}<p>
             <p class="barcode">*student-${student.getId()}*</p>
         </div>
     </c:forEach>
+    </div>
 </div>
 <!-- /#wrapper -->
 
