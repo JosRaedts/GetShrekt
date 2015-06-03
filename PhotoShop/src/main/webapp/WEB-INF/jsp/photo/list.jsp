@@ -23,6 +23,13 @@
 
                 <!-- /.panel -->
                 <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-list-alt"></i>
+                        <div class="pull-right">
+                            
+                        </div>
+                    </div>
+
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="row">
@@ -35,7 +42,6 @@
                                             });
                                         });
                                     </script>
-                                    <br>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
                                         <thead>
                                             <tr>

@@ -9,9 +9,9 @@
 
 <div class="container">
     <div class="Titelphotoview">
-        <h1>Photo detail pagina </h1>
+        <h1><spring:message code="photodetailpage" text="%photodetailpage" /></h1>
     </div>
-    <div class="row">
+    <div class="row">Photo detail pagina 
       <div class="col-md-6">
         <!-- <h3 class="page-header">Demo:</h3> -->
         <div id="cropper" class="img-container">

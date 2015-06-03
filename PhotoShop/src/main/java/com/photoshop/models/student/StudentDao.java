@@ -120,12 +120,12 @@ public class StudentDao extends Database  {
             boolean exists = idExists(student.getId());
             if(exists)
             {
-                querystring = "UPDATE students SET studentnr = ?, name = ?, address = ?, city = ?, zipcode = ?, username = ?, password = ?, schoolclass_id = ? WHERE id = ?";
+                querystring = "UPDATE students SET studentnr = ?, name = ?, address = ?, city = ?, zipcode = ?, username = ?, password = ?, schoolclass_id = ? email = ? WHERE id = ?";
                 stat = conn.prepareStatement(querystring);
             }
             else
             {
-                querystring = "INSERT INTO students(studentnr, name, address, city, zipcode, username, password, schoolclass_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+                querystring = "INSERT INTO students(studentnr, name, address, city, zipcode, username, password, schoolclass_id, email) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
             }
 
@@ -137,6 +137,7 @@ public class StudentDao extends Database  {
             stat.setString(6, student.getUsername());
             stat.setString(7, student.getPassword());
             stat.setInt(8, student.getSchoolclass_id());
+            stat.setString(9, student.getEmail());
             if(exists)
             {
                 stat.setInt(9, student.getId());
@@ -228,6 +229,7 @@ public class StudentDao extends Database  {
             student.setCity(rs.getString("city"));
             student.setZipcode(rs.getString("zipcode"));
             student.setSchoolclass_id(rs.getInt("schoolclass_id"));
+            student.setEmail("email");
         } catch (SQLException ex) {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
