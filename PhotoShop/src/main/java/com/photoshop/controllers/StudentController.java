@@ -86,6 +86,7 @@ public class StudentController extends AbstractController {
                 temp.setCity(request.getParameter("city"));
                 temp.setZipcode(request.getParameter("zipcode"));
                 temp.setUsername(request.getParameter("username"));
+                temp.setEmail(request.getParameter("email"));
                 studentDao.save(temp);
                 return "redirect:list?id=" + temp.getSchoolclass_id();
 
