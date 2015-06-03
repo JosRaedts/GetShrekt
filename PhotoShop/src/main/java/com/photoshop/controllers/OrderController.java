@@ -255,13 +255,13 @@ public class OrderController extends AbstractController {
             String filename = "";
             switch (format) {
                 case "high":
-                    filename = env.getProperty("uploadDir") + "orders/"+orderRow.getId()+"/highres.jpg";
+                    filename = env.getProperty("uploadDir") + "orders/"+orderRow.getOrder_id()+"/"+orderRow.getId()+"/highres.jpg";
                     break;
                 case "low":
-                    filename = env.getProperty("uploadDir") + "orders/"+orderRow.getId()+"/lowres.jpg";
+                    filename = env.getProperty("uploadDir") + "orders/"+orderRow.getOrder_id()+"/"+orderRow.getId()+"/lowres.jpg";
                     break;
                 case "thumb":
-                    filename = env.getProperty("uploadDir") + "orders/"+orderRow.getId()+"/thumb.jpg";
+                    filename = env.getProperty("uploadDir") + "orders/"+orderRow.getOrder_id()+"/"+orderRow.getId()+"/thumb.jpg";
                     break;
             }
 

@@ -37,7 +37,7 @@
                                     <c:set var="total" value="0" scope="page"/>
                                     <c:forEach var="orderrow" items="${productlist}">
                                             <tr>
-                                                <td><img src="${baseurl}/orders/view/thumb/${orderrow.getId()}"/></td>
+                                                <td><img src="${baseurl}/order/view/thumb/${orderrow.getId()}"/></td>
                                                 <td>${orderrow.getProduct().getName()}</td>
                                                 <td>${orderrow.getAantal()}</td>
                                                 <td>&#128; <fmt:formatNumber value="${orderrow.getProductprice()}" minFractionDigits="2" maxFractionDigits="2"/></td>
