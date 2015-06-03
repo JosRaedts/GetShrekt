@@ -8,7 +8,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <jsp:include page="/WEB-INF/jsp/admin/header.jsp" />
 <div id="page-wrapper">
-    <c:if test="${Type == 'admin'}">
+    <c:if test="${Type == 'photographer'}">
         <form class="form-accountinfo" method="post" action="${baseurl}/photographer/modify/">
             <br>
             <br>
