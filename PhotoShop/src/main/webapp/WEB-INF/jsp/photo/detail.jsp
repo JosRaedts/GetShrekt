@@ -22,12 +22,13 @@
         <!-- <h3 class="page-header">Preview:</h3> -->
         <div class="docs-preview clearfix">
           <div class="img-preview preview-lg "></div>
-          <select value="" class="filter" name="filter">
+          
+        </div>
+        <select value="" class="filter" name="filter">
                 <option value="0">color</option>
                 <option value="1">sepia</option>
                 <option value="2">zwart-wit</option>
           </select>
-        </div>
       </div>
     </div>
     <div class="row">
@@ -65,13 +66,14 @@
             </span>
           </button>
         </div>
+        <!--
         <div class="btn-group btn-group-crop">
           <button class="btn btn-primary" data-method="getCroppedCanvas" type="button">
             <span class="docs-tooltip" data-toggle="tooltip" title="$().cropper(&quot;getCroppedCanvas&quot;)">
               Get Cropped Canvas
             </span>
           </button>
-        </div>
+        </div>-->
         <!-- Show the cropped image in modal -->
         <div class="modal fade docs-cropped" id="getCroppedCanvasModal" aria-hidden="true" aria-labelledby="getCroppedCanvasTitle" role="dialog" tabindex="-1">
           <div class="modal-dialog">
@@ -98,7 +100,7 @@
             </span>
           </label>
         </div>
-
+        <!--
         <button class="btn btn-primary" data-method="getData" data-option="" data-target="#putData" type="button">
           <span class="docs-tooltip" data-toggle="tooltip" title="$().cropper(&quot;getData&quot;)">
             Get Data
@@ -140,7 +142,7 @@
           </span>
         </button>
         <input class="form-control" id="putData" type="text" placeholder="Get data to here or set data with this value">
-
+        -->
       </div><!-- /.docs-buttons -->
     </div>
     <div class="col-md-12">
