@@ -19,6 +19,10 @@
                     <td width="200px"><spring:message code="name" text="%name" />:</td>
                     <td>${Name}</td>
                 </tr>
+                    <tr>
+                    <td width="200px"><spring:message code="email" text="%email" />:</td>
+                    <td>${Email}</td>
+                </tr>
                 <tr>
                     <td width="200px"><spring:message code="schoolcode" text="%schoolcode" />:</td>
                     <td style="margin-top-5px">${Schoolcode}</td>

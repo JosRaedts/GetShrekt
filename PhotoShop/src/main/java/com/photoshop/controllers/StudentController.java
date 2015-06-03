@@ -186,6 +186,7 @@ public class StudentController extends AbstractController {
                     map.put("Type", "student");
                     map.put("UserName", student.getUsername());
                     map.put("Studentnumber", student.getStudentnr());
+                    map.put("Email", student.getEmail());
                     if (student.getSchoolClass() != null) {
                         map.put("Schoolcode", student.getSchoolClass().getName());
                     } else {

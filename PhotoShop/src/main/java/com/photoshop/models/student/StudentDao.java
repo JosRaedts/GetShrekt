@@ -25,23 +25,20 @@ import java.util.logging.Logger;
  * @author Bram
  */
 @Component
-public class StudentDao extends Database  {
-    
-    public StudentDao()
-    {
+public class StudentDao extends Database {
+
+    public StudentDao() {
         super();
     }
-    
-    public List<Student> getList()
-    {
+
+    public List<Student> getList() {
         List<Student> students = new ArrayList();
         try {
             String querystring = "SELECT * FROM students";
             PreparedStatement stat = conn.prepareStatement(querystring);
             ResultSet rs = stat.executeQuery();
-            
-            while(rs.next())
-            {
+
+            while (rs.next()) {
                 students.add(build(rs));
             }
         } catch (SQLException ex) {
@@ -49,18 +46,16 @@ public class StudentDao extends Database  {
         }
         return students;
     }
-    
-    public List<Student> getStudentsBySchoolclass(SchoolClass schoolclass)
-    {
+
+    public List<Student> getStudentsBySchoolclass(SchoolClass schoolclass) {
         List<Student> students = new ArrayList();
         try {
             String querystring = "SELECT * FROM students WHERE schoolclass_id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, schoolclass.getId());
             ResultSet rs = stat.executeQuery();
-            
-            while(rs.next())
-            {
+
+            while (rs.next()) {
                 students.add(build(rs));
             }
         } catch (SQLException ex) {
@@ -68,9 +63,8 @@ public class StudentDao extends Database  {
         }
         return students;
     }
-    
-    public Student getById(int id)
-    {
+
+    public Student getById(int id) {
         int test = 0;
         Student student = null;
         try {
@@ -78,9 +72,8 @@ public class StudentDao extends Database  {
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
-            
-            while(rs.next())
-            {
+
+            while (rs.next()) {
                 test++;
                 student = build(rs);
             }
@@ -89,9 +82,8 @@ public class StudentDao extends Database  {
         }
         return student;
     }
-    
-    public boolean idExists(int id)
-    {
+
+    public boolean idExists(int id) {
         boolean exists = false;
         try {
             String querystring = "SELECT * FROM students WHERE id = ?";
@@ -99,52 +91,52 @@ public class StudentDao extends Database  {
             stat = conn.prepareStatement(querystring);
             stat.setInt(1, id);
             ResultSet rs = stat.executeQuery();
-            
-            while(rs.next())
-            {
-               exists = true;
+
+            while (rs.next()) {
+                exists = true;
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return exists;
     }
-    
-    public void save(Student student)
-    {
+
+    public void save(Student student) {
         try {
             PreparedStatement stat;
             String querystring;
             boolean exists = idExists(student.getId());
-            if(exists)
-            {
+            if (exists) {
                 querystring = "UPDATE students SET studentnr = ?, name = ?, address = ?, city = ?, zipcode = ?, username = ?, password = ?, schoolclass_id = ?, email = ? WHERE id = ?";
                 stat = conn.prepareStatement(querystring);
-            }
-            else
-            {
+                stat.setInt(1, student.getStudentnr());
+                stat.setString(2, student.getName());
+                stat.setString(3, student.getAddress());
+                stat.setString(4, student.getCity());
+                stat.setString(5, student.getZipcode());
+                stat.setString(6, student.getUsername());
+                stat.setString(7, student.getPassword());
+                stat.setInt(8, student.getSchoolclass_id());
+                stat.setString(9, student.getEmail());
+                stat.setInt(10, student.getId());
+
+            } else {
                 querystring = "INSERT INTO students(studentnr, name, address, city, zipcode, username, password, schoolclass_id, email) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 stat = conn.prepareStatement(querystring, Statement.RETURN_GENERATED_KEYS);
-            }
-
-            stat.setInt(1, student.getStudentnr());
-            stat.setString(2, student.getName());
-            stat.setString(3, student.getAddress());
-            stat.setString(4, student.getCity());
-            stat.setString(5, student.getZipcode());
-            stat.setString(6, student.getUsername());
-            stat.setString(7, student.getPassword());
-            stat.setInt(8, student.getSchoolclass_id());
-            stat.setString(9, student.getEmail());
-            if(exists)
-            {
-                stat.setInt(9, student.getId());
+                stat.setInt(1, student.getStudentnr());
+                stat.setString(2, student.getName());
+                stat.setString(3, student.getAddress());
+                stat.setString(4, student.getCity());
+                stat.setString(5, student.getZipcode());
+                stat.setString(6, student.getUsername());
+                stat.setString(7, student.getPassword());
+                stat.setInt(8, student.getSchoolclass_id());
+                stat.setString(9, student.getEmail());
             }
             stat.execute();
-            if(!exists)
-            {
+            if (!exists) {
                 ResultSet rs = stat.getGeneratedKeys();
                 student.setId(rs.getInt(1));
             }
@@ -152,9 +144,8 @@ public class StudentDao extends Database  {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void addPhoto(Student student, Photo photo)
-    {
+
+    public void addPhoto(Student student, Photo photo) {
         try {
             String querystring;
             querystring = "INSERT INTO student_photos(studentID, photoID) VALUES(?, ?)";
@@ -179,9 +170,8 @@ public class StudentDao extends Database  {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void delete(Student student)
-    {
+
+    public void delete(Student student) {
         try {
             String querystring = "DELETE FROM students WHERE id = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
@@ -191,22 +181,19 @@ public class StudentDao extends Database  {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public Student authenticate(String username, String password)
-    {
+
+    public Student authenticate(String username, String password) {
         Student student = null;
         try {
             String querystring = "SELECT * FROM students WHERE username = ?";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setString(1, username);
             ResultSet rs = stat.executeQuery();
-            
-            while(rs.next())
-            {
+
+            while (rs.next()) {
                 student = build(rs);
                 BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-                if(!passwordEncoder.matches(password, rs.getString("password")))
-                {
+                if (!passwordEncoder.matches(password, rs.getString("password"))) {
                     student = null;
                 }
             }
@@ -215,11 +202,10 @@ public class StudentDao extends Database  {
         }
         return student;
     }
-    
-    public Student build(ResultSet rs)
-    {
+
+    public Student build(ResultSet rs) {
         Student student = null;
-        try {            
+        try {
             student = new Student(this);
             student.setId(rs.getInt("id"));
             student.setStudentnr(rs.getInt("studentnr"));
@@ -229,7 +215,7 @@ public class StudentDao extends Database  {
             student.setCity(rs.getString("city"));
             student.setZipcode(rs.getString("zipcode"));
             student.setSchoolclass_id(rs.getInt("schoolclass_id"));
-            student.setEmail("email");
+            student.setEmail(rs.getString("email"));
         } catch (SQLException ex) {
             Logger.getLogger(StudentDao.class.getName()).log(Level.SEVERE, null, ex);
         }
