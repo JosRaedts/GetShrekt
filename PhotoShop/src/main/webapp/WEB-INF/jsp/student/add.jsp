@@ -41,6 +41,7 @@
                                         <form class="form-signin" method="post" action="${baseurl}/student/add">
                                             <h2 class="form-signin-heading"><spring:message code="addstudent" text="%addstudent" /></h2>
                                             <input type="text" name="Name" class="form-control" placeholder="<spring:message code="studentname" text="&studentname" />" required autofocus>
+                                            <input type="text" name="Email" class="form-control" placeholder="<spring:message code="Email" text="&Email" />" required autofocus>
                                             <input type="text" name="Address" class="form-control" placeholder="<spring:message code="address" text="&address" />" required autofocus>
                                             <input type="text" name="City" class="form-control" placeholder="<spring:message code="city" text="&city" />" required autofocus>  
                                             <input type="text" name="ZipCode" class="form-control" placeholder="<spring:message code="zipcode" text="&zipcode" />" required autofocus>     
