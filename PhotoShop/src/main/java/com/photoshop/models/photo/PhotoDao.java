@@ -247,7 +247,7 @@ public class PhotoDao extends Database {
      public List<Photo> getClassPhotosByStudentclass(int classid){
         ArrayList<Photo> photos = new ArrayList<Photo>();
         try {
-            String querystring = "SELECT * FROM photos p,schoolclass_photos scp WHERE p.id = scp.id and schoolclassID = ? ORDER BY date";
+            String querystring = "SELECT * FROM photos p,schoolclass_photos scp WHERE p.id = scp.photoID and schoolclassID = ? ORDER BY date";
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, classid);
             ResultSet rs = stat.executeQuery();

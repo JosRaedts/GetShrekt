@@ -261,7 +261,7 @@ public class CartproductDao extends Database {
         try {
             String querystring = null;
 
-                querystring = "DELETE FROM cartproducts WHERE id = ?";
+                querystring = "DELETE FROM cartproducts WHERE student_id = ?";
 
             PreparedStatement stat = conn.prepareStatement(querystring);
             stat.setInt(1, studentid);

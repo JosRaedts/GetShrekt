@@ -133,7 +133,7 @@ public class ShoppingCartController extends AbstractController {
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String redirecttolist(ModelMap map, HttpServletRequest request) {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(1500);
 
             return "redirect:../shoppingcart/list";
         } catch (Exception ex) {
