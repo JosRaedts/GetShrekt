@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -65,7 +66,9 @@ public class PaymentController extends AbstractController{
                 PaymentItem item = new PaymentItem();
                 item.setQuantity(cp.getAmount());
                 item.setItemNumber(String.valueOf(cp.getId()));
-                item.setAmount(Double.toString(cp.getPrice()));
+                DecimalFormat df = new DecimalFormat("##.##");
+                float price = (float) cp.getPrice();
+                item.setAmount(String.format("%.2f", price).replace(",", "."));
                 item.setDescription(cp.getContent());
                 items[i] = item;
                 i++;
@@ -187,6 +190,6 @@ public class PaymentController extends AbstractController{
         order.setIndexkaart(indexkaartgenerator.getFilename());
         order.save();
         
-        return "";
+        return "redirect:../order/success";
     }
 }
