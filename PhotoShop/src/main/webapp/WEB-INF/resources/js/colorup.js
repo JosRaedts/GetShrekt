@@ -86,10 +86,10 @@ jQuery.fn.colorUp = function () {
                         imgData.data[pos + 1] = 255 - imgData.data[pos + 1];
                         imgData.data[pos + 2] = 255 - imgData.data[pos + 2];
                         break;
-                    case ("none"):
-                        imgData.data[pos] = imgData.data[pos];
-                        imgData.data[pos + 1] = imgData.data[pos + 1];
-                        imgData.data[pos + 2] = imgData.data[pos + 2];
+                    case ("light"):
+                        imgData.data[pos] = imgData.data[pos] + 80;
+                        imgData.data[pos + 1] = imgData.data[pos + 1] + 80;
+                        imgData.data[pos + 2] = imgData.data[pos + 2] + 80;
                         break;
                     case ("dark"):
                         imgData.data[pos] = imgData.data[pos] - 80;
