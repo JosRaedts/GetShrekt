@@ -161,7 +161,7 @@ public class PaymentController extends AbstractController{
                     orderrowdir.mkdir();
                 }
 
-                String cartdir = env.getProperty("uploadDir") + "cart/" + cp.getImageId();
+                String cartdir = env.getProperty("uploadDir") + "cart/" + cp.getId();
                 //Files.move(Paths.get(cartdir+"/*"), Paths.get(orderrowdirstring+"/*"));
 
                 Path sourceDir = Paths.get(cartdir);
@@ -189,6 +189,9 @@ public class PaymentController extends AbstractController{
         Indexkaartgenerator indexkaartgenerator = new Indexkaartgenerator(order, env, photodao, messageSource, locale);
         order.setIndexkaart(indexkaartgenerator.getFilename());
         order.save();
+        
+        Student student = (Student)this.getUser();
+        cartproductDao.clearCart(student.getId());
         
         return "redirect:../order/success";
     }

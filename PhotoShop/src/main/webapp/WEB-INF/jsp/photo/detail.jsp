@@ -207,7 +207,10 @@
                     $('.total').text("Totaal bedrag: " + '\u20AC' + sum.toFixed(2));
                 }
                 
-                
+                function sleep(ms) {
+                    ms += new Date().getTime();
+                    while (new Date() < ms){}
+                }
                 $(document).ready(function(){
                     $("#add_btn").click(function(){
                         var products = [];
@@ -233,6 +236,7 @@
                         function(data,status){
                             
                         });
+                        sleep(300);
                         }
                     });
                     
