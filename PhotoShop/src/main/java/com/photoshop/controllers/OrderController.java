@@ -45,13 +45,17 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.photoshop.misc.Indexkaartgenerator;
 import com.photoshop.models.orderrow.OrderRowDao;
 import com.photoshop.misc.Factuurgenerator;
+import com.photoshop.misc.ImageManager;
 import com.photoshop.misc.Mailgenerator;
 import com.photoshop.models.address.Address;
+import com.photoshop.models.cartproduct.Cartproduct;
 import com.photoshop.models.orderrow.OrderRow;
 import com.photoshop.models.photo.PhotoDao;
 import com.photoshop.models.product.ProductDao;
 import java.awt.Desktop;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -71,7 +75,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import net.coobird.thumbnailator.filters.Watermark;
+import net.coobird.thumbnailator.geometry.Positions;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -234,5 +245,47 @@ public class OrderController extends AbstractController {
             }
         }
         return "redirect:../";
+    }
+    
+    @RequestMapping(value = "/view/{format:low|high|thumb}/{order_row_id:^[0-9]+$}", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpEntity<byte[]> getPhoto(HttpServletRequest response, @PathVariable("format") String format, @PathVariable("order_row_id") int id) throws IOException {
+        OrderRow orderRow = orderrowDao.getById(id);
+        if (orderRow != null) {
+            String filename = "";
+            switch (format) {
+                case "high":
+                    filename = env.getProperty("uploadDir") + "orders/"+orderRow.getId()+"/highres.jpg";
+                    break;
+                case "low":
+                    filename = env.getProperty("uploadDir") + "orders/"+orderRow.getId()+"/lowres.jpg";
+                    break;
+                case "thumb":
+                    filename = env.getProperty("uploadDir") + "orders/"+orderRow.getId()+"/thumb.jpg";
+                    break;
+            }
+
+            InputStream in = new FileInputStream(filename);
+            BufferedImage img = ImageIO.read(in);
+            if (format.equals("low")) {
+                BufferedImage watermark = ImageIO.read(new FileInputStream(env.getProperty("uploadDir") + "watermerk.png"));
+                ImageManager imageManager = new ImageManager();
+                watermark = imageManager.resize(watermark, img.getHeight(), img.getWidth());
+                Watermark filter = new Watermark(Positions.CENTER, watermark, 0.2f);
+                img = filter.apply(img);
+            }
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            ImageIO.write(img, "jpg", bos);
+            byte[] image = bos.toByteArray();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); //or what ever type it is
+            headers.setContentLength(image.length);
+
+            return new HttpEntity<byte[]>(image, headers);
+        } else {
+            return null;
+        }
     }
 }

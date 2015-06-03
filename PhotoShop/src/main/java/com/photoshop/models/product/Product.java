@@ -32,6 +32,10 @@ public class Product {
     
     public void save()
     {
+        if(this.dao == null)
+        {
+            dao = new ProductDao();
+        }
         this.dao.save(this);
     }
     

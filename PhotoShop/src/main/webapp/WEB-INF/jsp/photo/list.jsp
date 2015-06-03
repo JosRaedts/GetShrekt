@@ -29,6 +29,7 @@
                             
                         </div>
                     </div>
+
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="row">
@@ -41,7 +42,6 @@
                                             });
                                         });
                                     </script>
-                                    <br>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
                                         <thead>
                                             <tr>
@@ -67,7 +67,7 @@
                                                     <td><a href="${baseurl}/photo/active/${picture.id}"><i class="fa fa-check fa-2x" style="color: green;"></i></a>
                                                 </c:if>
                                                 <c:if test="${!picture.active}">
-                                                        <td><a href="${baseurl}/photo/active/${picture.id}"><i class="fa fa-times fa-2x" style="color: red;"></i></a>
+                                                    <td><a href="${baseurl}/photo/active/${picture.id}"><i class="fa fa-times fa-2x" style="color: red;"></i></a>
                                                 </c:if>
                                             </tr>
                                         </c:forEach>

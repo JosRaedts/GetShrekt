@@ -206,70 +206,75 @@ public class PhotoController extends AbstractController {
 
     @RequestMapping(value = "/view/{format:low|high|thumb}/{photoId:^[0-9]+$}", method = RequestMethod.GET)
     @ResponseBody
-    public HttpEntity<byte[]> getPhoto(HttpServletRequest response, @PathVariable("format") String format, @PathVariable("photoId") int id) throws IOException {
-        Photo photo = photodao.getById(id);
-        if (photo != null) {
+    public HttpEntity<byte[]> getPhoto(HttpServletRequest response, @PathVariable("format") String format, @PathVariable("photoId") int id) {
+        try {
+            Photo photo = photodao.getById(id);
+            if (photo != null) {
 
-            IUser user = this.getUser();
-            if (user != null) {
-                switch (this.getUser().getType()) {
-                    case PHOTOGRAPHER:
-                        Photographer photographer = (Photographer) user;
-                        if (photo.getPhotographerID() != photographer.getId()) {
+                IUser user = this.getUser();
+                if (user != null) {
+                    switch (this.getUser().getType()) {
+                        case PHOTOGRAPHER:
+                            Photographer photographer = (Photographer) user;
+                            if (photo.getPhotographerID() != photographer.getId()) {
+                                return null;
+                            }
+                            break;
+                        case ADMIN:
+                            break;
+                        case STUDENT:
+                            Student student = (Student) user;
+                            if (!student.doIHaveAccess(photo)) {
+                                return null;
+                            }
+                            break;
+                        default:
                             return null;
-                        }
-                        break;
-                    case ADMIN:
-                        break;
-                    case STUDENT:
-                        Student student = (Student) user;
-                        if (!student.doIHaveAccess(photo)) {
-                            return null;
-                        }
-                        break;
-                    default:
-                        return null;
+                    }
+                } else {
+                    return null;
                 }
+
+                String filename = "";
+                switch (format) {
+                    case "high":
+                        filename = env.getProperty("uploadDir") + photo.getHighResURL();
+                        break;
+                    case "low":
+                        filename = env.getProperty("uploadDir") + "low/" + photo.getLowResURL();
+                        break;
+                    case "thumb":
+                        filename = env.getProperty("uploadDir") + "thumb/" + photo.getThumbnailURL();
+                        break;
+                }
+
+                InputStream in = new FileInputStream(filename);
+                BufferedImage img = ImageIO.read(in);
+                System.out.println("Watermark test1");
+                if (format.equals("low")) {
+                    BufferedImage watermark = ImageIO.read(new FileInputStream(env.getProperty("uploadDir") + "watermerk.png"));
+                    watermark = imageManager.resize(watermark, img.getHeight(), img.getWidth());
+                    Watermark filter = new Watermark(Positions.CENTER, watermark, 0.2f);
+                    img = filter.apply(img);
+                    System.out.println("Watermark try");
+                }
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+                ImageIO.write(img, "jpg", bos);
+                byte[] image = bos.toByteArray();
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.IMAGE_JPEG); //or what ever type it is
+                headers.setContentLength(image.length);
+
+                return new HttpEntity<byte[]>(image, headers);
             } else {
                 return null;
             }
-
-            String filename = "";
-            switch (format) {
-                case "high":
-                    filename = env.getProperty("uploadDir") + photo.getHighResURL();
-                    break;
-                case "low":
-                    filename = env.getProperty("uploadDir") + "low/" + photo.getLowResURL();
-                    break;
-                case "thumb":
-                    filename = env.getProperty("uploadDir") + "thumb/" + photo.getThumbnailURL();
-                    break;
-            }
-
-            InputStream in = new FileInputStream(filename);
-            BufferedImage img = ImageIO.read(in);
-            System.out.println("Watermark test1");
-            if (format.equals("low")) {
-                BufferedImage watermark = ImageIO.read(new FileInputStream(env.getProperty("uploadDir") + "watermerk.png"));
-                watermark = imageManager.resize(watermark, img.getHeight(), img.getWidth());
-                Watermark filter = new Watermark(Positions.CENTER, watermark, 0.2f);
-                img = filter.apply(img);
-                System.out.println("Watermark try");
-            }
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-            ImageIO.write(img, "jpg", bos);
-            byte[] image = bos.toByteArray();
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG); //or what ever type it is
-            headers.setContentLength(image.length);
-
-            return new HttpEntity<byte[]>(image, headers);
-        } else {
-            return null;
+        } catch (Exception e) {
+            System.out.println("File not found");
         }
+        return null;
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
