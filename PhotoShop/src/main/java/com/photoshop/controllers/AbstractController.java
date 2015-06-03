@@ -67,7 +67,7 @@ public class AbstractController {
         }
         catch(Exception ex)
         {
-            System.out.println(ex.getMessage());
+            //System.out.println(ex.getMessage());
         }
         return user;
     }

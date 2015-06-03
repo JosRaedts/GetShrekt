@@ -12,13 +12,10 @@ import com.photoshop.models.orderrow.OrderRow;
 import com.photoshop.models.orderrow.OrderRowDao;
 import com.photoshop.models.photo.Photo;
 import com.photoshop.models.photo.PhotoDao;
-import com.photoshop.models.product.Product;
-import com.photoshop.models.product.ProductDao;
 import com.photoshop.models.student.Student;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,13 +29,12 @@ import paypalnvp.profile.Profile;
 import paypalnvp.request.GetExpressCheckoutDetails;
 import paypalnvp.request.SetExpressCheckout;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.core.env.Environment;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * Created by Bram on 25-5-2015.
@@ -49,7 +45,7 @@ import org.springframework.core.env.Environment;
 public class PaymentController extends AbstractController{
 
     @RequestMapping(method = RequestMethod.GET)
-    public String pay()
+    public String pay(HttpServletRequest request)
     {
         if (this.authenticate(UserType.STUDENT)) {
             Student student = (Student) this.getUser();
@@ -81,7 +77,7 @@ public class PaymentController extends AbstractController{
             payment.setCurrency(Currency.EUR);
 
         /* create set express checkout - the first paypal request */
-            SetExpressCheckout setEC = new SetExpressCheckout(payment, "http://localhost:8080/PhotoShop/payment/confirm", "https://www.cancelurl.com");
+            SetExpressCheckout setEC = new SetExpressCheckout(payment, "http://localhost:8080"+request.getContextPath()+"/payment/confirm", "https://www.cancelurl.com");
             
             
             /* send request and set response */
@@ -126,6 +122,12 @@ public class PaymentController extends AbstractController{
         order.setFactuur("");
         order.setIndexkaart("");
         order.save();
+
+        String orderdirstring = env.getProperty("uploadDir") + "orders/" + order.getId();
+        File orderdir = new File(orderdirstring);
+        if (!orderdir.exists()) {
+            orderdir.mkdir();
+        }
         
         List<OrderRow> orderrows = new ArrayList();
         for(int i = 0; i < 100; i++)
@@ -145,12 +147,37 @@ public class PaymentController extends AbstractController{
                 orderrow.setProduct_id(cp.getProductId());
                 orderrow.setPhoto_id(cp.getPhotoID());
                 orderrow.setOrder_id(order.getId());
-                orderrow.setImagedata_id(cp.getImageId());
-                orderrowdao.save(orderrow); 
+                orderrow.setImagedata_id(cp.getImageId());;
+
+                //Files.move(, , StandardCopyOption.REPLACE_EXISTING);
+                orderrowdao.save(orderrow);
+
+                String orderrowdirstring = orderdirstring+"/"+orderrow.getId();
+                File orderrowdir = new File(orderrowdirstring);
+                if (!orderrowdir.exists()) {
+                    orderrowdir.mkdir();
+                }
+
+                String cartdir = env.getProperty("uploadDir") + "cart/" + cp.getImageId();
+                //Files.move(Paths.get(cartdir+"/*"), Paths.get(orderrowdirstring+"/*"));
+
+                Path sourceDir = Paths.get(cartdir);
+                Path destinationDir = Paths.get(orderrowdirstring);
+
+                try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(sourceDir)) {
+                    for (Path path : directoryStream) {
+                        System.out.println("copying " + path.toString());
+                        Path d2 = destinationDir.resolve(path.getFileName());
+                        System.out.println("destination File=" + d2);
+                        Files.move(path, d2, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                }
             }
             catch(NumberFormatException nbe)
             {
                 
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
    
