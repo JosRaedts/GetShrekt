@@ -23,28 +23,6 @@
 
                 <!-- /.panel -->
                 <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-comments fa-fw"></i> General information
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    Actions
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="#">Action</a>
-                                    </li>
-                                    <li><a href="#">Another action</a>
-                                    </li>
-                                    <li><a href="#">Something else here</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="row">
@@ -83,7 +61,7 @@
                                                     <td><a href="${baseurl}/photo/active/${picture.id}"><i class="fa fa-check fa-2x" style="color: green;"></i></a>
                                                 </c:if>
                                                 <c:if test="${!picture.active}">
-                                                        <td><a href="${baseurl}/photo/active/${picture.id}"><i class="fa fa-times fa-2x" style="color: red;"></i></a>
+                                                    <td><a href="${baseurl}/photo/active/${picture.id}"><i class="fa fa-times fa-2x" style="color: red;"></i></a>
                                                 </c:if>
                                             </tr>
                                         </c:forEach>
