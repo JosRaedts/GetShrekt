@@ -61,13 +61,12 @@
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
                                         <thead>
                                             <tr>
-                                                <th>Picture</th>
-                                                <th>Photographer name</th>
-                                                <th>Date</th>
-                                                <th>Width</th>  
-                                                <th>Height</th>
-                                                <th>Datum</th>
-                                                <th>Active</th>
+                                                <th><spring:message code="photolistpicture" text="%photolistpicture" /></th>
+                                                <th><spring:message code="photolistphotographername" text="%photolistphotographername" /></th>
+                                                <th><spring:message code="photolistwidth" text="%photolistwidth" /></th>  
+                                                <th><spring:message code="photolistheight" text="%photolistheight" /></th>
+                                                <th><spring:message code="photolistdate" text="%photolistdate" /></th>
+                                                <th><spring:message code="photolistactive" text="%photolistactive" /></th>
                                               
                                             </tr>
                                         </thead>
@@ -77,7 +76,6 @@
                                             <tr>
                                                 <td><img src="${baseurl}/photo/view/thumb/${picture.id}"/></td>
                                                 <td>${picture.getPhotographer().getName()}</td>
-                                                <td>${picture.date}</td>
                                                 <td>${picture.width}</td>
                                                 <td>${picture.height}</td>
                                                 <td><fmt:formatDate value="${picture.date}" type="both" pattern="dd-MM-yyyy" /></td> 
