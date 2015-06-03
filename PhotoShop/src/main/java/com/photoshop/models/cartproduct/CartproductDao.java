@@ -255,5 +255,25 @@ public class CartproductDao extends Database {
         }
         
     }
+    
+    public boolean clearCart(int studentid)
+    {
+        try {
+            String querystring = null;
+
+                querystring = "DELETE FROM cartproducts WHERE id = ?";
+
+            PreparedStatement stat = conn.prepareStatement(querystring);
+            stat.setInt(1, studentid);
+            stat.execute();
+
+          
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        
+    }
 
 }

@@ -288,4 +288,10 @@ public class OrderController extends AbstractController {
             return null;
         }
     }
+    
+    @RequestMapping(value = "/success", method = RequestMethod.GET)
+    public String success(ModelMap map, HttpServletRequest request) 
+    {
+        return "order/success";
+    }
 }
