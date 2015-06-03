@@ -24,25 +24,9 @@
                 <!-- /.panel -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-comments fa-fw"></i> General information
+                        <i class="fa fa-list-alt"></i>
                         <div class="pull-right">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    Actions
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="#">Action</a>
-                                    </li>
-                                    <li><a href="#">Another action</a>
-                                    </li>
-                                    <li><a href="#">Something else here</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a>
-                                    </li>
-                                </ul>
-                            </div>
+                            
                         </div>
                     </div>
                     <!-- /.panel-heading -->

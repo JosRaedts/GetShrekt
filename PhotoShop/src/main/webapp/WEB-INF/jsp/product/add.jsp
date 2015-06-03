@@ -23,7 +23,7 @@
                     <!-- /.panel -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-comments fa-fw"></i> General information
+                            <i class="fa fa-list-alt"></i>
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -49,8 +49,8 @@
                                                 <table border="0">
                                                     <tr>
                                                         <td width="200px"><spring:message code="active" text="%active" />:</td>
-                                                        <td><input type="radio" name="active" value="1" checked>Ja<br>
-                                                            <input type="radio" name="active" value="0">Nee</td>
+                                                        <td><input type="radio" name="active" value="1" checked><spring:message code="yes" text="%yes" /><br>
+                                                            <input type="radio" name="active" value="0"><spring:message code="no" text="%no" /></td>
                                                     </tr>
                                                     <tr>
                                                         <td width="200px"><spring:message code="preview" text="%preview" />:</td>

@@ -111,7 +111,7 @@
                 <c:if test="${sessionScope.UserType == 'ADMIN' && sessionScope.UserID != null}">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-comments fa-fw"></i> <spring:message code="Sales" text="%Sales" />
+                            <i class="fa fa-list-alt"></i> <spring:message code="Sales" text="%Sales" />
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">

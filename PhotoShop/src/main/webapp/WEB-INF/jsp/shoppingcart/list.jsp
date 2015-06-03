@@ -2,7 +2,11 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:include page="/WEB-INF/jsp/header.jsp" />
+
 <div class="container">
+    <div class="Titelphotoview">
+    <h1><spring:message code="shoppingcart" text="%shoppingcart" /></h1>
+    </div>
     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="producttable">
         <thead>
             <tr>
