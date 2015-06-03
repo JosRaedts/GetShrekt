@@ -84,7 +84,7 @@ public class ModelTests {
         this.photo = photoDao.getById(1);
         this.product = productDao.getById(1);
         this.order = orderDao.getById(12);
-        this.cartproduct = cartproductdao.getById(30);
+        this.cartproduct = cartproductdao.getById(4);
     }
     
     @After
@@ -333,20 +333,20 @@ public class ModelTests {
     @Test
     public void orderTest(){
         assertEquals("Orderid should be 1", 12, order.getId());
-        assertEquals("Studentname should be Henk de Student", "Henk de Student", order.getStudent().getName());
-        assertEquals("Status should be NIET_BETAALD", "1", order.getStatus().toString());
-        assertEquals("Factuur should be Factuur 4", "Factuur 4", order.getFactuur());
-        assertEquals("Indexkaart should be Indexkaart 4", "Indexkaart 4", order.getIndexkaart());
+        assertEquals("Studentname should be Casper Schobers", "Casper Schobers", order.getStudent().getName());
+        assertEquals("Status should be BETAALD", "2", order.getStatus().toString());
+        assertEquals("Factuur should be Factuur 12", "Factuur 12", order.getFactuur());
+        assertEquals("Indexkaart should be Indexkaart 12", "Indexkaart 12", order.getIndexkaart());
         
         order.setId(4);
-        order.setStatus(OrderEnum.BETAALD);
+        order.setStatus(OrderEnum.NIET_BETAALD);
         order.setShippingaddress(new Address("Henk", "Pinda", "5975SE", "Sevenum", "28343241"));
         order.setInvoiceaddress(new Address("Henk", "de Pinda", "5975SE", "Sevenum", "28343241"));
         order.setFactuur("Factuur 3");
         order.setIndexkaart("Indexkaart 3");
         
         assertEquals("Orderid should be 4", 4, order.getId());
-        assertEquals("Status should be BETAALD", "2", order.getStatus().toString());
+        assertEquals("Status should be NIET_BETAALD", "1", order.getStatus().toString());
         assertEquals("Shipping address should be Pinda", "Pinda", order.getShippingaddress().getAdres());
         assertEquals("Invoice address should be de Pinda", "de Pinda", order.getInvoiceaddress().getAdres());
         assertEquals("Factuur should be Factuur 4", "Factuur 3", order.getFactuur());
@@ -360,7 +360,7 @@ public class ModelTests {
         order.setIndexkaart("Indexkaart 4");
         
         assertEquals("Orderid should be 1", 12, order.getId());
-        assertEquals("Studentname should be Henk de Student", "Henk de Student", order.getStudent().getName());
+        assertEquals("Studentname should be Casper Schobers", "Casper Schobers", order.getStudent().getName());
         assertEquals("Status should be NIET_BETAALD", "1", order.getStatus().toString());
         assertEquals("Factuur should be Factuur 4", "Factuur 4", order.getFactuur());
         assertEquals("Indexkaart should be Indexkaart 4", "Indexkaart 4", order.getIndexkaart());
@@ -368,8 +368,44 @@ public class ModelTests {
     
     @Test
     public void testCartproduct(){
+        assertEquals("cartproductid should be 4", 4, cartproduct.getId());
+        assertEquals("content should be Foto op t-shirt", "Foto op t-shirt", cartproduct.getContent());
+        assertEquals("amount should be 1", 1, cartproduct.getAmount());
+        assertEquals("studentid should be 5", 5, cartproduct.getStudentID());
+        assertEquals("photoid should be 3", 3, cartproduct.getPhotoID());
+        assertEquals("productid should be 5", 5, cartproduct.getProductId());
+        assertEquals("imageid should be 4", 4, cartproduct.getImageId());
+        
+        cartproduct.setId(60);
+        cartproduct.setContent("dat pad");
+        cartproduct.setAmount(25);
+        cartproduct.setStudentID(25);
+        cartproduct.setPhotoID(58);
+        cartproduct.setProductId(25);
+        cartproduct.setImageId(25);
+        
+        assertEquals("cartproductid should be 30", 60, cartproduct.getId());
+        assertEquals("content should be dat pad", "dat pad", cartproduct.getContent());
+        assertEquals("amount should be 3", 25, cartproduct.getAmount());
+        assertEquals("studentid should be 4", 25, cartproduct.getStudentID());
+        assertEquals("photoid should be 51", 58, cartproduct.getPhotoID());
+        assertEquals("productid should be 2", 25, cartproduct.getProductId());
+        assertEquals("imageid should be 1", 25, cartproduct.getImageId());
+        
+        cartproduct.setId(30);
+        cartproduct.setContent("Foto op iPhone 5 hoesje");
+        cartproduct.setAmount(3);
+        cartproduct.setStudentID(4);
+        cartproduct.setPhotoID(51);
+        cartproduct.setProductId(2);
+        cartproduct.setImageId(1);
+        
         assertEquals("cartproductid should be 30", 30, cartproduct.getId());
         assertEquals("content should be Foto op iPhone 5 hoesje", "Foto op iPhone 5 hoesje", cartproduct.getContent());
         assertEquals("amount should be 3", 3, cartproduct.getAmount());
+        assertEquals("studentid should be 4", 4, cartproduct.getStudentID());
+        assertEquals("photoid should be 51", 51, cartproduct.getPhotoID());
+        assertEquals("productid should be 2", 2, cartproduct.getProductId());
+        assertEquals("imageid should be 1", 1, cartproduct.getImageId());
     }
 }

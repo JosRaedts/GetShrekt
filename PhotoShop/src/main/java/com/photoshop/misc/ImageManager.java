@@ -6,13 +6,17 @@
 package com.photoshop.misc;
 
 import com.photoshop.models.imgdata.Imgdata;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import com.photoshop.models.photo.Photo;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.WritableRaster;
-import org.springframework.stereotype.Component;
+import java.io.*;
 
 /**
  *
@@ -103,22 +107,55 @@ public class ImageManager {
 
         return sepia;
     }
-    
-    public static BufferedImage crop(Imgdata imgdata, BufferedImage img, String type)
+
+    public static BufferedImage loadImage(String filename)
     {
-        BufferedImage dest = null;
-        if(type == "lowres")
-        {
-            dest = img.getSubimage((int)imgdata.getX(), (int)imgdata.getY(), (int)imgdata.getWidth(), (int)imgdata.getHeight());
-        }  
-        else if(type == "normal")
-        {
-            //scale
+        InputStream in = null;
+        BufferedImage img = null;
+        try {
+            in = new FileInputStream(filename);
+            img = ImageIO.read(in);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        else if(type == "thumb")
-        {
-            //scale
+        return img;
+    }
+
+
+    public static void crop(Imgdata imgdata, Photo photo, Environment env, String location, int id) throws IOException {
+        File theDir = new File(location);
+
+        if (!theDir.exists()) {
+            theDir.mkdir();
         }
-        return dest;
+
+        BufferedImage lowimg = loadImage(env.getProperty("uploadDir") + "low/" + photo.getLowResURL());
+        BufferedImage lowdest = lowimg.getSubimage((int)imgdata.getX(), (int)imgdata.getY(), (int)imgdata.getWidth(), (int)imgdata.getHeight());
+        int lowwidth = lowimg.getWidth();
+        int lowheight = lowimg.getHeight();
+
+        BufferedImage highimg = loadImage(env.getProperty("uploadDir")  + photo.getHighResURL());
+        int highwidth = highimg.getWidth();
+        int highheight = highimg.getHeight();
+        System.out.println(imgdata.getWidth());
+        System.out.println(highwidth);
+        Double highScaleWidth = Double.valueOf(highwidth) / Double.valueOf(lowwidth);
+        System.out.println(highScaleWidth);
+        Double highScaleHeight = Double.valueOf((highheight) / Double.valueOf(lowheight));
+        System.out.println(imgdata.getWidth()*highScaleWidth);
+        BufferedImage highdest = highimg.getSubimage((int)(imgdata.getX()*highScaleWidth), (int)(imgdata.getY()*highScaleHeight), (int)(imgdata.getWidth()*highScaleWidth), (int)(imgdata.getHeight()*highScaleHeight));
+
+        BufferedImage thumbimg = loadImage(env.getProperty("uploadDir") + "thumb/" + photo.getThumbnailURL());
+        int thumbwidth = thumbimg.getWidth();
+        int thumbheight = thumbimg.getHeight();
+        Double thumbScaleWidth = Double.valueOf(thumbwidth) / Double.valueOf(lowwidth);
+        Double thumbScaleHeight = Double.valueOf(thumbheight) / Double.valueOf(lowheight);
+        BufferedImage thumbdest = thumbimg.getSubimage((int)(imgdata.getX()*thumbScaleWidth), (int)(imgdata.getY()*thumbScaleHeight), (int)(imgdata.getWidth()*thumbScaleWidth), (int)(imgdata.getHeight()*thumbScaleHeight));
+
+        ImageIO.write(lowdest, "jpg", new File(location+"/lowres.jpg"));
+        ImageIO.write(highdest, "jpg", new File(location+"/highres.jpg"));
+        ImageIO.write(thumbdest, "jpg", new File(location+"/thumb.jpg"));
     }
 }
