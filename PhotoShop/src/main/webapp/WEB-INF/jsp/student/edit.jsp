@@ -54,7 +54,7 @@
                                         <spring:message code="name" text="%name" /><br> 
                                         <input type="text" name="name" value="${student.name}"><br><br>
                                         <spring:message code="email" text="%email" /><br> 
-                                        <input type="text" name="name" value="${student.email}"><br><br>
+                                        <input type="text" name="email" value="${student.email}"><br><br>
                                         <spring:message code="address" text="%address" /><br>
                                         <input type="text" name="address" value="${student.address}"><br><br>
                                         <spring:message code="city" text="%city" /><br>

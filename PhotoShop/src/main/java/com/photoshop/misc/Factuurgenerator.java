@@ -165,6 +165,8 @@ public class Factuurgenerator {
         footer.setAlignment(Element.ALIGN_CENTER);
         preface.add(footer);
         document.add(preface);
+        Mailgenerator mail = new Mailgenerator();
+        mail.Sendmail(filename, order, env);
     }
   
     private void creatCell(String cellnaam,PdfPTable table,boolean header)

@@ -125,7 +125,7 @@ public class StudentController extends AbstractController {
             student.setUsername(request.getParameter("Username"));
             student.setZipcode(request.getParameter("ZipCode"));
             student.setSchoolclass_id(Integer.parseInt(request.getParameter("Schoolclassid")));
-            student.setEmail(request.getParameter("email"));
+            student.setEmail(request.getParameter("Email"));
             studentDao.save(student);
             return "redirect:../student/add"; 
         }
