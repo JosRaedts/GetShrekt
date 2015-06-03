@@ -11,7 +11,7 @@
     <div class="Titelphotoview">
         <h1><spring:message code="photodetailpage" text="%photodetailpage" /></h1>
     </div>
-    <div class="row">Photo detail pagina 
+    <div class="row">
       <div class="col-md-6">
         <!-- <h3 class="page-header">Demo:</h3> -->
         <div id="cropper" class="img-container">
@@ -151,6 +151,7 @@
             <c:if test="${product.price > 0}">
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="box">
+                    <br><b>${product.name}</b><br><br>
                     <input type="hidden" name="productid" value="${product.id}">
                     <img id="photo${product.id}" src="${baseurl}/photo/view/low/${photo.id}" width="100%" />
                     <img class="imgproduct" src="${baseurl}/product/view/${product.id}" width="100%"/>
