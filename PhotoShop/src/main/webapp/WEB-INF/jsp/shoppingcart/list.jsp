@@ -24,7 +24,7 @@
 
                 <tr>
 
-                    <td>plaatje ofzo hier</td>
+                    <td><img src="${baseurl}/shoppingcart/view/thumb/${cartproduct.id}"</td>
                     <td>${cartproduct.content}</td>
                     <td>&#128; ${cartproduct.price}</td>
                     <td><form method="post" action="${baseurl}/shoppingcart/list">
