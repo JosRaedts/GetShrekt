@@ -65,7 +65,7 @@ public class ShoppingCartController extends AbstractController {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-        return "redirect:../";
+        return "redirect:shoppingcart/list";
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -104,6 +104,18 @@ public class ShoppingCartController extends AbstractController {
         return "redirect:../";
     }
 
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String redirecttolist(ModelMap map, HttpServletRequest request) {
+        try {
+            Thread.sleep(1000);
+
+            return "redirect:../shoppingcart/list";
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return "redirect:../";
+        }
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addProduct(ModelMap map, HttpServletRequest request) {
 
@@ -119,20 +131,12 @@ public class ShoppingCartController extends AbstractController {
             double price = cartproductDao.getPrice(photoid, productid);
             int amount = Integer.parseInt(request.getParameter("product_qty"));
             String name = cartproductDao.getName(productid);
-            System.out.println("kkkkkk");
-            System.out.println(request.getParameterMap());
             float x = Float.valueOf(request.getParameter("photo_data[left]"));
-            System.out.println("PPPP");
             float y = Float.valueOf(request.getParameter("photo_data[top]"));
-            System.out.println("qqqqqq");
             float height = Float.valueOf(request.getParameter("photo_data[height]"));
-            System.out.println("tttttttt");
             float width = Float.valueOf(request.getParameter("photo_data[width]"));
-            System.out.println("000000000");
             Imgdata imgdata = new Imgdata(x, y, height, width, Filter.COLOR);
-            System.out.println("1111111");
             cartproductDao.saveImageData(imgdata);
-            System.out.println("22222222");
             Cartproduct temp = new Cartproduct();
             temp.setPrice(price);
             temp.setAmount(amount);
@@ -143,12 +147,13 @@ public class ShoppingCartController extends AbstractController {
             temp.setImageId(imgdata.getId());
             cartproductDao.addToCart(temp);
 
+            return "redirect:../shoppingcart/list";
+
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return "redirect:../";
         }
 
-        return "redirect:../shoppingcart/list";
     }
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)

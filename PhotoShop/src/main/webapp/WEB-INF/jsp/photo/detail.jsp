@@ -173,7 +173,9 @@
         </div>
         <div class="col-md-12">
             <label name="totalAmount" class="total"></label><br />
+            <form method="get" action="${baseurl}/shoppingcart/add">
             <input id="add_btn" type="submit" name="submit" value="Toevoegen aan winkelwagen" style="margin-bottom:15px;"> 
+            
             <script>
                 $(document).ready(function()
                 {
@@ -230,12 +232,15 @@
                         });
                         }
                     });
-                    window.location.href = "${baseurl}/shoppingcart/list";
+                    
+                    
+                    //window.location.href = "${baseurl}/shoppingcart/list";
                         //console.log(products);
                     });
                 });
 
             </script>
+            </form>
         </div>
     </div>
 </div>
