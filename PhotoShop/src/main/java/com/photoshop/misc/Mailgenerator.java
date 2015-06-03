@@ -36,7 +36,7 @@ public class Mailgenerator {
 
     private Environment env;
 
-    public void Sendmail(String OntvangerEmail, Order order, Environment env) {
+    public void Sendmail(String OntvangerEmail, Order order, Environment env, String filename) {
         this.env = env;
         this.order = order;
         final String username = "fotowinkelpts42@gmail.com";
@@ -76,11 +76,11 @@ public class Mailgenerator {
             multipart.addBodyPart(messageBodyPart);
             // Part two is attachment
             messageBodyPart = new MimeBodyPart();
-            String filename = env.getProperty("logo") + order.getFactuur() + ".pdf";
+            filename = env.getProperty("logo") + filename + ".pdf";
             DataSource source = new FileDataSource(filename);
             messageBodyPart.setDataHandler(new DataHandler(source));
 
-            messageBodyPart.setFileName(order.getFactuur());
+            messageBodyPart.setFileName(filename);
             multipart.addBodyPart(messageBodyPart);
 
             message.setContent(multipart);

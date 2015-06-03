@@ -166,7 +166,7 @@ public class Factuurgenerator {
         preface.add(footer);
         document.add(preface);
         Mailgenerator mail = new Mailgenerator();
-        mail.Sendmail(filename, order, env);
+        mail.Sendmail("willem1995@hotmail.com", order, env, filename);
     }
   
     private void creatCell(String cellnaam,PdfPTable table,boolean header)
