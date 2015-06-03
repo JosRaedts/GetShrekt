@@ -35,7 +35,6 @@
                                             });
                                         });
                                     </script>
-                                    <br>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="schooltable">
                                         <thead>
                                             <tr>

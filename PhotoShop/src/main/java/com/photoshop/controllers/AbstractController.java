@@ -120,7 +120,7 @@ public class AbstractController {
     public String backendLogin()
     {
         request.getSession().setAttribute("redirectURL", request.getRequestURI().toString().replace(request.getContextPath(), ""));
-        return "redirect:/admin/login";
+        return "redirect:../admin/login";
     }
     
 }
