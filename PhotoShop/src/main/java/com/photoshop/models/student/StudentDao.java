@@ -120,7 +120,7 @@ public class StudentDao extends Database  {
             boolean exists = idExists(student.getId());
             if(exists)
             {
-                querystring = "UPDATE students SET studentnr = ?, name = ?, address = ?, city = ?, zipcode = ?, username = ?, password = ?, schoolclass_id = ? email = ? WHERE id = ?";
+                querystring = "UPDATE students SET studentnr = ?, name = ?, address = ?, city = ?, zipcode = ?, username = ?, password = ?, schoolclass_id = ?, email = ? WHERE id = ?";
                 stat = conn.prepareStatement(querystring);
             }
             else
