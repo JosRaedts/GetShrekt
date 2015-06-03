@@ -125,7 +125,7 @@
 
             <div class="navbar-inverse sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
+                    <ul class="nav" id="side-menu" style='margin-top: 40px'>
                         <li>
                             <a href="${baseurl}/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
