@@ -6,6 +6,7 @@
 package com.photoshop.controllers;
 
 import com.photoshop.misc.ImageManager;
+import com.photoshop.models.IUser;
 import com.photoshop.models.cartproduct.Cartproduct;
 import com.photoshop.models.cartproduct.CartproductDao;
 import com.photoshop.models.imgdata.Filter;
@@ -15,9 +16,13 @@ import com.photoshop.models.order.OrderDao;
 import com.photoshop.models.order.OrderEnum;
 import com.photoshop.models.orderrow.OrderRow;
 import com.photoshop.models.orderrow.OrderRowDao;
+import com.photoshop.models.photo.Photo;
 import com.photoshop.models.photo.PhotoDao;
+import com.photoshop.models.photographer.Photographer;
 import com.photoshop.models.student.Student;
 import com.photoshop.models.student.StudentDao;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -28,10 +33,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.imageio.ImageIO;
+import net.coobird.thumbnailator.filters.Watermark;
+import net.coobird.thumbnailator.geometry.Positions;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -148,7 +164,7 @@ public class ShoppingCartController extends AbstractController {
             float y = Float.valueOf(request.getParameter("photo_data[y]"));
             float height = Float.valueOf(request.getParameter("photo_data[height]"));
             float width = Float.valueOf(request.getParameter("photo_data[width]"));
-            int filterid = Integer.valueOf(request.getParameter("photo_data[filter]"));
+            int filterid = Integer.valueOf(request.getParameter("photo_filter"));
             Imgdata imgdata = new Imgdata(x, y, height, width, Filter.values()[filterid]);
             cartproductDao.saveImageData(imgdata);
             Cartproduct temp = new Cartproduct();
@@ -161,7 +177,7 @@ public class ShoppingCartController extends AbstractController {
             temp.setImageId(imgdata.getId());
             cartproductDao.addToCart(temp);
 
-            ImageManager.crop(imgdata, photoDao.getById(photoid), env, env.getProperty("uploadDir") + "cart/"+temp.getId(), temp.getId());
+            ImageManager.modding(imgdata, photoDao.getById(photoid), env, env.getProperty("uploadDir") + "cart/"+temp.getId(), temp.getId());
             return "redirect:../shoppingcart/list";
 
         } catch (Exception ex) {
@@ -212,6 +228,48 @@ public class ShoppingCartController extends AbstractController {
             return "redirect:list";
         }
         return "redirect:../order/detail";
+    }
+    
+    @RequestMapping(value = "/view/{format:low|high|thumb}/{cartproductid:^[0-9]+$}", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpEntity<byte[]> getPhoto(HttpServletRequest response, @PathVariable("format") String format, @PathVariable("cartproductid") int id) throws IOException {
+        Cartproduct cartproduct = cartproductDao.getById(id);
+        if (cartproduct != null) {
+            String filename = "";
+            switch (format) {
+                case "high":
+                    filename = env.getProperty("uploadDir") + "cart/"+cartproduct.getId()+"/highres.jpg";
+                    break;
+                case "low":
+                    filename = env.getProperty("uploadDir") + "cart/"+cartproduct.getId()+"/lowres.jpg";
+                    break;
+                case "thumb":
+                    filename = env.getProperty("uploadDir") + "cart/"+cartproduct.getId()+"/thumb.jpg";
+                    break;
+            }
+
+            InputStream in = new FileInputStream(filename);
+            BufferedImage img = ImageIO.read(in);
+            if (format.equals("low")) {
+                BufferedImage watermark = ImageIO.read(new FileInputStream(env.getProperty("uploadDir") + "watermerk.png"));
+                ImageManager imageManager = new ImageManager();
+                watermark = imageManager.resize(watermark, img.getHeight(), img.getWidth());
+                Watermark filter = new Watermark(Positions.CENTER, watermark, 0.2f);
+                img = filter.apply(img);
+            }
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            ImageIO.write(img, "jpg", bos);
+            byte[] image = bos.toByteArray();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); //or what ever type it is
+            headers.setContentLength(image.length);
+
+            return new HttpEntity<byte[]>(image, headers);
+        } else {
+            return null;
+        }
     }
 
 }
