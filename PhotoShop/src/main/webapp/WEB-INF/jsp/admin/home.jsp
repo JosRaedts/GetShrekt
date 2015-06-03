@@ -46,7 +46,7 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-3">
             <div class="panel panel-primary">
                 <div class="panel-heading" style="height: 120px">
                     <div class="row">
@@ -70,7 +70,7 @@
                 </c:if>            
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-3">
             <div class="panel panel-green">
                 <div class="panel-heading" style="height: 120px">
                     <div class="row">
@@ -107,15 +107,11 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-8">
-
                 <!-- /.panel -->
                 <c:if test="${sessionScope.UserType == 'ADMIN' && sessionScope.UserID != null}">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-comments fa-fw"></i> <spring:message code="Sales" text="%Sales" />
-                            <div class="pull-right">
-                                <!-- empty -->
-                            </div>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
