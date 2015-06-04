@@ -198,19 +198,19 @@ public class OrderController extends AbstractController {
         return "redirect:../../";
     }
 
-    @RequestMapping(value = "/pdf", method = RequestMethod.GET)
-    public String pdf(ModelMap map, HttpServletRequest request,Locale locale) throws IOException {
-        if (this.authenticate(UserType.STUDENT)) {
-            this.order = this.orderDao.getById(1);
-            this.order.setInvoiceaddress(new Address("Willem de kok", "Orion 32", "5527CR", "Hapert", "0612345678"));
-            Mailgenerator mail = new Mailgenerator();
-            mail.Sendmail("willem1995@hotmail.com", order, this.env);
-            pdf = new Factuurgenerator(order, env, messageSource,locale);
-            index = new Indexkaartgenerator(order, env, photoDao, messageSource, locale);
-            return "redirect:../";
-        }
-        return "redirect:../";
-    }
+//    @RequestMapping(value = "/pdf", method = RequestMethod.GET)
+//    public String pdf(ModelMap map, HttpServletRequest request,Locale locale) throws IOException {
+//        if (this.authenticate(UserType.STUDENT)) {
+//            this.order = this.orderDao.getById(1);
+//            this.order.setInvoiceaddress(new Address("Willem de kok", "Orion 32", "5527CR", "Hapert", "0612345678"));
+//            Mailgenerator mail = new Mailgenerator();
+//            //mail.Sendmail("willem1995@hotmail.com", order, this.env);
+//            pdf = new Factuurgenerator(order, env, messageSource,locale);
+//            index = new Indexkaartgenerator(order, env, photoDao, messageSource, locale);
+//            return "redirect:../";
+//        }
+//        return "redirect:../";
+//    }
 
     @RequestMapping(value = "/address", method = RequestMethod.GET)
     public String address(ModelMap map, HttpServletRequest request) {
